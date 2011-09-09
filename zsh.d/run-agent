@@ -1,0 +1,12 @@
+function run-agent() {
+	ssh-add -l >& /dev/null
+	if [[ $? -eq 2 ]] ; then
+		eval `ssh-agent -s`
+	fi
+	ssh-add -l >& /dev/null
+	if [[ $? -eq 1 ]] ; then
+		ssh-add ~/.ssh/id*~*.pub
+#	else
+#		print "ssh-agent already exist"
+	fi
+}
