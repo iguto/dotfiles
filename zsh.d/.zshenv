@@ -8,5 +8,7 @@
 
 echo $ZSH_VERSION | grep 4.3.10
 if [ $? -ne 0 ]; then
-	exec $HOME/bin/zsh
+	if [ -e $HOME/bin/zsh ] ; then
+		exec $HOME/bin/zsh
+	fi
 fi
