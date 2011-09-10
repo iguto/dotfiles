@@ -2,4 +2,4 @@
 # ログインシェル/対話シェルで読み込まれる
 # スクリプト用シェルでは読み込まれないため注意
 
-#export PATH=$HOME/bin:$PATH
+export PATH=$HOME/bin:$PATH

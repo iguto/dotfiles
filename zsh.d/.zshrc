@@ -12,7 +12,7 @@ cdpath=$HOME
 export PAGER=less
 
 # zsh関連の別ファイルを置く場所へのパス
-zsh_dir=$HOME/.zshd
+zsh_dir=$HOME/zsh_dotfiles
 
 ############################################################
 #  ターミナル起動時に実行するコマンド
