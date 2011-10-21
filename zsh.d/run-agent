@@ -1,11 +1,15 @@
 function run-agent() {
-	ssh-add -l >& /dev/null
+	/usr/bin/ssh-add -l >& /dev/null
 	if [[ $? -eq 2 ]] ; then
 		eval `ssh-agent -s`
 	fi
-	ssh-add -l >& /dev/null
+	/usr/bin/ssh-add -l >& /dev/null
 	if [[ $? -eq 1 ]] ; then
-		ssh-add ~/.ssh/id*~*.pub
+	# 公開鍵が ~/.ssh にあると正常に動作しないため、存在しないことを確認
+		ls ~/.ssh | egrep .pub$ > /dev/null
+		if [[ $? -ne0 ]] ; then
+			/usr/bin/ssh-add ~/.ssh/id*
+		fi
 #	else
 #		print "ssh-agent already exist"
 	fi
