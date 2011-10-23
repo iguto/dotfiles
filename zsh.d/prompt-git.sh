@@ -51,37 +51,44 @@ autoload colors -U && colors
 # ipアドレスを参照する
 get-ipaddr() {
 	# get NIC list
-	local devices="`cat /proc/net/dev | awk '{print $1}' | sed '1,3d' | sed s/://`"
-
+#	local devices="`cat /proc/net/dev | awk '{print $1}' | sed '1,3d' | sed s/://`"
+	local devices="`cat /proc/net/dev | awk '{print $1}' | sed '1,3d' | cut -d: -f1`"
+#	echo devices : $devices
+	
+	
 	# num of NICs
 	local numof_dev=`echo "$devices" | wc -l`
-
-	# check ip-addr of nic1
-	focus_dev=`echo "$devices" | cat -n | grep 1 | awk '{print $2}'`
-	#echo $focus_dev
-	/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /tmp/.inet
-	cat /tmp/.inet | grep inet > /dev/null
-	if [ $? -eq 0 ]; then
-		inet_line=`cat /tmp/.inet`
-		echo $inet_line | awk '{ print $1 }' | cut -d : -f2 > /tmp/.inet
-		inet_addr=`cat /tmp/.inet`
+#	echo numof_dev : $numof_dev
+	# check ip-addr of all nics
+	
+	for i in `seq -s' ' 1 1 $numof_dev`
+	do
+#			echo i : $i
+			focus_dev=`echo "$devices" | cat -n | grep $i | awk '{print $2}'`
+#			echo focus_dev : $focus_dev
+			/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /tmp/.inet
+			cat /tmp/.inet | grep inet > /dev/null
+			if [ $? -eq 0 ]; then
+					inet_line=`cat /tmp/.inet`
+					echo $inet_line | awk '{ print $3 }' | cut -d : -f2 > /tmp/.inet
+					inet_addr=`cat /tmp/.inet`
 		#echo $inet_addr
-		return 
-	fi
-
-	# check ip-addr of nic2
-	focus_dev=`echo "$devices" |cat -n | grep 2 | awk '{print $2}'`
-	#echo $focus_dev
-	/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /tmp/.inet
-	# inet_addr=`/sbin/ifconfig $focus_dev | grep "inet addr"`
-	cat /tmp/.inet | grep inet > /dev/null
-	if [ $? -eq 0 ]; then
-		inet_line=`cat /tmp/.inet`
-		echo $inet_line | awk '{print $1}' | cut -d : -f2 > /tmp/.inet
-		inet_addr=`cat /tmp/.inet`
-		#echo $inet_addr
-		return
-	fi
+					return 
+			fi
+	done
+#	# check ip-addr of nic2
+#	focus_dev=`echo "$devices" |cat -n | grep 2 | awk '{print $2}'`
+#	#echo $focus_dev
+#	/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /tmp/.inet
+#	# inet_addr=`/sbin/ifconfig $focus_dev | grep "inet addr"`
+#	cat /tmp/.inet | grep inet > /dev/null
+#	if [ $? -eq 0 ]; then
+#		inet_line=`cat /tmp/.inet`
+#		echo $inet_line | awk '{print $1}' | cut -d : -f2 > /tmp/.inet
+#		inet_addr=`cat /tmp/.inet`
+#		#echo $inet_addr
+#		return
+#	fi
 }
 
 get-ipaddr
@@ -145,7 +152,7 @@ fi
 fill_char () {
 # プロンプトの余り部分を埋める
 		# 埋める文字
-		fchr="⇦"
+		fchr=">"
 		while [ $REMAIN -gt 0 ]
 		do
 				PROMPT="${PROMPT}${fchr}"
@@ -157,28 +164,35 @@ first_line () {
 # カレントディレクトリ
 		cwd=$(pwd | ruby -e "print ENV['PWD'].gsub(ENV['HOME'], '~')")
 		
-		USER_AND_HOST="[${USER}@${HOST}:${cwd}]"
+		USER_AND_HOST="[${USER}@${HOST}(${inet_addr}):${cwd}]"
 #		p_size=${#${:-${USER_AND_HOST}}}
 		
 # IPアドレス
 		REMAIN=$(( ${COLUMNS} - ${#${:-${USER_AND_HOST}}} ))
-		PROMPT=$'\n${USER_AND_HOST}'
+#		PROMPT=$'\n${USER_AND_HOST}'
 		
-		fill_char
+#		fill_char
 }
 
 second_line () {
-		s_line="‡‡‡ %#)‡>> "
-		PROMPT="${PROMPT}
-${s_line}"
+		s_line="〓―(%#)->> "
+}
+
+set_color () {
+		PROMPT=$'%{$fg['green']%}[${USER}@${HOST}(%{$fg['yellow']%}${inet_addr}\
+%{$fg['green']%}):%{$fg['blue']%}%~%{$fg['green']%}]%{$fg['cyan']%}'
+		fill_char
+		PROMPT=${PROMPT}$'${s_line}%{$reset_color%}'
+		
+		# red green yellow blue magenta cyan white
 }
 
 # コマンド実行前じ実行される特殊関数
 precmd() {
 		first_line
 		second_line
+		set_color
 }
-
 
 # プロンプト
 # WINDOWはscreen実行時のスクリーン番号表示 (prompt_subset必要)
