@@ -70,25 +70,12 @@ get-ipaddr() {
 			cat /tmp/.inet | grep inet > /dev/null
 			if [ $? -eq 0 ]; then
 					inet_line=`cat /tmp/.inet`
-					echo $inet_line | awk '{ print $3 }' | cut -d : -f2 > /tmp/.inet
+					echo $inet_line | cut -d : -f2 | cut -d' ' -f1 > /tmp/.inet
 					inet_addr=`cat /tmp/.inet`
 		#echo $inet_addr
 					return 
 			fi
 	done
-#	# check ip-addr of nic2
-#	focus_dev=`echo "$devices" |cat -n | grep 2 | awk '{print $2}'`
-#	#echo $focus_dev
-#	/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /tmp/.inet
-#	# inet_addr=`/sbin/ifconfig $focus_dev | grep "inet addr"`
-#	cat /tmp/.inet | grep inet > /dev/null
-#	if [ $? -eq 0 ]; then
-#		inet_line=`cat /tmp/.inet`
-#		echo $inet_line | awk '{print $1}' | cut -d : -f2 > /tmp/.inet
-#		inet_addr=`cat /tmp/.inet`
-#		#echo $inet_addr
-#		return
-#	fi
 }
 
 get-ipaddr
