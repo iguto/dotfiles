@@ -53,17 +53,25 @@ setopt hist_ignore_space
 #====== 仮想ターミナルならシンプルな、そうでなければラインな
 #       プロンプトを読み込む
 # プロンプト設定読み込み
+#
+
 local simple_prompt=$zsh_dir/.zsh_prompt
 if [ -e $simple_prompt ] ; then
 	source $simple_prompt
 fi
+
 # 自作? ラインプロンプトを使用する
 if [ "$TERM" != linux ] ; then
 	local line_prompt=$zsh_dir/.zsh_line
 	if [ -e $line_prompt ] ; then
 		source $line_prompt
 	fi
+	local ip_prompt=$zsh_dir/prompt-git.sh
+	if [ -e $ip_prompt ] ; then
+		source $ip_prompt
+	fi
 fi
+
 if [ "$TERM" = screen ] ; then
 	local screen_prompt=$zsh_dir/.zsh_prompt4screen
 	if [ -e $screen_prompt ] ; then
@@ -417,3 +425,4 @@ alias ndate='date +%m%d_%H:%M:%S'
 ############################################################
 alias taskshell='ZDOTDIR=~/.task zsh'
 compdef _task task
+
