@@ -138,47 +138,54 @@ fi
 
 fill_char () {
 # プロンプトの余り部分を埋める
-		# 埋める文字
-		fchr=">"
-		while [ $REMAIN -gt 0 ]
-		do
-				PROMPT="${PROMPT}${fchr}"
-				REMAIN=$((${REMAIN}-1))
-		done
+	# 埋める文字
+	fchr="="
+	while [ $REMAIN -gt 0 ]
+	do
+		PROMPT="${PROMPT}${fchr}"
+		REMAIN=$((${REMAIN}-1))
+	done
 }
 first_line () {
-		HOST=$HOSTNAME   # 要省略
+	HOST=$HOSTNAME   # 要省略
 # カレントディレクトリ
-		cwd=$(pwd | ruby -e "print ENV['PWD'].gsub(ENV['HOME'], '~')")
+	cwd=$(ruby -e "print ENV['PWD'].gsub(ENV['HOME'], '~')")
 		
-		USER_AND_HOST="[${USER}@${HOST}(${inet_addr}):${cwd}]"
-#		p_size=${#${:-${USER_AND_HOST}}}
+	USER_AND_HOST="[${USER}@${HOST}(${inet_addr}):${cwd}]"
+#	p_size=${#${:-${USER_AND_HOST}}}
 		
 # IPアドレス
-		REMAIN=$(( ${COLUMNS} - ${#USER_AND_HOST} ))
-#		PROMPT=$'\n${USER_AND_HOST}'
+	REMAIN=$(( ${COLUMNS} - ${#USER_AND_HOST} ))
+#	PROMPT=$'\n${USER_AND_HOST}'
 		
-#		fill_char
+#	fill_char
 }
 
 second_line () {
-		s_line="〓―(%#)->> "
+	s_line="〓―(%#:%?)->> "
 }
 
 set_color () {
-		PROMPT=$'%{$fg['green']%}[${USER}@${HOST}(%{$fg['yellow']%}${inet_addr}\
-%{$fg['green']%}):%{$fg['blue']%}%~%{$fg['green']%}]%{$fg['cyan']%}'
-		fill_char
-		PROMPT=${PROMPT}$'${s_line}%{$reset_color%}'
-		
-		# red green yellow blue magenta cyan white
+	echo $l_c
+	PROMPT=$'%{$fg['green']%}[${USER}@${HOST}(%{$fg['yellow']%}${inet_addr}\
+%{$fg['green']%}):%{$fg['blue']%}${cwd}%{$fg['green']%}]%{$fg['cyan']%}'
+	fill_char
+
+	s_line_f="〓―(%#"
+	# $?
+	s_line_l=")->> "
+	PROMPT=${PROMPT}$'${s_line_f}'%(?."OK".%{$fg['red']%}$l_c)$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
+
+	# red green yellow blue magenta cyan white
 }
 
 # コマンド実行前じ実行される特殊関数
 precmd() {
-		first_line
-		second_line
-		set_color
+	local l_c=$?
+	echo $l_c
+	second_line;
+	first_line;
+	set_color;
 }
 
 # プロンプト
