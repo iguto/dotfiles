@@ -1,14 +1,17 @@
 # 環境変数を設定するファイル
 # ログインシェル/対話シェルで読み込まれる
-# スクリプト用シェルでは読み込まれないため注意
+# スクリプト用シェルでも読み込まれる
 
 #export PATH=$HOME/bin:$PATH
 
 # バージョンチェックし、古いなら新しいものに変える
 
-echo $ZSH_VERSION | grep 4.3.10
-if [ $? -ne 0 ]; then
-	if [ -e $HOME/bin/zsh ] ; then
-		exec $HOME/bin/zsh
-	fi
-fi
+#echo $ZSH_VERSION | grep 4.3.10
+#if [ $? -ne 0 ]; then
+#	if [ -e $HOME/bin/zsh ] ; then
+#		exec $HOME/bin/zsh
+#	fi
+#fi
+
+# zshのリポジトリへの変数を用意する スクリプト用
+zsh_dir=~/zsh_dotfiles

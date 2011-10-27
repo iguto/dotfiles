@@ -66,7 +66,7 @@ if [ "$TERM" != linux ] ; then
 	if [ -e $line_prompt ] ; then
 		source $line_prompt
 	fi
-	local ip_prompt=$zsh_dir/prompt-git.sh
+	local ip_prompt=$zsh_dir/ip_prompt.zsh
 	if [ -e $ip_prompt ] ; then
 		source $ip_prompt
 	fi
