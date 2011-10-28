@@ -166,7 +166,6 @@ second_line () {
 }
 
 set_color () {
-	echo $l_c
 	PROMPT=$'%{$fg['green']%}[${USER}@${HOST}(%{$fg['yellow']%}${inet_addr}\
 %{$fg['green']%}):%{$fg['blue']%}${cwd}%{$fg['green']%}]%{$fg['cyan']%}'
 	fill_char
@@ -182,7 +181,6 @@ set_color () {
 # コマンド実行前じ実行される特殊関数
 precmd() {
 	local l_c=$?
-	echo $l_c
 	second_line;
 	first_line;
 	set_color;
