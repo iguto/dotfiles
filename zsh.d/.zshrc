@@ -53,19 +53,27 @@ setopt hist_ignore_space
 #====== 仮想ターミナルならシンプルな、そうでなければラインな
 #       プロンプトを読み込む
 # プロンプト設定読み込み
-local simple_prompt=~/.zsh_prompt
+#
+
+local simple_prompt=$zsh_dir/.zsh_prompt
 if [ -e $simple_prompt ] ; then
 	source $simple_prompt
 fi
+
 # 自作? ラインプロンプトを使用する
 if [ "$TERM" != linux ] ; then
-	local line_prompt=~/.zsh_line
+	local line_prompt=$zsh_dir/.zsh_line
 	if [ -e $line_prompt ] ; then
 		source $line_prompt
 	fi
+	local ip_prompt=$zsh_dir/ip_prompt.zsh
+	if [ -e $ip_prompt ] ; then
+		source $ip_prompt
+	fi
 fi
+
 if [ "$TERM" = screen ] ; then
-	local screen_prompt=~/.zsh_prompt4screen
+	local screen_prompt=$zsh_dir/.zsh_prompt4screen
 	if [ -e $screen_prompt ] ; then
 		source $screen_prompt
 	fi
@@ -360,14 +368,13 @@ zstyle ':completion:*' group-name ''
 #autofu=$zsh_dir/auto-fu.zsh
 #if [ -e $autofu ] ; then
 #	source $autofu
-#	zle-line-init () {
-#		auto-fu-init;
-#	}
+	zle-line-init () {
+		auto-fu-init;
+	}
 #	zle -N zle-line-init
 #	zstyle ':auto-fu:var' disable magic-space
-##	unsetopt autoremoveslash
+#	##	unsetopt autoremoveslash
 #fi
-
 ############################################################
 # サークルのサーバへのssh接続を楽にする
 #   IPアドレスの4オクテット目の入力だけで接続可能
@@ -396,6 +403,10 @@ function color_test {
 }
 
 # alias diff mode?
+which colordiff > /dev/null
+if [ $? -eq 0 ]; then
+  alias diff='colordiff'
+fi
 alias diff='diff -u'
 
 ############################################################
@@ -414,3 +425,4 @@ alias ndate='date +%m%d_%H:%M:%S'
 ############################################################
 alias taskshell='ZDOTDIR=~/.task zsh'
 compdef _task task
+

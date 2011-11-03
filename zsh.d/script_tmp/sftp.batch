@@ -1,0 +1,2 @@
+put /tmp/send_file.tmp
+chmod 760 send_file.tmp
