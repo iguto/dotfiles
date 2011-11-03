@@ -6,7 +6,7 @@
 
 # バージョンチェックし、古いなら新しいものに変える
 
-echo $ZSH_VERSION | grep 4.3.10
+echo $ZSH_VERSION | grep 4.3.10 > /dev/null
 if [ $? -ne 0 ]; then
 	if [ -e $HOME/bin/zsh ] ; then
 		exec $HOME/bin/zsh

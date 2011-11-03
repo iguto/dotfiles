@@ -21,10 +21,10 @@ zsh_dir=$HOME/zsh_dotfiles
 #cd $HOME
 
 # いる場所を自動で判断し、ssh_configを切り替える
-local netset=$zsh_dir/ch-network-setting.rb
-if [ -e $netset ] ; then
-	/usr/local/bin/ruby $netset
-fi
+#local netset=$zsh_dir/ch-network-setting.rb
+#if [ -e $netset ] ; then
+#	/usr/local/bin/ruby $netset
+#fi
 ############################################################
 ## history
 ############################################################
@@ -106,11 +106,11 @@ zstyle 'completion::match:*' insert-unambiguous true
 #  ssh-agentをssh系コマンド実行前に実行
 ############################################################
 ## ssh-agent をssh,scp,sftp,rsyncに関連付け
-local overssh=$zsh_dir/overwrite-ssh-command.sh
-if [ -e $overssh ] ; then
-	source $overssh
-fi
-
+#local overssh=$zsh_dir/overwrite-ssh-command.sh
+#if [ -e $overssh ] ; then
+#	source $overssh
+#fi
+#
 ############################################################
 # bindkeyの変更
 ############################################################
