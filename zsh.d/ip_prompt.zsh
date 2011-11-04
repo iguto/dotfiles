@@ -77,7 +77,7 @@ get-ipaddr() {
 					return 
 			fi
 	done
-}
+x}
 
 get-ipaddr
 
@@ -187,15 +187,16 @@ second_line () {
 
 
 set_color () {
-	PROMPT=$'%{$terminfo['bold']$fg['green']%}[$fg['green']%}${USER}%{$terminfo['bold']%}@${HOST}(%{$fg['yellow']%}${inet_addr}\
-%{$fg['green']%}):%{$fg['blue']%}${cwd}%{$fg['green']%}]%{$reset_color$fg['cyan']%}'
 
+	PROMPT=$'%{$fg['green']%}[${USER}@${HOST}(%{$fg['yellow']%}${inet_addr}\
+%{$fg['green']%}):%{$fg['blue']%}${cwd}%{$fg['green']%}]%{$fg['cyan']%}'
 	fill_char
 
 	s_line_f="〓―(%#"
 	# $?
 	s_line_l=")->> "
-	PROMPT=${PROMPT}$'%{$terminfo['bold']%}${s_line_f}'%(?."OK".%{$fg['red']%}$l_c)$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
+
+	PROMPT=${PROMPT}$'${s_line_f}'$'%0(?||%{$fg['yellow']%}:%{$fg['red']%}'$l_c')'$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
 
 	# red green yellow blue magenta cyan white
 }
