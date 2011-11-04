@@ -42,6 +42,7 @@
 # プロンプトに escape sequence (環境変数) を通す
 setopt prompt_subst
 autoload colors -U && colors
+autoload zsh/terminfo
 # $fg[色名]/bg[色名]$reset_color   などの色表示の書き方ができる
 # begin ------------------
 # rootのプロンプトカラー変更 test http://www.q-eng.imat.eng.osaka-cu.ac.jp/~        ippei/unix-tips/zsh.html から
@@ -125,9 +126,27 @@ fi
 #	H_CLR='magenta'
 #fi
 
+# set color
+
+GREEN="%{$fg['green']%}"
+RED="%{$fg['red']%}"
+CYAN="%{$fg['cyan']%}"
+BLUE="%{$fg['blue']%}"
+YELLOW="%{$fg['yellow']%}"
+MAGENTA="%{$fg['magenta']%}"
+
+
+BGREEN="%{$terminfo['bold']$fg['green']%}"
+BRED="%{$terminfo['bold']$fg['red']%}"
+BCYAN="%{$terminfo['bold']$fg['cyan']%}"
+BBLUE="%{$terminfo['bold']$fg['blue']%}"
+BYELLOW="%{$terminfo['bold']$fg['yellow']%}"
+BMAGENTA="%{$terminfo['bold']$fg['magenta']%}"
+
+BRESET='%{$terminfo['srg0']%}'
+
 #PROMPT=$'\n%{$fg['cyan']%} ‡‡‡‡‡‡ † ∬  ⇦  ↻ ▨ ▨ ▨ ▨ ▨▨▨  ∑→ →(%{$fg['magenta']%}$inet_addr%{$fg['cyan']%})╋╋╋╋ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
 #%{$fg[${U_CLR}]%}${MYUSER}%{$fg[${H_CLR}]%}@${HOSTNAME} %2~:%{$reset_color%}'
-
 #=====================================================================
 
 # 文字数に変換 ${#${:-STR}}
@@ -165,15 +184,18 @@ second_line () {
 	s_line="〓―(%#:%?)->> "
 }
 
+
+
 set_color () {
-	PROMPT=$'%{$fg['green']%}[${USER}@${HOST}(%{$fg['yellow']%}${inet_addr}\
-%{$fg['green']%}):%{$fg['blue']%}${cwd}%{$fg['green']%}]%{$fg['cyan']%}'
+	PROMPT=$'%{$terminfo['bold']$fg['green']%}[$fg['green']%}${USER}%{$terminfo['bold']%}@${HOST}(%{$fg['yellow']%}${inet_addr}\
+%{$fg['green']%}):%{$fg['blue']%}${cwd}%{$fg['green']%}]%{$reset_color$fg['cyan']%}'
+
 	fill_char
 
 	s_line_f="〓―(%#"
 	# $?
 	s_line_l=")->> "
-	PROMPT=${PROMPT}$'${s_line_f}'%(?."OK".%{$fg['red']%}$l_c)$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
+	PROMPT=${PROMPT}$'%{$terminfo['bold']%}${s_line_f}'%(?."OK".%{$fg['red']%}$l_c)$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
 
 	# red green yellow blue magenta cyan white
 }

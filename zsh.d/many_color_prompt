@@ -1,0 +1,14 @@
+# \e[38;5;iNmMAGGAGE\e[m で色がつく
+
+setopt prompt_subst
+autoload color
+colors
+
+local cb="\e[01;38;5;"
+local c1="${cb}166m"
+local c2="${cb}117m"
+local c3="${cb}226m"
+local rc="\e[m"
+#str=`print -P "%{${c1}%}[%{${c2}%}%n@%m%{$c1%}]%%{$c3%}%~%{$reset_color%}"`
+str=`print -P "${c1}[${c2}%n@%m${c1}]${c3}%~$reset_color"`
+PROMPT=$'\n${str}'
