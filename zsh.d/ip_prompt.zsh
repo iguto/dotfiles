@@ -100,25 +100,25 @@ fi
 # ホスト名省略
 if [ $HOST = 'iguto-Think' ] ; then
   	HOSTNAME='Think'
-	H_CLR="%{$fg['green']%}"
+	H_CLR="green"
 elif [ $HOST = 'daisyoohkawa.myhome.cx' ] ; then
 	HOSTNAME='HomeSrv'
-	H_CLR="%{$fg['blue']%}"
+	H_CLR="blue"
 elif [ $HOST = 'poulenc.eng.kagawa-u.ac.jp' ] ; then
 	HOSTNAME='poulenc'
-	H_CLR="%{$fg['poulenc']%}"
+	H_CLR="poulenc"
 elif [ $HOST = 'stfile.eng.kagawa-u.ac.jp' ] ; then
 	HOSTNAME='STFILE'
-	H_CLR="%{$fg['yallow']%}"
+	H_CLR="yallow"
 elif [ $HOST = 'utillo1.eng.kagawa-u.ac.jp' ] ; then
 	HOSTNAME='u1'
-	H_CLR="%{$fg['cyan']%}"
+	H_CLR="cyan"
 elif [ $HOST = 'utrillo2.eng.kagawa-u.ac.jp' ] ; then
 	HOSTNAME='u2'
-	H_CLR="%{$fg['magenta']%}"
+	H_CLR="magenta}"
 else
   	HOSTNAME=$HOST
-	H_CLR="%{$fg['magenta']%}"
+	H_CLR="magenta"
 fi
 
 # set color
@@ -183,8 +183,7 @@ second_line () {
 
 set_color () {
 
-	PROMPT=$'%{$GREEN%}[%{$fg[${U_CLR}]%}${USER}${GREEN}@%{$H_CLR%}${HOST}(%{$fg['yellow']%}${inet_addr}\
-%{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
+	PROMPT=$'%{$GREEN%}[%{$fg[${U_CLR}]%}${USER}%{${GREEN}%}@%{$fg[${H_CLR}]%}${HOST}%{${GREEN}%}(%{$fg["yellow"]%}${inet_addr}%{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
 	fill_char
 
 	s_line_f="〓―(%#"
