@@ -106,7 +106,7 @@ elif [ $HOST = 'daisyoohkawa.myhome.cx' ] ; then
 	H_CLR="blue"
 elif [ $HOST = 'poulenc.eng.kagawa-u.ac.jp' ] ; then
 	HOSTNAME='poulenc'
-	H_CLR="poulenc"
+	H_CLR="red"
 elif [ $HOST = 'stfile.eng.kagawa-u.ac.jp' ] ; then
 	HOSTNAME='STFILE'
 	H_CLR="yallow"
@@ -130,14 +130,14 @@ BLUE="%{$fg['blue']%}"
 YELLOW="%{$fg['yellow']%}"
 MAGENTA="%{$fg['magenta']%}"
 
-BGREEN="%{$terminfo['bold']$fg['green']%}"
-BRED="%{$terminfo['bold']$fg['red']%}"
-BCYAN="%{$terminfo['bold']$fg['cyan']%}"
-BBLUE="%{$terminfo['bold']$fg['blue']%}"
-BYELLOW="%{$terminfo['bold']$fg['yellow']%}"
-BMAGENTA="%{$terminfo['bold']$fg['magenta']%}"
-
-BRESET='%{$terminfo['srg0']%}'
+#BGREEN="%{$terminfo['bold']$fg['green']%}"
+#BRED="%{$terminfo['bold']$fg['red']%}"
+#BCYAN="%{$terminfo['bold']$fg['cyan']%}"
+#BBLUE="%{$terminfo['bold']$fg['blue']%}"
+#BYELLOW="%{$terminfo['bold']$fg['yellow']%}"
+#BMAGENTA="%{$terminfo['bold']$fg['magenta']%}"
+#
+#BRESET='%{$terminfo['srg0']%}'
 
 #PROMPT=$'\n%{$fg['cyan']%} ‡‡‡‡‡‡ † ∬  ⇦  ↻ ▨ ▨ ▨ ▨ ▨▨▨  ∑→ →(%{$fg['magenta']%}$inet_addr%{$fg['cyan']%})╋╋╋╋ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
 #%{$fg[${U_CLR}]%}${MYUSER}%{$fg[${H_CLR}]%}@${HOSTNAME} %2~:%{$reset_color%}'
