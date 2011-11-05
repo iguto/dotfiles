@@ -114,11 +114,11 @@ zstyle 'completion::match:*' insert-unambiguous true
 #  ssh-agentをssh系コマンド実行前に実行
 ############################################################
 ## ssh-agent をssh,scp,sftp,rsyncに関連付け
-#local overssh=$zsh_dir/overwrite-ssh-command.sh
-#if [ -e $overssh ] ; then
-#	source $overssh
-#fi
-#
+local overssh=$zsh_dir/overwrite-ssh-command.sh
+if [ -e $overssh ] ; then
+	source $overssh
+fi
+
 ############################################################
 # bindkeyの変更
 ############################################################
@@ -183,7 +183,7 @@ alias rsync='rsync -av -e ssh'
 # tarコマンドが拡張子を自動認識し、展開してくれるようなのでalias設定
 # tar.gz tar.gz2 
 # zipはダメなようなので、unzipを使う。
-alias tare='tar'
+alias tare='tar xvf'
 
 ## この設定ファイル編集を簡略化
 alias zrc='vim ~/.zshrc'
@@ -198,6 +198,9 @@ alias e="emacs"
 
 # 相対パスを絶対パスに変換してヒストリ登録するcd
 alias cd='zcd'
+
+# nautilus カレントディレクトリを開く
+alias nndisp="nautilus . &"
 ############################################################
 #  ディレクトリスタック利用
 ############################################################

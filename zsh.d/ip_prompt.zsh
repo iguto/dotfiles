@@ -42,6 +42,7 @@
 # プロンプトに escape sequence (環境変数) を通す
 setopt prompt_subst
 autoload colors -U && colors
+autoload zsh/terminfo
 # $fg[色名]/bg[色名]$reset_color   などの色表示の書き方ができる
 # begin ------------------
 # rootのプロンプトカラー変更 test http://www.q-eng.imat.eng.osaka-cu.ac.jp/~        ippei/unix-tips/zsh.html から
@@ -85,49 +86,61 @@ get-ipaddr
 # rootならユーザ名rootを赤で表示する
 # 自分のアカウントでない場合は紫っぽい色で表示 
 if [ $UID = 0 ] ; then
-	MYUSER='root'
 	U_CLR='red'
 elif [ $USER = 'masahiro' ] ; then
-    MYUSER='M'
 	U_CLR='blue'
 elif [ $USER = 'ookawa' ] ; then
-	MYUSER='OKW'
 	U_CLR='cyan'
-	
 else
-	MYUSER=$USER
 	U_CLR='magenta'
 fi
 
 # red green yellow blue magenta cyan white
 
 # ホスト名省略
-#if [ $HOST = 's09t214-laptop' ] ; then
-#   	HOSTNAME='NOTE'
-#	H_CLR='green'
-#elif [ $HOST = 'daisyoohkawa.myhome.cx' ] ; then
-#	HOSTNAME='HS'
-#	H_CLR='blue'
-#elif [ $HOST = 'poulenc.eng.kagawa-u.ac.jp' ] ; then
-#	HOSTNAME='poulenc'
-#	H_CLR='red'
-#elif [ $HOST = 'stfile.eng.kagawa-u.ac.jp' ] ; then
-#	HOSTNAME='STFILE'
-#	H_CLR='yellow'
-#elif [ $HOST = 'haydn11.eng.kagawa-u.ac.jp' ] ; then
-#	HOSTNAME='U1'
-#	H_CLR='cyan'
-#elif [ $HOST = 'haydn12.eng.kagawa-u.ac.jp' ] ; then
-#	HOSTNAME='U2'
-#	H_CLR='magenta'
-#else
-#   	HOSTNAME=$HOST
-#	H_CLR='magenta'
-#fi
+if [ $HOST = 'iguto-Think' ] ; then
+  	HOSTNAME='Think'
+	H_CLR="green"
+elif [ $HOST = 'daisyoohkawa.myhome.cx' ] ; then
+	HOSTNAME='HomeSrv'
+	H_CLR="blue"
+elif [ $HOST = 'poulenc.eng.kagawa-u.ac.jp' ] ; then
+	HOSTNAME='poulenc'
+	H_CLR="poulenc"
+elif [ $HOST = 'stfile.eng.kagawa-u.ac.jp' ] ; then
+	HOSTNAME='STFILE'
+	H_CLR="yallow"
+elif [ $HOST = 'utillo1.eng.kagawa-u.ac.jp' ] ; then
+	HOSTNAME='u1'
+	H_CLR="cyan"
+elif [ $HOST = 'utrillo2.eng.kagawa-u.ac.jp' ] ; then
+	HOSTNAME='u2'
+	H_CLR="magenta}"
+else
+  	HOSTNAME=$HOST
+	H_CLR="magenta"
+fi
+
+# set color
+
+GREEN="%{$fg['green']%}"
+RED="%{$fg['red']%}"
+CYAN="%{$fg['cyan']%}"
+BLUE="%{$fg['blue']%}"
+YELLOW="%{$fg['yellow']%}"
+MAGENTA="%{$fg['magenta']%}"
+
+BGREEN="%{$terminfo['bold']$fg['green']%}"
+BRED="%{$terminfo['bold']$fg['red']%}"
+BCYAN="%{$terminfo['bold']$fg['cyan']%}"
+BBLUE="%{$terminfo['bold']$fg['blue']%}"
+BYELLOW="%{$terminfo['bold']$fg['yellow']%}"
+BMAGENTA="%{$terminfo['bold']$fg['magenta']%}"
+
+BRESET='%{$terminfo['srg0']%}'
 
 #PROMPT=$'\n%{$fg['cyan']%} ‡‡‡‡‡‡ † ∬  ⇦  ↻ ▨ ▨ ▨ ▨ ▨▨▨  ∑→ →(%{$fg['magenta']%}$inet_addr%{$fg['cyan']%})╋╋╋╋ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
 #%{$fg[${U_CLR}]%}${MYUSER}%{$fg[${H_CLR}]%}@${HOSTNAME} %2~:%{$reset_color%}'
-
 #=====================================================================
 
 # 文字数に変換 ${#${:-STR}}
@@ -151,7 +164,9 @@ first_line () {
 # カレントディレクトリ
 	cwd=$(ruby -e "print ENV['PWD'].gsub(ENV['HOME'], '~')")
 		
-	USER_AND_HOST="[${USER}@${HOST}(${inet_addr}):${cwd}]"
+	USER_AND_HOST="[${USER}@${HOSTNAME}(${inet_addr}):${cwd}]"
+	user_host_decolation="[${USER}@${HOSTNAME}(${inet_addr}):]"
+	user_host_decolation_size=$(( ${COLUMNS} - ${#${user_host_decolation}} ))
 #	p_size=${#${:-${USER_AND_HOST}}}
 		
 # IPアドレス
@@ -165,16 +180,17 @@ second_line () {
 	s_line="〓―(%#:%?)->> "
 }
 
+
 set_color () {
-	echo $l_c
-	PROMPT=$'%{$fg['green']%}[${USER}@${HOST}(%{$fg['yellow']%}${inet_addr}\
-%{$fg['green']%}):%{$fg['blue']%}${cwd}%{$fg['green']%}]%{$fg['cyan']%}'
+
+	PROMPT=$'%{$GREEN%}[%{$fg[${U_CLR}]%}${USER}%{${GREEN}%}@%{$fg[${H_CLR}]%}${HOST}%{${GREEN}%}(%{$fg["yellow"]%}${inet_addr}%{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
 	fill_char
 
 	s_line_f="〓―(%#"
 	# $?
 	s_line_l=")->> "
-	PROMPT=${PROMPT}$'${s_line_f}'%(?."OK".%{$fg['red']%}$l_c)$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
+
+	PROMPT=${PROMPT}$'${s_line_f}'$'%0(?||%{$fg['yellow']%}:%{$fg['red']%}'$l_c')'$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
 
 	# red green yellow blue magenta cyan white
 }
@@ -182,7 +198,6 @@ set_color () {
 # コマンド実行前じ実行される特殊関数
 precmd() {
 	local l_c=$?
-	echo $l_c
 	second_line;
 	first_line;
 	set_color;

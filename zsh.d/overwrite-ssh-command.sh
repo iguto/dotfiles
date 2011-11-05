@@ -10,6 +10,17 @@ fi
 
 ## ssh-agent をssh,scp,sftp,rsyncに関連付け
 # my-ssh
+<<<<<<< HEAD
+=======
+
+# check load-.zshenv file
+#echo $zsh_dir > 
+if [ $? -ne 0 ]; then
+	echo "can't find \$zsh_dir"
+fi
+
+
+>>>>>>> c2362b7e4e4a8bf0daf9198f70a18407a187616b
 if [ -e $zsh_dir/run-agent ]; then
   function ssh {
     source $zsh_dir/run-agent
@@ -34,8 +45,9 @@ if [ -e $zsh_dir/run-agent ]; then
     run-agent
     /usr/bin/rsync $*
   }
-  function agent {
-    source $zsh_dir/run-agent
+
+	function agent() {
+		source $zsh_dir/run-agent
     run-agent
   }
   # function screen {
@@ -46,7 +58,6 @@ if [ -e $zsh_dir/run-agent ]; then
   function vagent {
     ssh-add -l
   }
-
 fi
 
 # ssh-agentをkillするコマンドを定義する
