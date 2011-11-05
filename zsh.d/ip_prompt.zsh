@@ -135,7 +135,6 @@ BLUE="%{$fg['blue']%}"
 YELLOW="%{$fg['yellow']%}"
 MAGENTA="%{$fg['magenta']%}"
 
-
 BGREEN="%{$terminfo['bold']$fg['green']%}"
 BRED="%{$terminfo['bold']$fg['red']%}"
 BCYAN="%{$terminfo['bold']$fg['cyan']%}"
@@ -171,6 +170,8 @@ first_line () {
 	cwd=$(ruby -e "print ENV['PWD'].gsub(ENV['HOME'], '~')")
 		
 	USER_AND_HOST="[${USER}@${HOST}(${inet_addr}):${cwd}]"
+	user_host_decolation="[${USER}@${HOST}(${inet_addr}):]"
+	user_host_decolation_size=$(( ${COLUMNS} - ${#${user_host_decolation}} ))
 #	p_size=${#${:-${USER_AND_HOST}}}
 		
 # IPアドレス
@@ -189,7 +190,7 @@ second_line () {
 set_color () {
 
 	PROMPT=$'%{$fg['green']%}[${USER}@${HOST}(%{$fg['yellow']%}${inet_addr}\
-%{$fg['green']%}):%{$fg['blue']%}${cwd}%{$fg['green']%}]%{$fg['cyan']%}'
+%{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
 	fill_char
 
 	s_line_f="〓―(%#"

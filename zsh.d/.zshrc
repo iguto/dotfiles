@@ -116,6 +116,7 @@ zstyle 'completion::match:*' insert-unambiguous true
 ## ssh-agent をssh,scp,sftp,rsyncに関連付け
 local overssh=$zsh_dir/overwrite-ssh-command.sh
 if [ -e $overssh ] ; then
+	echo "load overssh"
 	source $overssh
 fi
 

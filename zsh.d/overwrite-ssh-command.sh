@@ -3,43 +3,51 @@
 ############################################################
 ## ssh-agent をssh,scp,sftp,rsyncに関連付け
 # my-ssh
-if [ -e ~/.zshd/run-agent ]; then
+
+# check load-.zshenv file
+#echo $zsh_dir > 
+if [ $? -ne 0 ]; then
+	echo "can't find \$zsh_dir"
+fi
+
+
+if [ -e $zsh_dir/run-agent ]; then
   function ssh {
-    source ~/.zshd/run-agent
+    source $zsh_dir/run-agent
     run-agent
     /usr/bin/ssh $*
   }
   #my-scp
 # function scp {
-#   source ~/.zshd/run-agent
+#   source $zsh_dir/run-agent
 #   run-agent
 #   /usr/local/bin/scp $*
 # }
 # # my-sftp
 # function sftp {
-#   source ~/.zshd/run-agent
+#   source $zsh_dir/run-agent
 #   run-agent
 #   /usr/local/bin/sftp $*
 # }
   # my-rsync
   function my-rsync {
-    source ~/.zshd/run-agent
+#    source $zsh_dir/run-agent
     run-agent
     /usr/bin/rsync $*
   }
-  function agent {
-    source ~/.zshd/run-agent
+
+	function agent() {
+
     run-agent
   }
   # function screen {
-  #   source ~/.zshd/run-agent
+  #   source $zsh_dir/run-agent
   #   run-agent
   #   /usr/bin/screen $*
   # }
   function vagent {
     ssh-add -l
   }
-
 fi
 
 # ssh-agentをkillするコマンドを定義する
