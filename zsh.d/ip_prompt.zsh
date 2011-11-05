@@ -77,7 +77,7 @@ get-ipaddr() {
 					return 
 			fi
 	done
-x}
+}
 
 get-ipaddr
 
@@ -86,45 +86,40 @@ get-ipaddr
 # rootならユーザ名rootを赤で表示する
 # 自分のアカウントでない場合は紫っぽい色で表示 
 if [ $UID = 0 ] ; then
-	MYUSER='root'
 	U_CLR='red'
 elif [ $USER = 'masahiro' ] ; then
-    MYUSER='M'
 	U_CLR='blue'
 elif [ $USER = 'ookawa' ] ; then
-	MYUSER='OKW'
 	U_CLR='cyan'
-	
 else
-	MYUSER=$USER
 	U_CLR='magenta'
 fi
 
 # red green yellow blue magenta cyan white
 
 # ホスト名省略
-#if [ $HOST = 's09t214-laptop' ] ; then
-#   	HOSTNAME='NOTE'
-#	H_CLR='green'
-#elif [ $HOST = 'daisyoohkawa.myhome.cx' ] ; then
-#	HOSTNAME='HS'
-#	H_CLR='blue'
-#elif [ $HOST = 'poulenc.eng.kagawa-u.ac.jp' ] ; then
-#	HOSTNAME='poulenc'
-#	H_CLR='red'
-#elif [ $HOST = 'stfile.eng.kagawa-u.ac.jp' ] ; then
-#	HOSTNAME='STFILE'
-#	H_CLR='yellow'
-#elif [ $HOST = 'haydn11.eng.kagawa-u.ac.jp' ] ; then
-#	HOSTNAME='U1'
-#	H_CLR='cyan'
-#elif [ $HOST = 'haydn12.eng.kagawa-u.ac.jp' ] ; then
-#	HOSTNAME='U2'
-#	H_CLR='magenta'
-#else
-#   	HOSTNAME=$HOST
-#	H_CLR='magenta'
-#fi
+if [ $HOST = 'iguto-Think' ] ; then
+  	HOSTNAME='Think'
+	H_CLR="%{$fg['green']%}"
+elif [ $HOST = 'daisyoohkawa.myhome.cx' ] ; then
+	HOSTNAME='HomeSrv'
+	H_CLR="%{$fg['blue']%}"
+elif [ $HOST = 'poulenc.eng.kagawa-u.ac.jp' ] ; then
+	HOSTNAME='poulenc'
+	H_CLR="%{$fg['poulenc']%}"
+elif [ $HOST = 'stfile.eng.kagawa-u.ac.jp' ] ; then
+	HOSTNAME='STFILE'
+	H_CLR="%{$fg['yallow']%}"
+elif [ $HOST = 'utillo1.eng.kagawa-u.ac.jp' ] ; then
+	HOSTNAME='u1'
+	H_CLR="%{$fg['cyan']%}"
+elif [ $HOST = 'utrillo2.eng.kagawa-u.ac.jp' ] ; then
+	HOSTNAME='u2'
+	H_CLR="%{$fg['magenta']%}"
+else
+  	HOSTNAME=$HOST
+	H_CLR="%{$fg['magenta']%}"
+fi
 
 # set color
 
@@ -169,8 +164,8 @@ first_line () {
 # カレントディレクトリ
 	cwd=$(ruby -e "print ENV['PWD'].gsub(ENV['HOME'], '~')")
 		
-	USER_AND_HOST="[${USER}@${HOST}(${inet_addr}):${cwd}]"
-	user_host_decolation="[${USER}@${HOST}(${inet_addr}):]"
+	USER_AND_HOST="[${USER}@${HOSTNAME}(${inet_addr}):${cwd}]"
+	user_host_decolation="[${USER}@${HOSTNAME}(${inet_addr}):]"
 	user_host_decolation_size=$(( ${COLUMNS} - ${#${user_host_decolation}} ))
 #	p_size=${#${:-${USER_AND_HOST}}}
 		
@@ -186,10 +181,9 @@ second_line () {
 }
 
 
-
 set_color () {
 
-	PROMPT=$'%{$fg['green']%}[${USER}@${HOST}(%{$fg['yellow']%}${inet_addr}\
+	PROMPT=$'%{$GREEN%}[%{$fg[${U_CLR}]%}${USER}${GREEN}@%{$H_CLR%}${HOST}(%{$fg['yellow']%}${inet_addr}\
 %{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
 	fill_char
 
