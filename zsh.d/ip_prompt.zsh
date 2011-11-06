@@ -186,7 +186,7 @@ set_color () {
 	PROMPT=$'%{$GREEN%}[%{$fg[${U_CLR}]%}${USER}%{${GREEN}%}@%{$fg[${H_CLR}]%}${HOST}%{${GREEN}%}(%{$fg["yellow"]%}${inet_addr}%{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
 	fill_char
 
-	s_line_f="〓―(%#"
+	s_line_f="-(%#"
 	# $?
 	s_line_l=")->> "
 
