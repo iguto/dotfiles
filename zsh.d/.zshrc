@@ -21,10 +21,10 @@ zsh_dir=$HOME/zsh_dotfiles
 #cd $HOME
 
 # いる場所を自動で判断し、ssh_configを切り替える
-#local netset=$zsh_dir/ch-network-setting.rb
-#if [ -e $netset ] ; then
-#	/usr/local/bin/ruby $netset
-#fi
+local netset=$zsh_dir/ch-network-setting.rb
+if [ -e $netset ] ; then
+	/usr/local/bin/ruby $netset
+fi
 ############################################################
 ## history
 ############################################################
@@ -162,6 +162,7 @@ alias cp='cp -i'
 # -b : 上書き必要がある場合、バックアップファイルを作成する
 # -S SUFFIX : SUFFIXをバックアップファイルに付け加える文字列とする
 alias mv='mv -ibS .mvbak'
+alias cp='cp -ibs .cpbak'
 
 ## グローバルエイリアス
 alias -g G="| grep --color='always'"
