@@ -148,6 +148,7 @@ alias l='ls'
 alias ll='ls -lF' la='ls -aF' laa='la | grep ^\.' lla='la -l'
 
 ## ディレクトリ移動関連
+alias c='cd'
 alias cd..='cd ..'
 alias cd...='../..'
 alias cd ...='../..'
@@ -430,3 +431,8 @@ alias ndate='date +%m%d_%H:%M:%S'
 alias taskshell='ZDOTDIR=~/.task zsh'
 compdef _task task
 
+############################################################
+# URLを自動でクオート処理
+############################################################
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
