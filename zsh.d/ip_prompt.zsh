@@ -67,10 +67,11 @@ get-ipaddr() {
 #			echo i : $i
 			focus_dev=`echo "$devices" | cat -n | grep $i | awk '{print $2}'`
 #			echo focus_dev : $focus_dev
-			/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /tmp/.inet
-			cat /tmp/.inet | grep inet > /dev/null
+			inet_line=`/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet`
+			/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /dev/null #> /tmp/.inet
+			#cat /tmp/.inet | grep inet > /dev/null
 			if [ $? -eq 0 ]; then
-					inet_line=`cat /tmp/.inet`
+					#inet_line=`cat /tmp/.inet`
 					echo $inet_line | cut -d : -f2 | cut -d' ' -f1 > /tmp/.inet
 					inet_addr=`cat /tmp/.inet`
 		#echo $inet_addr

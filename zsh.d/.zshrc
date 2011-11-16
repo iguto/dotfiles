@@ -105,7 +105,7 @@ setopt COMPLETE_IN_WORD
 
 # 補完スタイル
 #zstyle ':completion:*' completer _expand _complete _approximate #_match
-zstyle ':completion:*' completer _oldlist _complete  _expand _match 
+zstyle ':completion:*' completer _oldlist _complete  _expand
 # 2011.05.25 auto-fuのために_oldlistを先頭に追加した。
 # ↑ の_matchについて、一意に対象を絞るため、補完位置ずらしていく
 zstyle 'completion::match:*' insert-unambiguous true
@@ -163,7 +163,7 @@ alias cp='cp -i'
 # -b : 上書き必要がある場合、バックアップファイルを作成する
 # -S SUFFIX : SUFFIXをバックアップファイルに付け加える文字列とする
 alias mv='mv -ibS .mvbak'
-alias cp='cp -ibs .cpbak'
+alias cp='cp -ibS .cpbak'
 
 ## グローバルエイリアス
 alias -g G="| grep --color='always'"
