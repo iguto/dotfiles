@@ -52,8 +52,9 @@ autoload zsh/terminfo
 # ipアドレスを参照する
 get-ipaddr() {
   # get NIC list
-  local devices="`cat /proc/net/dev | awk '{print $1}' | sed '1,3d' | cut -d: -f1`"
-
+#  local devices="`cat /proc/net/dev | awk '{print $1}' | sed '1,3d' | cut -d: -f1`"
+	local devices="`cat /proc/net/arp | sed '1d' |  awk '{print $6}'`"
+#	echo $devices
   # num of NICs
   local numof_dev=`echo "$devices" | wc -l`
 
@@ -64,16 +65,12 @@ get-ipaddr() {
   for i in `seq -s' ' 1 1 $numof_dev`
   do
       focus_dev=`echo "$devices" | cat -n | grep $i | awk '{print $2}'`
-      echo "$devices" | cat -n | grep $i | awk '{print $2}' ###
       inet_line=`/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet`
-      echo "[*]focus:" ${focus_dev}"a" ###
       /sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /dev/null #> /tmp/.inet
       if [ $? -eq 0 ]; then
-          echo "in focus:" $focus_dev
-          echo $inet_line | cut -d : -f2 | cut -d' ' -f1 ###
           echo $inet_line | cut -d : -f2 | cut -d' ' -f1 >> /tmp/.inet
           inet_addr=`cat /tmp/.inet`
-          return 
+          return
       fi
   done
 }
