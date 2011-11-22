@@ -75,8 +75,25 @@ get-ipaddr() {
   done
 }
 
-get-ipaddr
+function select_ipaddr () {
+	num_ip="`cat /tmp/.inet | wc -l`"
+	echo $num_ip
+	if [ $num_ip = "1" ]; then
+		inet_addr=`cat /tmp/.inet`
+	fi
+	select i in `cat /tmp/.inet` # 改行文字でダメならsed で\nを' 'へ
+	do
+	if [ -x $i ] ; then
+		echo "plz retry."
+		continue
+	fi
+		inet_addr=$i
+		break
+	done
+}
 
+get-ipaddr
+select_ipaddr
 # ユーザごとに色を変える
 # rootならユーザ名rootを赤で表示する
 # 自分のアカウントでない場合は紫っぽい色で表示 
