@@ -48,7 +48,6 @@ autoload zsh/terminfo
 # rootのプロンプトカラー変更 test http://www.q-eng.imat.eng.osaka-cu.ac.jp/~        ippei/unix-tips/zsh.html から
 # end -------------------
 
-
 # ipアドレスを参照する
 get-ipaddr() {
   # get NIC list
@@ -174,8 +173,8 @@ fill_char () {
 first_line () {
   HOST=$HOSTNAME
 # カレントディレクトリ
-  cwd=$(ruby -e "print ENV['PWD'].gsub(ENV['HOME'], '~')")
-    
+  #cwd=$(ruby -e "print ENV['PWD'].gsub(ENV['HOME'], '~')")
+  cwd="`print -P \"%~\"`"  
   USER_AND_HOST="[${USER}@${HOSTNAME}(${inet_addr}):${cwd}]"
   user_host_decolation="[${USER}@${HOSTNAME}(${inet_addr}):]"
   user_host_decolation_size=$(( ${COLUMNS} - ${#${user_host_decolation}} ))
