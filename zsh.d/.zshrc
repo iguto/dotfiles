@@ -8,6 +8,7 @@ export LANG=ja_JP.UTF-8
 # 存在しない場合、この変数で指定したディレクトリを探索してみる
 cdpath=$HOME
 
+PATH=$PATH:$HOME/bin
 # ページャをlessと明示
 export PAGER=less
 

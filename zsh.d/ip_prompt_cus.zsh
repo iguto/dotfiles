@@ -75,10 +75,11 @@ get-ipaddr() {
 }
 
 function select_ipaddr () {
-	num_ip="`cat /tmp/.inet | wc -l`"
+	num_ip=`cat /tmp/.inet | wc -l`
 	echo $num_ip
-	if [ $num_ip = "1" ]; then
+	if [ $num_ip -eq 1 ]; then
 		inet_addr=`cat /tmp/.inet`
+		return
 	fi
 	select i in `cat /tmp/.inet` # 改行文字でダメならsed で\nを' 'へ
 	do
