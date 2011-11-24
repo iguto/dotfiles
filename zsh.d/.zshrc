@@ -8,20 +8,17 @@ export LANG=ja_JP.UTF-8
 # 存在しない場合、この変数で指定したディレクトリを探索してみる
 cdpath=$HOME
 
-PATH=$PATH:$HOME/bin
 # ページャをlessと明示
 export PAGER=less
 
-# zsh関連の別ファイルを置く場所へのパス
+# zsh関連ディレクトリ
 zsh_dir=$HOME/zsh_dotfiles
 
 ############################################################
 #  ターミナル起動時に実行するコマンド
 ############################################################
-# カレントディレクトリの変更
-#cd $HOME
 
-# いる場所を自動で判断し、ssh_configを切り替える
+# いる場所で、ssh_configを切り替える
 local netset=$zsh_dir/ch-network-setting.rb
 if [ -e $netset ] ; then
 	/usr/local/bin/ruby $netset
@@ -43,7 +40,7 @@ export SAVEHIST=10000
 setopt hist_ignore_all_dups
 # 余分な空白があれば削除して履歴へ
 setopt hist_reduce_blanks
-
+# コマンドラインの先頭にくうはくがあれば、ヒストリに追加しない
 setopt hist_ignore_space
 
 ##########################################################
@@ -61,25 +58,13 @@ if [ -e $simple_prompt ] ; then
 	source $simple_prompt
 fi
 
-# 自作? ラインプロンプトを使用する
+# 自作 ラインプロンプトを使用する
 if [ "$TERM" != linux ] ; then
-	local line_prompt=$zsh_dir/.zsh_line
-	if [ -e $line_prompt ] ; then
-		source $line_prompt
-	fi
 	local ip_prompt=$zsh_dir/ip_prompt_cus.zsh
 	if [ -e $ip_prompt ] ; then
 		source $ip_prompt
 	fi
 fi
-
-if [ "$TERM" = screen ] ; then
-	local screen_prompt=$zsh_dir/.zsh_prompt4screen
-	if [ -e $screen_prompt ] ; then
-		source $screen_prompt
-	fi
-fi
-
 
 ############################################################
 #   補完候補
@@ -100,7 +85,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 ## a-zとA-Zを相互置換、'-','_','.'があるところで*を補ったような補完を実現
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
-## ↑ と同じ効果???
+
 #allow tab completion in the middle of a word
 setopt COMPLETE_IN_WORD
 
@@ -108,6 +93,7 @@ setopt COMPLETE_IN_WORD
 #zstyle ':completion:*' completer _expand _complete _approximate #_match
 zstyle ':completion:*' completer _oldlist _complete  _expand
 # 2011.05.25 auto-fuのために_oldlistを先頭に追加した。
+
 # ↑ の_matchについて、一意に対象を絞るため、補完位置ずらしていく
 zstyle 'completion::match:*' insert-unambiguous true
 
@@ -132,34 +118,31 @@ autoload -Uz is-at-least
 if is-at-least 4.3.10; then
 	bindkey '' history-incremental-pattern-search-backward
 	#bindkey 'S history-incremental-pattern-serach-forward
+	# ↑ ^Sが入力できないので使えていない
 fi
 
 ############################################################
 #  alias
 ############################################################
 ## 色表示関連
-#色つき、データサイズ単位付きで、
-# ファイル名の数値は、　1, 2 01.1 などではなく、1, 01.1, 2　のようにバージョン管理しやすい順で表示する
 # less 色表示を残す? もとの表示を維持しようとする
 alias grep="grep --color='always'"
 alias less='less -R'
-alias ls="ls --color=always -hvF" 
-alias lsd="ls *(/) -d"
+#色つき、データサイズ単位付きで、
+# ファイル名の数値は、　1, 2 01.1 などではなく、1, 01.1, 2　のようにバージョン管理しやすい順で表示する
 ## Alias for ls
+alias ls="ls --color=always -hvF" 
 alias l='ls'
 alias ll='ls -lF' la='ls -aF' laa='la | grep ^\.' lla='la -l'
+alias ld='ls -d *(/)'
 
 ## ディレクトリ移動関連
 alias c='cd'
 alias cd..='cd ..'
-alias cd...='../..'
-alias cd ...='../..'
-alias cd....='../../..' 
-alias cd ....='../../..' 
+alias -g ...='../..'
+alias -g ....='../../..'
 
 ## 実行確認
-# -i 上書き確認
-alias cp='cp -i'
 # -i : 上書き確認, 
 # -u : 移動元の更新日時が更新先より古いか、同じ場合は上書きしない
 # -b : 上書き必要がある場合、バックアップファイルを作成する
@@ -178,11 +161,6 @@ alias -g N='/dev/null'
 # 受け取ったストリームをクリップボードへ
 # デフォルトで入っていないので、有無の確認が必要
 alias -g X='| xsel --clipboard --input'
-# ログファイル参照用
-alias tailf='tail -f'
-
-# rsync 常用するものをセット
-alias rsync='rsync -av -e ssh'
 
 # tarコマンドが拡張子を自動認識し、展開してくれるようなのでalias設定
 # tar.gz tar.gz2 
@@ -191,7 +169,7 @@ alias tare='tar xvf'
 
 ## この設定ファイル編集を簡略化
 alias zrc='vim ~/.zshrc'
-
+# 補完が効くため、いらないかも
 alias sshp='ssh -o PreferredAuthentications=password'
 
 ## emacs
@@ -200,11 +178,9 @@ alias eamcs='emacs'
 alias enw="emacs -nw"
 alias e="emacs"
 
-# 相対パスを絶対パスに変換してヒストリ登録するcd
-alias cd='zcd'
-
-# nautilus カレントディレクトリを開く
+# nautilus(ファイルブラウザ) カレントディレクトリを開く
 alias nndisp="nautilus . &"
+
 ############################################################
 #  ディレクトリスタック利用
 ############################################################
@@ -312,9 +288,9 @@ RPROMPT="%1(v|%F{green}%1v%f|)" # [%20<..<%~]"
 ############################################################
 # Directory BookMark
 ############################################################
-if [ -e $zsh_dir/bookmark.zsh ] ; then
-		source $zsh_dir/bookmark.zsh
-fi
+#if [ -e $zsh_dir/bookmark.zsh ] ; then
+#		source $zsh_dir/bookmark.zsh
+#fi
 
 ############################################################
 # zsh_command_not_found  存在しないコマンドを実行→ 近いパッケージを表示
@@ -324,14 +300,10 @@ if [ -e $cmd_nfound ] ; then
 	source $cmd_nfound
 fi
 
-setopt auto_name_dirs  # !!!
-
-# M-? で which
-
 #-----------------------------------------------------------
 #
 #-----------------------------------------------------------
-# 256色確認
+# 256色表示確認
 function pcolor() {
 	for ((f = 0; f < 255; f++)); do
 		printf "\e[38;5;%dm %3d*■\e[m" $f $f
@@ -343,20 +315,12 @@ echo
 }
 
 #=========================================
-local DEFAULT=$'%{[m%}'
-local RED=$'%{[1;31m%}'
-local GREEN=$'%{[1;32m%}'
-local YELLOW=$'%{[1;33m%}'
-local BLUE=$'%{[1;34m%}'
-local PURPLE=$'%{[1;35m%}'
-local LIGHT_BLUE=$'%{[1;36m%}'
-local WHITE=$'%{[1;37m%}'
-
 # カレントに候補が無い場合のみcdpath 上のディレクトリが候補となる。
 # zstyle ':completion:*:cd:*' tag-order local-directories path-directories
 #
 # # cdpath 上のディレクトリは補完候補から外す
 # # zstyle ':completion:*:path-directories' hidden true
+
 ############################################################
 # 補完候補表示の際、グループ名表示し、グループごとに表示する
 ############################################################
@@ -375,23 +339,23 @@ zstyle ':completion:*' group-name ''
 #autofu=$zsh_dir/auto-fu.zsh
 #if [ -e $autofu ] ; then
 #	source $autofu
-	zle-line-init () {
-		auto-fu-init;
-	}
+#	zle-line-init () {
+#		auto-fu-init;
+#	}
 #	zle -N zle-line-init
 #	zstyle ':auto-fu:var' disable magic-space
 #	##	unsetopt autoremoveslash
 #fi
+
 ############################################################
 # サークルのサーバへのssh接続を楽にする
 #   IPアドレスの4オクテット目の入力だけで接続可能
-#   ただし、ユーザ名の指定は l オプション必須
+#   ただし、ユーザ名の指定は l オプションで
 ############################################################
 sshl=$zsh_dir/ssh-labo.sh
 if [ -e $sshl ] ; then
 	source $sshl
 fi
-
 
 ############################################################
 #  絶対パスへ展開してヒストリ登録するcd
@@ -400,7 +364,9 @@ zcd_file=$zsh_dir/zcd.zsh
 if [ -e $zcd_file ]; then
 		source $zcd_file
 fi
+alias cd='zcd'
 
+# 256色表示を個別にテストするための関数
 function color_test {
 	if [ $# -lt 2 ]; then
 		echo "color_test message number"
@@ -409,7 +375,7 @@ function color_test {
 	fi
 }
 
-# alias diff mode?
+# alias diff mode
 which colordiff > /dev/null
 if [ $? -eq 0 ]; then
   alias diff='colordiff'
@@ -425,16 +391,18 @@ alias diff='diff -u'
 #    screen -qR
 #fi
 #
-alias ndate='date +%m%d_%H:%M:%S'
 
-############################################################
-# setting for task (task management tool on shell)
-############################################################
-alias taskshell='ZDOTDIR=~/.task zsh'
-compdef _task task
 
 ############################################################
 # URLを自動でクオート処理
 ############################################################
 autoload -Uz url-quote-magic
 zle -N self-insert url-quote-magic
+
+
+### misc
+# memo
+# M-? で which
+#
+setopt auto_name_dirs  # !!!
+alias ndate='date +%m%d_%H:%M:%S'
