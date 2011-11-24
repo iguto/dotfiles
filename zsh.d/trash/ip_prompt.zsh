@@ -30,62 +30,55 @@
 # %w    : 日付表示
 # %W    : 年月日(mm/dd/yy)
 # %D    : yy-mm-dd
+
 # %N    : シェル名
 # %i    : %Nによって与えられるスクリプト、ソース、シェル関数で現在実行されている行番号 (debug用)
 #
 # 特権ユーザと一般ユーザのプロンプトを1行で設定する
 # PROMPT='(!.特権ユーザ用.一般ユーザ用)'
 
-# $fg[色名]/bg[色名]$reset_color   などの色表示の書き方ができる
+
 
 # プロンプトに escape sequence (環境変数) を通す
 setopt prompt_subst
 autoload colors -U && colors
 autoload zsh/terminfo
+# $fg[色名]/bg[色名]$reset_color   などの色表示の書き方ができる
+# begin ------------------
+# rootのプロンプトカラー変更 test http://www.q-eng.imat.eng.osaka-cu.ac.jp/~        ippei/unix-tips/zsh.html から
+# end -------------------
+
 
 # ipアドレスを参照する
 get-ipaddr() {
   # get NIC list
-	local devices="`cat /proc/net/arp | sed '1d' |  awk '{print $6}'`"
+  local devices="`cat /proc/net/dev | awk '{print $1}' | sed '1,3d' | cut -d: -f1`"
+
   # num of NICs
   local numof_dev=`echo "$devices" | wc -l`
+
   # reset file
   cat /dev/null > /tmp/.inet
+
   # check ip-addr of all nics
   for i in `seq -s' ' 1 1 $numof_dev`
   do
       focus_dev=`echo "$devices" | cat -n | grep $i | awk '{print $2}'`
+      echo "$devices" | cat -n | grep $i | awk '{print $2}' ###
       inet_line=`/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet`
-      /sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /dev/null 
+      echo "[*]focus:" ${focus_dev}"a" ###
+      /sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /dev/null #> /tmp/.inet
       if [ $? -eq 0 ]; then
+          echo "in focus:" $focus_dev
+          echo $inet_line | cut -d : -f2 | cut -d' ' -f1 ###
           echo $inet_line | cut -d : -f2 | cut -d' ' -f1 >> /tmp/.inet
           inet_addr=`cat /tmp/.inet`
-          return
+          return 
       fi
   done
 }
 
-function select_ipaddr () {
-	num_ip=`cat /tmp/.inet | wc -l`
-	echo $num_ip
-	if [ $num_ip -eq 1 ]; then
-		inet_addr=`cat /tmp/.inet`
-		return
-	fi
-	select i in `cat /tmp/.inet`
-	do
-	if [ -x $i ] ; then
-		echo "plz retry."
-		continue
-	fi
-		inet_addr=$i
-		break
-	done
-}
-
-# 関数実行
 get-ipaddr
-select_ipaddr
 
 # ユーザごとに色を変える
 # rootならユーザ名rootを赤で表示する
@@ -127,6 +120,7 @@ else
 fi
 
 # set color
+
 GREEN="%{$fg['green']%}"
 RED="%{$fg['red']%}"
 CYAN="%{$fg['cyan']%}"
@@ -134,12 +128,27 @@ BLUE="%{$fg['blue']%}"
 YELLOW="%{$fg['yellow']%}"
 MAGENTA="%{$fg['magenta']%}"
 
+#BGREEN="%{$terminfo['bold']$fg['green']%}"
+#BRED="%{$terminfo['bold']$fg['red']%}"
+#BCYAN="%{$terminfo['bold']$fg['cyan']%}"
+#BBLUE="%{$terminfo['bold']$fg['blue']%}"
+#BYELLOW="%{$terminfo['bold']$fg['yellow']%}"
+#BMAGENTA="%{$terminfo['bold']$fg['magenta']%}"
+#
+#BRESET='%{$terminfo['srg0']%}'
+
+#PROMPT=$'\n%{$fg['cyan']%} ‡‡‡‡‡‡ † ∬  ⇦  ↻ ▨ ▨ ▨ ▨ ▨▨▨  ∑→ →(%{$fg['magenta']%}$inet_addr%{$fg['cyan']%})╋╋╋╋ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░
+#%{$fg[${U_CLR}]%}${MYUSER}%{$fg[${H_CLR}]%}@${HOSTNAME} %2~:%{$reset_color%}'
 #=====================================================================
 
 # 文字数に変換 ${#${:-STR}}
 
-# プロンプトの余り部分を埋める
+# 表示したいコンテンツ？
+# ユーザ名@ホスト名
+# $USER そのまま
+
 fill_char () {
+# プロンプトの余り部分を埋める
   # 埋める文字
   fchr="="
   while [ $REMAIN -gt 0 ]
@@ -148,10 +157,11 @@ fill_char () {
     REMAIN=$((${REMAIN}-1))
   done
 }
-
 first_line () {
   HOST=$HOSTNAME
-  cwd="`print -P \"%~\"`"  
+# カレントディレクトリ
+  cwd=$(ruby -e "print ENV['PWD'].gsub(ENV['HOME'], '~')")
+    
   USER_AND_HOST="[${USER}@${HOSTNAME}(${inet_addr}):${cwd}]"
   user_host_decolation="[${USER}@${HOSTNAME}(${inet_addr}):]"
   user_host_decolation_size=$(( ${COLUMNS} - ${#${user_host_decolation}} ))
@@ -170,6 +180,7 @@ set_color () {
 
   PROMPT=${PROMPT}$'${s_line_f}'$'%0(?||%{$fg['yellow']%}:%{$fg['red']%}'$l_c')'$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
 
+  # red green yellow blue magenta cyan white
 }
 
 # コマンド実行前じ実行される特殊関数
