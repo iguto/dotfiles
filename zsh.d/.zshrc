@@ -144,6 +144,7 @@ fi
 alias grep="grep --color='always'"
 alias less='less -R'
 alias ls="ls --color=always -hvF" 
+alias lsd="ls *(/) -d"
 ## Alias for ls
 alias l='ls'
 alias ll='ls -lF' la='ls -aF' laa='la | grep ^\.' lla='la -l'
