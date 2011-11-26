@@ -101,7 +101,8 @@ zstyle 'completion::match:*' insert-unambiguous true
 #  ssh-agentをssh系コマンド実行前に実行
 ############################################################
 ## ssh-agent をssh,scp,sftp,rsyncに関連付け
-local overssh=$zsh_dir/overwrite-ssh-command.sh
+#local overssh=$zsh_dir/overwrite-ssh-command.sh
+local overssh=$zsh_dir/pressh_agent.sh
 if [ -e $overssh ] ; then
 	source $overssh
 fi
