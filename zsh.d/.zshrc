@@ -6,7 +6,7 @@ export LANG=ja_JP.UTF-8
 
 # 相対パスでcdする際、カレントディレクトリに指定したディレクトリが
 # 存在しない場合、この変数で指定したディレクトリを探索してみる
-cdpath=$HOME
+#cdpath=$HOME
 
 # ページャをlessと明示
 export PAGER=less

@@ -1,18 +1,18 @@
 function run-agent() {
-	/usr/bin/ssh-add -l >& /dev/null
-	if [ $? -eq 2 ] ; then
-		eval `ssh-agent -s`
-	fi
-	/usr/bin/ssh-add -l >& /dev/null
-	if [ $? -eq 1 ] ; then
-	# 公開鍵が ~/.ssh にあると正常に動作しないため、存在しないことを確認
-		ls $HOME/.ssh/ | egrep pub$ > /dev/null
-		if [ $? -ne 0 ] ; then
-			/usr/bin/ssh-add ~/.ssh/id*
-		else
-			echo "check ~/.ssh has no publickey." > /dev/stderr
+		/usr/bin/ssh-add -l >& /dev/null
+		if [ $? -eq 2 ] ; then
+				eval `ssh-agent -s`
 		fi
-	fi
+		/usr/bin/ssh-add -l >& /dev/null
+		if [ $? -eq 1 ] ; then
+	# 公開鍵が ~/.ssh にあると正常に動作しないため、存在しないことを確認
+				ls $HOME/.ssh/ | egrep .pub$ > /dev/null
+				if [ $? -ne 0 ] ; then
+						/usr/bin/ssh-add ~/.ssh/id*
+				else
+						echo "check ~/.ssh has no publickey." > /dev/stderr
+				fi
+		fi
 }
 
 ############################################################
@@ -28,12 +28,11 @@ function run-agent() {
 #
 ## ssh-agent をssh,scp,sftp,rsyncに関連付け
 # my-ssh
-if [ -e $zsh_dir/run-agent ]; then
-  function ssh {
-    source $zsh_dir/run-agent
+function ssh {
+#    source $zsh_dir/run-agent
     run-agent
     /usr/bin/ssh $*
-  }
+}
   #my-scp
 # function scp {
 #   source $zsh_dir/run-agent
@@ -47,27 +46,27 @@ if [ -e $zsh_dir/run-agent ]; then
 #   /usr/local/bin/sftp $*
 # }
   # my-rsync
-  function my-rsync {
-    source $zsh_dir/run-agent
+function my-rsync {
+#    source $zsh_dir/run-agent
     run-agent
     /usr/bin/rsync $*
-  }
+}
 
-	function agent() {
-		source $zsh_dir/run-agent
+function agent() {
+#		source $zsh_dir/run-agent
     run-agent
-  }
+}
   # function screen {
   #   source $zsh_dir/run-agent
   #   run-agent
   #   /usr/bin/screen $*
   # }
-  function vagent {
+function vagent {
     ssh-add -l
-  }
-fi
+}
+
 
 # ssh-agentをkillする
 function kill-agent {
-  eval `ssh-agent -s -k`
+		eval `ssh-agent -s -k`
 }
