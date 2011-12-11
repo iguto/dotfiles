@@ -84,7 +84,7 @@ function select_ipaddr () {
 }
 
 # 関数実行
-get-ipaddr
+get-ipaddr 2> /dev/null					# エラーは捨てる
 select_ipaddr
 
 # ユーザごとに色を変える

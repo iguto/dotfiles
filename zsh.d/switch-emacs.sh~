@@ -1,0 +1,8 @@
+function switch_emacs()
+{
+	if [ -e $SSH_CONNECTION ]; then
+		echo "emacs -nw"
+	else
+		echo "emacs"
+	fi
+}
