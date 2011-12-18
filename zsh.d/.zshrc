@@ -38,7 +38,7 @@ export HISTSIZE=10000
 # HISTFILEに保存するコマンド数 HISTSIZEより小さいとあまり意味がない?
 export SAVEHIST=10000
 # 重複があれば、古いほうを削除
-setopt hist_ignore_all_dups
+#setopt hist_ignore_all_dups
 # 余分な空白があれば削除して履歴へ
 setopt hist_reduce_blanks
 # コマンドラインの先頭にくうはくがあれば、ヒストリに追加しない
@@ -376,3 +376,55 @@ zle -N self-insert url-quote-magic
 #
 setopt auto_name_dirs  # !!!
 alias ndate='date +%m%d_%H:%M:%S'
+
+
+## smart insert word
+autoload smart-insert-last-word
+zle -N insert-last-word smart-insert-last-word
+zstyle :insert-last-word match \
+  '*([^[:space:]][[:alpha:]/\\]|[[:alpha:]/\\][^[:space:]])*'
+#bindkey '^]' insert-last-word
+bindkey '.' insert-last-word
+
+############################################################
+# percolを使ったヒストリ検索
+############################################################
+function exists { which $1 &> /dev/null }
+
+if exists percol; then
+    function percol_select_history() {
+        local tac
+        exists gtac && tac=gtac || tac=tac
+        BUFFER=$($tac $HISTFILE | sed 's/^: [0-9]*:[0-9]*;//' | percol --query "$LBUFFER")
+        CURSOR=$#BUFFER         # move cursor
+        zle -R -c               # refresh
+    }
+
+    zle -N percol_select_history
+    bindkey '^[' percol_select_history
+fi
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# memo
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#
+#- pastebinit
+#		webサービスpastebinのクライアント
+#		パイプ等の形で、出力を渡してやると、その出力をWebへ投稿する
+#		投稿したページのURLを代わりに出力するので、
+#		それを他の人に知らせるなどする
+#		オプションでシンタックスハイライトの指定もできる様子
+#
+#- vim -R 
+#		コマンドのview相当。読み込み専用で開くことができる
+#
+#- vim - 
+#		ファイルの内容をvimで開くのではなく、標準出力ノ内容をvimでひらく
+#
+#- percol
+#		開いたファイルの内容を検索しつつ表示でくきるページャ
+#
+#
+#
+#
