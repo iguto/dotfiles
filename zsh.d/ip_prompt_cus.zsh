@@ -84,7 +84,7 @@ function select_ipaddr () {
 }
 
 # 関数実行
-get-ipaddr
+get-ipaddr 2> /dev/null					# エラーは捨てる
 select_ipaddr
 
 # ユーザごとに色を変える
@@ -168,12 +168,13 @@ set_color () {
   s_line_f="-(%#"
   s_line_l=")->> "
 
-  PROMPT=${PROMPT}$'${s_line_f}'$'%0(?||%{$fg['yellow']%}:%{$fg['red']%}'$l_c')'$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
+  PROMPT=${PROMPT}$'${s_line_f}'$'%(?||%{$fg['red']%}:%{$fg["red"]%}'$ret')'$'%{$fg['cyan']%}${s_line_l}%{$reset_color%}'
 
 }
 
 # コマンド実行前じ実行される特殊関数
 precmd() {
+	ret=$?
   first_line;
   set_color;
 }

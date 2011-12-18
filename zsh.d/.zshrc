@@ -1,30 +1,31 @@
 ############################################################
 #  環境変数/シェル変数
 ############################################################
-#文字コードを設定
+## 文字コードを設定
 export LANG=ja_JP.UTF-8
 
-# 相対パスでcdする際、カレントディレクトリに指定したディレクトリが
-# 存在しない場合、この変数で指定したディレクトリを探索してみる
-cdpath=$HOME
+## 相対パスでcdする際、カレントディレクトリに指定したディレクトリが
+## 存在しない場合、この変数で指定したディレクトリを探索してみる
+#cdpath=$HOME
 
-# ページャをlessと明示
+## ページャをlessと明示
 export PAGER=less
 
-# zsh関連ディレクトリ
+## zsh設定リポジトリへのパス
 zsh_dir=$HOME/zsh_dotfiles
 
 ############################################################
 #  ターミナル起動時に実行するコマンド
 ############################################################
 
-# いる場所で、ssh_configを切り替える
+## いる場所で、ssh_configを切り替える
 local netset=$zsh_dir/ch-network-setting.rb
 if [ -e $netset ] ; then
 	/usr/local/bin/ruby $netset
 fi
+
 ############################################################
-## history
+## history/ヒストリサーチ
 ############################################################
 setopt APPEND_HISTORY
 # for sharing history between zsh processes
@@ -43,22 +44,27 @@ setopt hist_reduce_blanks
 # コマンドラインの先頭にくうはくがあれば、ヒストリに追加しない
 setopt hist_ignore_space
 
+
+############################################################
+#  history-grep 候補を一覧表示するヒストリ検索
+############################################################
+local histgrep=$zsh_dir/history-grep.zsh
+if [ -r $histgrep ]; then
+		source $histgrep
+fi
+
 ##########################################################
-###  別ファイルの読み込み
-#         主にプロンプト
+# プロンプト
 ##########################################################
 
-#====== 仮想ターミナルならシンプルな、そうでなければラインな
-#       プロンプトを読み込む
-# プロンプト設定読み込み
-#
+## 仮想ターミナルならシンプルな、そうでなければラインな
+## プロンプト設定読み込み
 
 local simple_prompt=$zsh_dir/.zsh_prompt
 if [ -e $simple_prompt ] ; then
 	source $simple_prompt
 fi
 
-# 自作 ラインプロンプトを使用する
 if [ "$TERM" != linux ] ; then
 	local ip_prompt=$zsh_dir/ip_prompt_cus.zsh
 	if [ -e $ip_prompt ] ; then
@@ -67,17 +73,46 @@ if [ "$TERM" != linux ] ; then
 fi
 
 ############################################################
-#   補完候補
+# gitのブランチ情報を右プロンプトに表示
 ############################################################
-# 補完機能は上位版を使用
+autoload -Uz add-zsh-hook
+autoload -Uz vcs_info
+
+zstyle ':vcs_info:*' enable git svn hg bzr
+zstyle ':vcs_info:*' formats '[%b]'
+zstyle ':vcs_info:*' actionformats '[%b|%a]'
+zstyle ':vcs_info:(svn|bzr):*' branchformat '%b:r%r'
+zstyle ':vcs_info:bzr:*' use-simple true
+
+autoload -Uz is-at-least
+if is-at-least 4.3.10; then
+	zstyle ':vcs_info:git:*' check-for-changes true
+	zstyle ':vcs_info:git:*' stagedstr "+"
+	zstyle ':vcs_info:git:*' unstagedstr "-"
+	zstyle ':vcs_info:git:*' formats '[%b[%c%u]]'
+	zstyle ':vcs_info:git:*' actionformats '[%b|%a[%c%u]]'
+fi
+
+function _update_vcs_info_msg() {
+	psvar=()
+	LANG=en_US.UTF-8 vcs_info
+	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
+add-zsh-hook precmd _update_vcs_info_msg
+RPROMPT="%1(v|%F{green}%1v%f|)" # [%20<..<%~]"
+
+############################################################
+#   補完/補完スタイル
+############################################################
+
+## 補完機能上位版を使用
 autoload -U compinit
 compinit
 
-# 補完候補を詰め込んで表示(なるべく1画面に収めるため)
+## 補完候補を詰め込んで表示(なるべく1画面に収める)
 setopt list_packed
 
 ## ファイル名のカラー表示
-#export `dircolors -b`
 if [ -e ~/.dir_colors ]; then
 	eval `dircolors -b ~/.dir_colors`
 fi
@@ -89,23 +124,45 @@ zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
 #allow tab completion in the middle of a word
 setopt COMPLETE_IN_WORD
 
-# 補完スタイル
+## 補完スタイル
 #zstyle ':completion:*' completer _expand _complete _approximate #_match
 zstyle ':completion:*' completer _oldlist _complete  _expand
-# 2011.05.25 auto-fuのために_oldlistを先頭に追加した。
+## 2011.05.25 auto-fuのために_oldlistを先頭に追加した。
 
-# ↑ の_matchについて、一意に対象を絞るため、補完位置ずらしていく
+## ↑ の_matchについて、一意に対象を絞るため、補完位置ずらしていく
 zstyle 'completion::match:*' insert-unambiguous true
+
+############################################################
+# 補完候補表示の際、グループ名表示し、グループごとに表示する
+############################################################
+zstyle ':completion:*:messages' format $YELLOW'%d'$DEFAULT
+zstyle ':completion:*:warnings' format $RED'No matches for:'$YELLOW' %d'$DEFAULT
+zstyle ':completion:*:descriptions' format $YELLOW'completing %B%d%b'$DEFAULT
+zstyle ':completion:*:corrections' format $YELLOW'%B%d '$RED'(errors: %e)%b'$DEFAULT
+zstyle ':completion:*:options' description 'yes'
+## グループ名に空文字列を指定すると，マッチ対象のタグ名がグループ名に使われる。
+## したがって，すべての マッチ種別を別々に表示させたいなら以下のようにする
+zstyle ':completion:*' group-name ''
 
 ############################################################
 #  ssh-agentをssh系コマンド実行前に実行
 ############################################################
 ## ssh-agent をssh,scp,sftp,rsyncに関連付け
-local overssh=$zsh_dir/overwrite-ssh-command.sh
+local overssh=$zsh_dir/pressh_agent.sh
 if [ -e $overssh ] ; then
 	source $overssh
 fi
 
+
+############################################################
+# emacs起動のモード？をremote/localで切り替える
+############################################################
+
+local sw_emacs=$zsh_dir/switch-emacs.sh
+if [ -e $sw_emacs ] ; then
+	source $sw_emacs
+fi
+alias emacs=switch_emacs
 ############################################################
 # bindkeyの変更
 ############################################################
@@ -137,7 +194,6 @@ alias ll='ls -lF' la='ls -aF' laa='la | grep ^\.' lla='la -l'
 alias ld='ls -d *(/)'
 
 ## ディレクトリ移動関連
-alias c='cd'
 alias cd..='cd ..'
 alias -g ...='../..'
 alias -g ....='../../..'
@@ -164,17 +220,13 @@ alias -g X='| xsel --clipboard --input'
 
 # tarコマンドが拡張子を自動認識し、展開してくれるようなのでalias設定
 # tar.gz tar.gz2 
-# zipはダメなようなので、unzipを使う。
+# zipはこれでは使えない、unzipを使う。
 alias tare='tar xvf'
 
 ## この設定ファイル編集を簡略化
 alias zrc='vim ~/.zshrc'
-# 補完が効くため、いらないかも
-alias sshp='ssh -o PreferredAuthentications=password'
 
 ## emacs
-# タイプミス用
-alias eamcs='emacs'
 alias enw="emacs -nw"
 alias e="emacs"
 
@@ -182,7 +234,7 @@ alias e="emacs"
 alias nndisp="nautilus . &"
 
 ############################################################
-#  ディレクトリスタック利用
+#  ディレクトリスタック
 ############################################################
 # http://journal.mycom.co.jp/column/zsh/006/index.html より
 # "cd"の入力なしで、カレントディレクトリを変更できる
@@ -220,34 +272,6 @@ setopt no_flow_control
 ############################################################
 ## コマンドラインで '#'以降をコメント扱い
 setopt interactive_comments
-
-############################################################
-#  history-grep 候補を一覧表示するヒストリ検索
-############################################################
-HISTORY_MENU_LENGTH=20
-typeset -A HISTORY_MENU_KEYS
-set -A HISTORY_MENU_KEYS a 1 s 2 d 3 f 4 g 5 h 6 j 7 k 8 l 9 q 10 \
-                w 11 e 12 r 13 t 14 y 15 u 16 i 17 o 18 p 19 @ 20
-autoload -U read-from-minibuffer
-HISTORY_GREP_TEMPFILE=/tmp/hmgrep.tmp
-history-grep-menu () {
-	read-from-minibuffer "history grep: "
-	if [ -n "$REPLY" ]; then
-		 history -n 1 | egrep "$REPLY" | tail -100 | uniq | tail -$HISTORY_MENU_LENGTH | tac > $HISTORY_GREP_TEMPFILE
-			zle -M  "`ruby -e '%w[a s d f g h j k l q w e r t y u i o p @].zip(ARGF.readlines){|k,l| print %[#{k}: #{l}]}' $HISTORY_GREP_TEMPFILE`"
-			zle -R
-			read -k key
-	if [ -n "${HISTORY_MENU_KEYS[$key]}" ]; then
-			 zle -U "`head -${HISTORY_MENU_KEYS[$key]} $HISTORY_GREP_TEMPFILE | tail -1 | perl -pe 's/\\\\n/\\021\\n/g'`"
-				zle -R
-	fi
-	zle -R -c
-	rm -f $HISTORY_GREP_TEMPFILE
-	fi
-}
-# history-grep へのキー割り当て
-zle -N history-grep-menu
-bindkey "^[r" history-grep-menu
  
 ############################################################
 # zawを読み込む (全く使ってない)
@@ -256,41 +280,7 @@ if [ -e  $zsh_dir/zaw/zaw.zsh ] ; then
 	source $zsh_dir/zaw/zaw.zsh
 fi
 
-############################################################
-# gitのブランチ情報を右プロンプトに表示
-############################################################
-autoload -Uz add-zsh-hook
-autoload -Uz vcs_info
 
-zstyle ':vcs_info:*' enable git svn hg bzr
-zstyle ':vcs_info:*' formats '[%b]'
-zstyle ':vcs_info:*' actionformats '[%b|%a]'
-zstyle ':vcs_info:(svn|bzr):*' branchformat '%b:r%r'
-zstyle ':vcs_info:bzr:*' use-simple true
-
-autoload -Uz is-at-least
-if is-at-least 4.3.10; then
-	zstyle ':vcs_info:git:*' check-for-changes true
-	zstyle ':vcs_info:git:*' stagedstr "+"
-	zstyle ':vcs_info:git:*' unstagedstr "-"
-	zstyle ':vcs_info:git:*' formats '[%b[%c%u]]'
-	zstyle ':vcs_info:git:*' actionformats '[%b|%a[%c%u]]'
-fi
-
-function _update_vcs_info_msg() {
-	psvar=()
-	LANG=en_US.UTF-8 vcs_info
-	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-}
-add-zsh-hook precmd _update_vcs_info_msg
-RPROMPT="%1(v|%F{green}%1v%f|)" # [%20<..<%~]"
-
-############################################################
-# Directory BookMark
-############################################################
-#if [ -e $zsh_dir/bookmark.zsh ] ; then
-#		source $zsh_dir/bookmark.zsh
-#fi
 
 ############################################################
 # zsh_command_not_found  存在しないコマンドを実行→ 近いパッケージを表示
@@ -300,10 +290,9 @@ if [ -e $cmd_nfound ] ; then
 	source $cmd_nfound
 fi
 
-#-----------------------------------------------------------
-#
-#-----------------------------------------------------------
-# 256色表示確認
+#####################################################################
+# 256色表示確認                                                     #
+#####################################################################
 function pcolor() {
 	for ((f = 0; f < 255; f++)); do
 		printf "\e[38;5;%dm %3d*■\e[m" $f $f
@@ -314,24 +303,6 @@ function pcolor() {
 echo
 }
 
-#=========================================
-# カレントに候補が無い場合のみcdpath 上のディレクトリが候補となる。
-# zstyle ':completion:*:cd:*' tag-order local-directories path-directories
-#
-# # cdpath 上のディレクトリは補完候補から外す
-# # zstyle ':completion:*:path-directories' hidden true
-
-############################################################
-# 補完候補表示の際、グループ名表示し、グループごとに表示する
-############################################################
-zstyle ':completion:*:messages' format $YELLOW'%d'$DEFAULT
-zstyle ':completion:*:warnings' format $RED'No matches for:'$YELLOW' %d'$DEFAULT
-zstyle ':completion:*:descriptions' format $YELLOW'completing %B%d%b'$DEFAULT
-zstyle ':completion:*:corrections' format $YELLOW'%B%d '$RED'(errors: %e)%b'$DEFAULT
-zstyle ':completion:*:options' description 'yes'
-# グループ名に空文字列を指定すると，マッチ対象のタグ名がグループ名に使われる。
-# # したがって，すべての マッチ種別を別々に表示させたいなら以下のようにする
-zstyle ':completion:*' group-name ''
 
 ############################################################
 # auto-fu インクリメンタルに補完候補を表示
@@ -391,7 +362,6 @@ alias diff='diff -u'
 #    screen -qR
 #fi
 #
-
 
 ############################################################
 # URLを自動でクオート処理
