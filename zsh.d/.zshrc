@@ -401,7 +401,7 @@ if exists percol; then
     }
 
     zle -N percol_select_history
-    bindkey '^[' percol_select_history
+    bindkey '^]' percol_select_history
 fi
 
 
