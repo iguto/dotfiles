@@ -10,16 +10,16 @@ HISTORY_GREP_TEMPFILE=/tmp/hmgrep.tmp
 history-grep-menu () {
 	read-from-minibuffer "history grep: "
 	if [ -n "$REPLY" ]; then
-		 history -n 1 | egrep "$REPLY" | tail -100 | uniq | tail -$HISTORY_MENU_LENGTH | tac > $HISTORY_GREP_TEMPFILE
-			zle -M  "`ruby -e '%w[a s d f g h j k l q w e r t y u i o p @].zip(ARGF.readlines){|k,l| print %[#{k}: #{l}]}' $HISTORY_GREP_TEMPFILE`"
+		history -n 1 | egrep "$REPLY" | tail -100 | uniq | tail -$HISTORY_MENU_LENGTH | tac > $HISTORY_GREP_TEMPFILE
+		zle -M  "`ruby -e '%w[a s d f g h j k l q w e r t y u i o p @].zip(ARGF.readlines){|k,l| print %[#{k}: #{l}]}' $HISTORY_GREP_TEMPFILE`"
+		zle -R
+		read -k key
+		if [ -n "${HISTORY_MENU_KEYS[$key]}" ]; then
+			zle -U "`head -${HISTORY_MENU_KEYS[$key]} $HISTORY_GREP_TEMPFILE | tail -1 | perl -pe 's/\\\\n/\\021\\n/g'`"
 			zle -R
-			read -k key
-	if [ -n "${HISTORY_MENU_KEYS[$key]}" ]; then
-			 zle -U "`head -${HISTORY_MENU_KEYS[$key]} $HISTORY_GREP_TEMPFILE | tail -1 | perl -pe 's/\\\\n/\\021\\n/g'`"
-				zle -R
-	fi
-	zle -R -c
-	rm -f $HISTORY_GREP_TEMPFILE
+		fi
+		zle -R -c
+		rm -f $HISTORY_GREP_TEMPFILE
 	fi
 }
 # history-grep へのキー割り当て
