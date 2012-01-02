@@ -34,9 +34,9 @@ setopt SHARE_HISTORY
 # history file save this directory/file
 export HISTFILE=${HOME}/.zsh_history
 # number of command that keep on memory
-export HISTSIZE=10000
+export HISTSIZE=100000
 # HISTFILEに保存するコマンド数 HISTSIZEより小さいとあまり意味がない?
-export SAVEHIST=10000
+export SAVEHIST=100000
 # 重複があれば、古いほうを削除
 #setopt hist_ignore_all_dups
 # 余分な空白があれば削除して履歴へ
@@ -428,3 +428,56 @@ fi
 #
 #
 #
+## emacsclient をシームレスに使うための関数
+## http://k-ui.jp/?p=243
+function e(){
+    echo "[$0] emacsclient -c -t $*";
+    (emacsclient -c -t $* ||
+        (echo "[$0] emacs --daemon"; emacs --daemon &&
+            (echo "[$0] emacsclient -c -t $*"; emacsclient -c -t $*)) ||
+        (echo "[$0] emacs $*"; emacs $*))
+}
+
+# ソケットの場所を環境変数に覚えてもらう
+# emacs のバージョンによって少し場所が違うようなので、
+# *** "/tmp" を要確認 ***
+export USER_ID=`id -u`
+export EMACS_TMP_DIR="/tmp/emacs$USER_ID"
+export EMACS_SOCK="$EMACS_TMP_DIR/server"
+
+## screen emacsclient をシームレスに使うための関数
+function se(){
+    if which emacsclient &&
+        (echo "[$0] ls $EMACS_SOCK "; ls $EMACS_SOCK) ||
+        (echo "[$0] emacs --daemon"; emacs --daemon)
+    then
+        echo "[$0] screen -t emacs emacsclient -t -c $*";
+        screen -t emacs emacsclient -t -c $*
+    elif which emacs
+    then
+        echo "[$0] screen emacs -t -c $*";
+        screen emacs -t -c $*
+    fi
+
+}
+
+##  $EMACS_TMP_DIR が無いとき
+if ! [ -d $EMACS_TMP_DIR ]; then
+
+   #（socket 使わないバージョン、毎回emacs--daemonしてる。。。）
+    function se(){
+        if which emacsclient
+        then
+            echo "[$0] emacs --daemon"
+            emacs --daemon
+            echo "[$0] screen -t emacs emacsclient -t -c $*"
+            screen -t emacs emacsclient -t -c $*
+        elif which emacs
+        then
+            echo "[$0] screen emacs -t -c $*";
+            screen emacs -t -c $*
+        fi
+    }
+fi
+#------------------------------------------------------------
+alias irb=pry
