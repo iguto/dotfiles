@@ -122,7 +122,7 @@ elif [ $HOST = 'utrillo2.eng.kagawa-u.ac.jp' ] ; then
   HOSTNAME='u2'
   H_CLR="magenta}"
 else
-    HOSTNAME=$HOST
+	HOSTNAME=$HOST
   H_CLR="magenta"
 fi
 
@@ -151,7 +151,10 @@ fill_char () {
 
 first_line () {
   HOST=$HOSTNAME
-  cwd="`print -P \"%~\"`"  
+  cwd=`print -P "%~"`
+	if [ $cwd = "~cwd" ]; then
+		cwd=`print -P "%~"`
+	fi
   USER_AND_HOST="[${USER}@${HOSTNAME}(${inet_addr}):${cwd}]"
   user_host_decolation="[${USER}@${HOSTNAME}(${inet_addr}):]"
   user_host_decolation_size=$(( ${COLUMNS} - ${#${user_host_decolation}} ))

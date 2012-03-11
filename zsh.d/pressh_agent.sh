@@ -10,7 +10,7 @@ function run-agent() {
 				if [ $? -ne 0 ] ; then
 						/usr/bin/ssh-add ~/.ssh/id*
 				else
-						echo "check ~/.ssh has no publickey." > /dev/stderr
+						echo "check ~/.ssh has publickey. then move it to pub/" > /dev/stderr
 				fi
 		fi
 }

@@ -10,7 +10,9 @@ export LANG=ja_JP.UTF-8
 
 ## ページャをlessと明示
 export PAGER=less
-
+export SUDO_EDITOR='vim -u /home/iguto/.vimrc'
+export EDITOR=vim  # pit用の設定
+export GISTY_DIR="$HOME/dev/gists"
 ## zsh設定リポジトリへのパス
 zsh_dir=$HOME/zsh_dotfiles
 
@@ -45,13 +47,6 @@ setopt hist_reduce_blanks
 setopt hist_ignore_space
 
 
-############################################################
-#  history-grep 候補を一覧表示するヒストリ検索
-############################################################
-local histgrep=$zsh_dir/history-grep.zsh
-if [ -r $histgrep ]; then
-		source $histgrep
-fi
 
 ##########################################################
 # プロンプト
@@ -60,12 +55,14 @@ fi
 ## 仮想ターミナルならシンプルな、そうでなければラインな
 ## プロンプト設定読み込み
 
-local simple_prompt=$zsh_dir/.zsh_prompt
-if [ -e $simple_prompt ] ; then
-	source $simple_prompt
-fi
-
-if [ "$TERM" != linux ] ; then
+if [ "$TERM" = linux ] ; then
+	local simple_prompt=$zsh_dir/.zsh_prompt
+	if [ -e $simple_prompt ] ; then
+		source $simple_prompt
+	fi
+else
+	
+	# IPアドレス表示プロンプト
 	local ip_prompt=$zsh_dir/ip_prompt_cus.zsh
 	if [ -e $ip_prompt ] ; then
 		source $ip_prompt
@@ -166,6 +163,7 @@ alias emacs=switch_emacs
 ############################################################
 # bindkeyの変更
 ############################################################
+bindkey -e
 # 途中まで打った後、C-pで打った文字でヒストリサーチする(C-nも)
 bindkey '' history-beginning-search-backward # 先頭マッチのヒストリサーチ
 bindkey '' history-beginning-search-forward  # 同上
@@ -233,6 +231,8 @@ alias e="emacs"
 # nautilus(ファイルブラウザ) カレントディレクトリを開く
 alias nndisp="nautilus . &"
 
+# rspec color
+alias rspec='rspec -c'
 ############################################################
 #  ディレクトリスタック
 ############################################################
@@ -276,11 +276,24 @@ setopt interactive_comments
 ############################################################
 # zawを読み込む (全く使ってない)
 ############################################################
-if [ -e  $zsh_dir/zaw/zaw.zsh ] ; then
-	source $zsh_dir/zaw/zaw.zsh
+local zaw_file=$zsh_dir/site_script/zaw/zaw.zsh
+if [ -e  $zaw_file ] ; then
+	source $zaw_file
 fi
 
+zaw-register-src -n ack $zsh_dir/site_script/zaw/sources/ack.zsh
+zaw-register-src -n cdr $zsh_dir/site_script/zaw/sources/cdr.zsh
 
+# key-bind
+bindkey 'r' zaw-history
+
+#opt
+zstyle ':filter-select:highlight' selected bg=white
+zstyle ':filter-select:highlight' matched fg=yellow,red
+zstyle ':filter-select' max-lines 10 # use 10 lines for filter-select
+zstyle ':filter-select' max-lines -10 # use $LINES - 10 for filter-select
+zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
+zstyle ':filter-select' extended-search yes # see below
 
 ############################################################
 # zsh_command_not_found  存在しないコマンドを実行→ 近いパッケージを表示
@@ -302,7 +315,6 @@ function pcolor() {
 	done
 echo
 }
-
 
 ############################################################
 # auto-fu インクリメンタルに補完候補を表示
@@ -326,6 +338,14 @@ echo
 sshl=$zsh_dir/ssh-labo.sh
 if [ -e $sshl ] ; then
 	source $sshl
+fi
+
+############################################################
+#  history-grep 候補を一覧表示するヒストリ検索
+############################################################
+local histgrep="$zsh_dir/history-grep.zsh"
+if [ -r $histgrep ]; then
+		source $histgrep
 fi
 
 ############################################################
@@ -384,7 +404,7 @@ zle -N insert-last-word smart-insert-last-word
 zstyle :insert-last-word match \
   '*([^[:space:]][[:alpha:]/\\]|[[:alpha:]/\\][^[:space:]])*'
 #bindkey '^]' insert-last-word
-bindkey '.' insert-last-word
+#bindkey '.' insert-last-word
 
 ############################################################
 # percolを使ったヒストリ検索
@@ -405,29 +425,6 @@ if exists percol; then
 fi
 
 
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-# memo
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-#
-#- pastebinit
-#		webサービスpastebinのクライアント
-#		パイプ等の形で、出力を渡してやると、その出力をWebへ投稿する
-#		投稿したページのURLを代わりに出力するので、
-#		それを他の人に知らせるなどする
-#		オプションでシンタックスハイライトの指定もできる様子
-#
-#- vim -R 
-#		コマンドのview相当。読み込み専用で開くことができる
-#
-#- vim - 
-#		ファイルの内容をvimで開くのではなく、標準出力ノ内容をvimでひらく
-#
-#- percol
-#		開いたファイルの内容を検索しつつ表示でくきるページャ
-#
-#
-#
-#
 ## emacsclient をシームレスに使うための関数
 ## http://k-ui.jp/?p=243
 function e(){
@@ -481,3 +478,55 @@ if ! [ -d $EMACS_TMP_DIR ]; then
 fi
 #------------------------------------------------------------
 alias irb=pry
+
+######################################################################
+# 最近のディレクトリへ移動
+######################################################################
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+zstyle ':chpwd:*' recent-dirs-max 5000
+zstyle ':chpwd:*' recent-dirs-default yes
+zstyle ':completion:*' recent-dirs-insert both
+
+
+######################################################################
+# autojump
+######################################################################
+local autojump=~/src/autojump/autojump.zsh
+if [ -r $autojump ]; then
+	source $autojump
+else
+	echo 'autojump read error' > /dev/stderr
+fi
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+# memo
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#
+#- pastebinit
+#		webサービスpastebinのクライアント
+#		パイプ等の形で、出力を渡してやると、その出力をWebへ投稿する
+#		投稿したページのURLを代わりに出力するので、
+#		それを他の人に知らせるなどする
+#		オプションでシンタックスハイライトの指定もできる様子
+#
+#- vim -R 
+#		コマンドのview相当。読み込み専用で開くことができる
+#
+#- vim - 
+#		ファイルの内容をvimで開くのではなく、標準出力ノ内容をvimでひらく
+#
+#- percol
+#		開いたファイルの内容を検索しつつ表示でくきるページャ
+#
+#- lzma
+#		7-zip形式の圧縮・展開ツール
+#- netコマンド
+#		sambaツール？
+#- whiptail, dialog(dialogは要インストール)
+#		CUIインストール時のようなパネルを作成するツール？
+#		シェルスクリプト向け
+#- rlwrap
+#		ヒストリ機能のない対話環境を引数にすることで、実行可能
+#		ヒストリ機能を強制的につけるようなもの？
