@@ -491,15 +491,16 @@ zstyle ':completion:*' recent-dirs-insert both
 
 ######################################################################
 # autojump
-######################################################################
-local autojump=~/src/autojump/autojump.zsh
-if [ -r $autojump ]; then
-	source $autojump
-else
-	echo 'autojump read error' > /dev/stderr
-fi
+#pp#####################################################################
+source /etc/profile.d/autojump.zsh
 
-
+## z
+#_Z_CMD=j
+#source $zsh_dir/site_script/z/z.sh
+#precmd() {
+#	_z --add "$(pwd -P)"
+#}
+#
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # memo
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
