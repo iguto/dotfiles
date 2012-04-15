@@ -176,6 +176,9 @@ if is-at-least 4.3.10; then
 	# ↑ ^Sが入力できないので使えていない
 fi
 
+# 消えてしまっているウィジェットの再設定
+bindkey 'm' _most_recent_file
+bindkey '' _read_comp
 ############################################################
 #  alias
 ############################################################
@@ -206,6 +209,7 @@ alias cp='cp -ibS .cpbak'
 
 ## グローバルエイリアス
 alias -g G="| grep --color='always'"
+#bindkey -s G '| grep'
 alias -g H='| head'
 alias -g L='| less'
 alias -g T='| tail'
