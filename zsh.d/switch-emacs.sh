@@ -1,10 +1,16 @@
 function switch_emacs()
 {
+	if [ -e /usr/local/bin/emacs ]; then
+		local emacs=/usr/local/bin/emacs
+	else
+		local emacs=/usr/bin/emacs
+	fi
+
 	if [ ${SSH_CONNECTION:-""} = "" ]; then
 		# on local
-		/usr/bin/emacs $*
+		$emacs $*
 	else
 		# on remote
-		/usr/bin/emacs -nw $*
+		$emacs -nw $*
 	fi
 }
