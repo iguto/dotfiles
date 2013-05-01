@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# lv が入ってないケースは？
+
+if [ $# -eq 0 ]; then
+	echo "USEGE: decode-utf7 <STRING>"
+fi
+
+tmp_file=`tempfile`
+
+echo $@ > $tmp_file
+lv -Iu7 -Ou8 $tmp_file | cat
+
+rm $tmp_file

@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+
+#=============================================================================
+# sjis2utf
+#   引数に指定したディレクトリ内のすべてのファイルの文字コードをUTF-8に変更する。
+#   引数がなかった場合は、カレントディレクトリを対象とする
+#
+#   元の文字コードのファイルは _sjis をファイル名末尾に付加し、
+#   .sjis-dir ディレクトリへ移動してバックアップとする
+#=============================================================================
+
+local suffix=_sjis
+local bakdir=.sjis-dir
+
+# 実行時引数で指定のディレクトリに移動する
+# 実行時引数がなければ、カレントディレクトリで実行する
+cd "${1-.}"
+
+# 元ファイル保存用ディレクトリの作成
+if [ ! -d $bakdir ] ; then 
+  echo "dir maked"
+  mkdir $bakdir
+fi
+
+# ディレクトリ内の全てのファイルについて処理する
+for file in *
+do
+  # テキストファイルのみ対象とする
+  {file $file | grep text | grep -v mvbak} >/dev/null 2>&1 
+  if [ $? -eq 0 ] ; then
+    nkf -g $file | egrep "UTF-8|ASCII"
+    if [ $? -ne 0 ] ; then
+      echo $file
+      local orig_file=$bakdir/$file$suffix
+      mv -f $file $orig_file
+      # utf8,UNIX改行にする 
+      nkf -w80 -Lu $orig_file > $file
+    fi
+  fi
+done
