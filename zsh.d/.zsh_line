@@ -49,16 +49,16 @@ function precmd {
 
 setopt extended_glob
 preexec () {
-    if [[ "$TERM" == screen* ]]; then
-	local CMD=${1[(wr)^(<*|*=*|sudo|exec|-*)]}
-	echo -n "\ek$CMD\e\\"
-    fi
+	if [[ "$TERM" == screen* ]]; then
+		local CMD=${1[(wr)^(<*|*=*|sudo|exec|-*)]}
+		echo -n "\ek$CMD\e\\"
+	fi
 
-    ###
-    # See if $DISPLAY needs to be fixed.
-    if [[ "$STY" != "" && "$DISPLAY" != "$(<~/.display)" ]]; then
-	DISPLAY=$(<~/.display)
-    fi
+	###
+	# See if $DISPLAY needs to be fixed.
+	if [[ "$STY" != "" && "$DISPLAY" != "$(<~/.display)" ]]; then
+		DISPLAY=$(<~/.display)
+	fi
 }
 
 
