@@ -141,7 +141,11 @@ MAGENTA="%{$fg['magenta']%}"
 # プロンプトの余り部分を埋める
 fill_char () {
   # 埋める文字
-  fchr="="
+  #fchr="⇉"
+  #fchr="■"
+  #fchr="✚"
+  fchr="-"
+  #fchr="❚"
   while [ $REMAIN -gt 0 ]
   do
     PROMPT="${PROMPT}${fchr}"
