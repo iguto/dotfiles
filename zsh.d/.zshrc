@@ -21,10 +21,10 @@ zsh_dir=$HOME/zsh_dotfiles
 ############################################################
 
 ## いる場所で、ssh_configを切り替える
-local netset=$zsh_dir/ch-network-setting.rb
-if [ -e $netset ] ; then
-	/usr/local/bin/ruby $netset
-fi
+#local netset=$zsh_dir/ch-network-setting.rb
+#if [ -e $netset ] ; then
+#	/usr/local/bin/ruby $netset
+#fi
 
 ############################################################
 ## history/ヒストリサーチ
@@ -45,8 +45,8 @@ export SAVEHIST=100000
 setopt hist_reduce_blanks
 # コマンドラインの先頭にくうはくがあれば、ヒストリに追加しない
 setopt hist_ignore_space
-
-
+# 時刻の記録
+setopt extended_history
 
 ##########################################################
 # プロンプト
@@ -54,7 +54,6 @@ setopt hist_ignore_space
 
 ## 仮想ターミナルならシンプルな、そうでなければラインな
 ## プロンプト設定読み込み
-
 if [ "$TERM" = linux ] ; then
 	local simple_prompt=$zsh_dir/.zsh_prompt
 	if [ -e $simple_prompt ] ; then
@@ -179,6 +178,8 @@ fi
 # 消えてしまっているウィジェットの再設定
 bindkey 'm' _most_recent_file
 bindkey '' _read_comp
+bindkey 'C' _correct_filename
+bindkey 'c' _correct_word
 ############################################################
 #  alias
 ############################################################
@@ -192,7 +193,7 @@ alias less='less -R'
 alias ls="ls --color=always -hvF" 
 alias l='ls'
 alias ll='ls -lF' la='ls -aF' laa='la | grep ^\.' lla='la -l'
-alias ld='ls -d *(/)'
+alias lsd='ls -d *(/)'
 
 ## ディレクトリ移動関連
 alias cd..='cd ..'
@@ -237,6 +238,10 @@ alias nndisp="nautilus . &"
 
 # rspec color
 alias rspec='rspec -c'
+
+# Read only vim
+alias vimr='vim -R'
+
 ############################################################
 #  ディレクトリスタック
 ############################################################
@@ -280,24 +285,24 @@ setopt interactive_comments
 ############################################################
 # zawを読み込む (全く使ってない)
 ############################################################
-local zaw_file=$zsh_dir/site_script/zaw/zaw.zsh
-if [ -e  $zaw_file ] ; then
-	source $zaw_file
-fi
-
-zaw-register-src -n ack $zsh_dir/site_script/zaw/sources/ack.zsh
-zaw-register-src -n cdr $zsh_dir/site_script/zaw/sources/cdr.zsh
-
-# key-bind
-bindkey 'r' zaw-history
-
-#opt
-zstyle ':filter-select:highlight' selected bg=white
-zstyle ':filter-select:highlight' matched fg=yellow,red
-zstyle ':filter-select' max-lines 10 # use 10 lines for filter-select
-zstyle ':filter-select' max-lines -10 # use $LINES - 10 for filter-select
-zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
-zstyle ':filter-select' extended-search yes # see below
+#local zaw_file=$zsh_dir/site_script/zaw/zaw.zsh
+#if [ -e  $zaw_file ] ; then
+#	source $zaw_file
+#fi
+#
+#zaw-register-src -n ack $zsh_dir/site_script/zaw/sources/ack.zsh
+#zaw-register-src -n cdr $zsh_dir/site_script/zaw/sources/cdr.zsh
+#
+## key-bind
+#bindkey 'r' zaw-history
+#
+##opt
+#zstyle ':filter-select:highlight' selected bg=white
+#zstyle ':filter-select:highlight' matched fg=yellow,red
+#zstyle ':filter-select' max-lines 10 # use 10 lines for filter-select
+#zstyle ':filter-select' max-lines -10 # use $LINES - 10 for filter-select
+#zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
+#zstyle ':filter-select' extended-search yes # see below
 
 ############################################################
 # zsh_command_not_found  存在しないコマンドを実行→ 近いパッケージを表示
@@ -398,7 +403,7 @@ zle -N self-insert url-quote-magic
 # memo
 # M-? で which
 #
-setopt auto_name_dirs  # !!!
+#setopt auto_name_dirs  # !!!
 alias ndate='date +%m%d_%H:%M:%S'
 
 
@@ -486,11 +491,11 @@ alias irb=pry
 ######################################################################
 # 最近のディレクトリへ移動
 ######################################################################
-autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
-add-zsh-hook chpwd chpwd_recent_dirs
-zstyle ':chpwd:*' recent-dirs-max 5000
-zstyle ':chpwd:*' recent-dirs-default yes
-zstyle ':completion:*' recent-dirs-insert both
+#autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+#add-zsh-hook chpwd chpwd_recent_dirs
+#zstyle ':chpwd:*' recent-dirs-max 5000
+#zstyle ':chpwd:*' recent-dirs-default yes
+#zstyle ':completion:*' recent-dirs-insert both
 
 
 ######################################################################
@@ -536,3 +541,4 @@ fi
 #- rlwrap
 #		ヒストリ機能のない対話環境を引数にすることで、実行可能
 #		ヒストリ機能を強制的につけるようなもの？
+# $ mono NetWorkMiner.exe "in opt"
