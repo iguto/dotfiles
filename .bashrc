@@ -13,8 +13,8 @@ HISTCONTROL=ignoredups:ignorespace
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+#HISTSIZE=1000
+#HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -101,4 +101,30 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+#
+# environment variables
+#
+HISTSIZE=100000
+HISTFILESIZE=200000
+
+which vim &> /dev/null
+if [ $? -eq 0 ]; then
+  EDITOR=vim
+else
+  EDITOR=vi
+fi
+
+#
+# alias
+#
+alias ls="ls -F"
+
+#
+# prompt
+# 
+prompt_file=~/.bash_PS1_colored.sh
+#prompt_file=~/bash_prompt_with_vagrant.sh
+if [ -e $prompt_file ]; ten
+  source $prompt_file
+fi
