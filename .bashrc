@@ -103,10 +103,23 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 
 #
+#
+# User setting
+#
+#
+
+#
 # environment variables
 #
 HISTSIZE=100000
 HISTFILESIZE=200000
+
+#
+if [ -d ~/dotfiles ]; then
+	bash_dir=~/dotfiles
+else
+	bash_dir=~/
+fi
 
 which vim &> /dev/null
 if [ $? -eq 0 ]; then
@@ -118,17 +131,19 @@ fi
 #
 # alias
 #
-alias ls="ls -F"
+alias ls="ls -F --color"
+
 
 #
 # prompt
 # 
-prompt_file=~/.bash_PS1_colored.sh
+
+prompt_file=$bash_dir/.bash_PS1_colored.sh
 #prompt_file=~/bash_prompt_with_vagrant.sh
 if [ -e $prompt_file ]; then
-  source $prompt_file
+  . $prompt_file
 else
-  if [ -e ~/.bash_prompt.sh ]; then
-    source ~/.bash_prompt.sh
+  if [ -e $bash_dir/.bash_prompt ]; then
+    . $bash_dir/.bash_prompt
   fi
 fi
