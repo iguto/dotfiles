@@ -159,20 +159,9 @@ alias vimr="vim -R"
 #
 # prompt
 # 
-<<<<<<< HEAD
 
-prompt_file=$bash_dir/.bash_PS1_colored.sh
-#prompt_file=~/bash_prompt_with_vagrant.sh
-if [ -e $prompt_file ]; then
-  . $prompt_file
-else
-  if [ -e $bash_dir/.bash_prompt ]; then
-    . $bash_dir/.bash_prompt
-  fi
-=======
 prompt_file=$bash_dir/.bash_prompt
 #prompt_file=~/bash_prompt_with_vagrant.sh
 if [ -e $prompt_file ]; then
   . $prompt_file
->>>>>>> b65f90cb01838b18b3ad72149c0a9bae8162ae8d
 fi
