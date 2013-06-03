@@ -102,6 +102,16 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+
+
+#
+#
+# User settings
+#
+#
+
+
+
 #
 #
 # User setting
@@ -111,16 +121,21 @@ fi
 #
 # environment variables
 #
+
+# history
 HISTSIZE=100000
 HISTFILESIZE=200000
 
-#
-if [ -d ~/dotfiles ]; then
-	bash_dir=~/dotfiles
+# bash_env
+b_dir=~/dotfiles
+if [ -d $b_dir ]; then
+	bash_dir=$b_dir
 else
 	bash_dir=~/
 fi
+unset b_dir
 
+# set editor
 which vim &> /dev/null
 if [ $? -eq 0 ]; then
   EDITOR=vim
@@ -128,15 +143,23 @@ else
   EDITOR=vi
 fi
 
+# set pager
+export PAGER=less
+
 #
 # alias
 #
 alias ls="ls -F --color"
 
 
+alias less="less -R"
+
+alias vimr="vim -R"
+
 #
 # prompt
 # 
+<<<<<<< HEAD
 
 prompt_file=$bash_dir/.bash_PS1_colored.sh
 #prompt_file=~/bash_prompt_with_vagrant.sh
@@ -146,4 +169,10 @@ else
   if [ -e $bash_dir/.bash_prompt ]; then
     . $bash_dir/.bash_prompt
   fi
+=======
+prompt_file=$bash_dir/.bash_prompt
+#prompt_file=~/bash_prompt_with_vagrant.sh
+if [ -e $prompt_file ]; then
+  . $prompt_file
+>>>>>>> b65f90cb01838b18b3ad72149c0a9bae8162ae8d
 fi
