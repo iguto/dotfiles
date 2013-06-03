@@ -117,6 +117,12 @@ stty stop undef
 stty start undef
 
 #
+#
+# User setting
+#
+#
+
+#
 # environment variables
 #
 
@@ -131,8 +137,7 @@ if [ -d $b_dir ]; then
 else
 	bash_dir=~/
 fi
-echo b:$b_dir
-#unset b_dir
+unset b_dir
 
 # set editor
 which vim &> /dev/null
@@ -148,7 +153,8 @@ export PAGER=less
 #
 # alias
 #
-alias ls="ls -F"
+alias ls="ls -F --color"
+
 
 alias less="less -R"
 
@@ -157,6 +163,7 @@ alias vimr="vim -R"
 #
 # prompt
 # 
+
 prompt_file=$bash_dir/.bash_prompt
 #prompt_file=~/bash_prompt_with_vagrant.sh
 if [ -e $prompt_file ]; then
