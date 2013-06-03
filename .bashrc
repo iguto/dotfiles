@@ -125,6 +125,10 @@ alias ls="ls -F"
 # 
 prompt_file=~/.bash_PS1_colored.sh
 #prompt_file=~/bash_prompt_with_vagrant.sh
-if [ -e $prompt_file ]; ten
+if [ -e $prompt_file ]; then
   source $prompt_file
+else
+  if [ -e ~/.bash_prompt.sh ]; then
+    source ~/.bash_prompt.sh
+  fi
 fi
