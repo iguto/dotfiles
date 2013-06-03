@@ -110,7 +110,11 @@ fi
 #
 #
 
-
+#
+# sttyの画面停止を無効化
+#
+stty stop undef
+stty start undef
 
 #
 # environment variables
