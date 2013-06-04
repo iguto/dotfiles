@@ -121,8 +121,8 @@ set_prompt() {
 		PS1="[${lblue}\u${reset}@${lgreen}\h${reset} ${lpurple}\w${reset}]${lgreen}\$${reset} "
 	else
 		#PS1="[${lblue}\u${reset}@${lcyan}\h${reset} ${lgreen}\w${reset}]${lcyan}\$${reset} "
-		PS1='['"${red}"'$(prompt_dynamic_part)'"${lblue}\u${reset}@${lcyan}\h${reset} ${lgreen}\w${reset}]${lcyan}
-		\$${reset} "
+		PS1='['"${red}"'$(prompt_dynamic_part)'"${lblue}\u${reset}@${lcyan}\h${reset} ${lgreen}\w${reset}]${lcyan} 
+\$${reset} "
 	fi
 }
 
