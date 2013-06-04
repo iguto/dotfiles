@@ -116,6 +116,9 @@ fi
 stty stop undef
 stty start undef
 
+# ignore case
+shopt -s nocaseglob
+
 #
 #
 # User setting

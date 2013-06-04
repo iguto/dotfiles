@@ -1,0 +1,13 @@
+
+#
+# setting file of readline
+#
+
+
+# 大文字小文字を同一視して補完
+set completion-ignore-case on
+
+# 8bitクリーン？
+#set meta-flag on
+#set convert-meta off
+#set output-meta on
