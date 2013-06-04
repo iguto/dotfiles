@@ -11,3 +11,7 @@ set completion-ignore-case on
 #set meta-flag on
 #set convert-meta off
 #set output-meta on
+
+"\C-p" history-search-backward
+"\C-n" history-search-forward
+
