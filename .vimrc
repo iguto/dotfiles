@@ -69,13 +69,13 @@ imap <C-d> <Del>
 set nocompatible
 filetype off 
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-"" 利用する？している？プラグイン
-Bundle 'gmarik/vundle'
-Bundle 'neocomplcache'
-"Bundle 'https://github.com/Shougo/neosnippet'
+"set rtp+=~/.vim/bundle/vundle/
+"call vundle#rc()
+"
+""" 利用する？している？プラグイン
+"Bundle 'gmarik/vundle'
+"Bundle 'neocomplcache'
+""Bundle 'https://github.com/Shougo/neosnippet'
 
 """ vundleのためにオフにしていた機能を正常に戻す
 filetype indent plugin on
