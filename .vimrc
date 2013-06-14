@@ -22,6 +22,12 @@ set wildmode=list,full
 " listモードで使用する文字の設定
 set listchars=tab:>-,extends:<,trail:-,eol:<
 
+"バックスペースでインデントや改行を削除できるようにする
+set backspace=indent,eol,start
+
+
+"コマンドをステータス行に表示
+set showcmd
 
 " HTMLの閉じタグを自動補完
 augroup MyXML
@@ -31,12 +37,13 @@ augroup MyXML
 augroup END
 
 " () {} [] の閉じ括弧を自動補完
-inoremap ( ()<ESC>i
-inoremap <expr> ) ClosePair(')')
-inoremap { {}<ESC>i
-inoremap <expr> } ClosePair('}')
-inoremap [ []<ESC>i
-inoremap <expr> ] ClosePair(']')
+"inoremap ( ()<ESC>i
+"inoremap <expr> ) ClosePair(')')
+"inoremap { {}<ESC>i
+"inoremap <expr> } ClosePair('}')
+"inoremap [ []<ESC>i
+"inoremap <expr> ] ClosePair(']')
+
 " pair close checker
 " from othree vimrc ( http://github.com/othree/rc/blob/master/osx/.vimrc )
 function ClosePair(char)
@@ -83,3 +90,4 @@ filetype indent plugin on
 
 " for neosnippet
 let g:neosnippet_enable_at_startup = 1
+
