@@ -1,8 +1,12 @@
-#!/bin/bash
+#!/bin/bash 
 
-#.bash_prompt
+relative_dir=`dirname $0`
+dotfiles_dir=`(cd $relative_dir; pwd)`
+echo $dotfiles_dir
 for file in .bashrc .dir_colors .inputrc .tmux.conf .vimrc
 do
-  ln -fs $file $HOME
+  src=$dotfiles_dir/$file
+  ln -fs $src $HOME
 done
+#.bash_prompt
 #.vim/
