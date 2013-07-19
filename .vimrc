@@ -100,68 +100,24 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 
 
-
-
-
-
-
-
-" HTMLの閉じタグを自動補完
-augroup MyXML
-	autocmd!
-	autocmd Filetype xml inoremap <buffer> </ </ <C-x><C-o>
-	autocmd Filetype htmk inoremap <buffer> </ </<C-x><C-o>
-augroup END
-
-" () {} [] の閉じ括弧を自動補完
-"inoremap ( ()<ESC>i
-"inoremap <expr> ) ClosePair(')')
-"inoremap { {}<ESC>i
-"inoremap <expr> } ClosePair('}')
-"inoremap [ []<ESC>i
-"inoremap <expr> ] ClosePair(']')
-
-" pair close checker
-" from othree vimrc ( http://github.com/othree/rc/blob/master/osx/.vimrc )
-function ClosePair(char)
-	if getline('.')[col('.') - 1] == a:char
-		return "\<Right>"
-	else
-		return a:char
-	endif
-endf
-
 " .rb拡張子の時ときにRubyへのパスと、マジックコメントを自動挿入
 " vim [file_name]のとき自動挿入
 " touch [file_name] → vim [file_name]では自動挿入されない
 autocmd BufNewFile *.rb 0r ~/.vim/templates/rb.tpl
 
 
-"-- 前回開いた場所を記憶
-"au BufWritePost,VimLeave * mkview
-"autocmd BufReadPost * loadview
-
-
-""" vundle によるプラグイン管理
-" vundle設定のために一時的に設定をオフにする
-set nocompatible
-filetype off 
-
-"set rtp+=~/.vim/bundle/vundle/
-"call vundle#rc()
 "
-""" 利用する？している？プラグイン
-"Bundle 'gmarik/vundle'
-"Bundle 'neocomplcache'
-""Bundle 'https://github.com/Shougo/neosnippet'
+"
+" 拡張
+"
+"
 
-""" vundleのためにオフにしていた機能を正常に戻す
-filetype indent plugin on
+execute pathogen#infect()
+syntax on
+filetype plugin indent on
 
 
-" for neosnippet
-let g:neosnippet_enable_at_startup = 1
-
+" docのロード
 helptags ~/.vim/doc
 
 "
