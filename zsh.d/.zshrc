@@ -128,6 +128,9 @@ zstyle ':completion:*' completer _oldlist _complete  _expand
 ## ↑ の_matchについて、一意に対象を絞るため、補完位置ずらしていく
 zstyle 'completion::match:*' insert-unambiguous true
 
+## 保管ができるコマンドを追加する  https://github.com/zsh-users/zsh-completions
+fpath=($zsh_dir/zsh_completions/src $fpath)
+
 ############################################################
 # 補完候補表示の際、グループ名表示し、グループごとに表示する
 ############################################################
