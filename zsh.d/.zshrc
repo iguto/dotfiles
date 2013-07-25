@@ -208,6 +208,10 @@ alias -g ....='../../..'
 alias mv='mv -ibS .mvbak'
 alias cp='cp -ibS .cpbak'
 
+
+# bell
+alias bell='echo -e "\a"'
+
 ## グローバルエイリアス
 alias -g G="| grep --color='always'"
 #bindkey -s G '| grep'
