@@ -514,6 +514,15 @@ source /etc/profile.d/autojump.zsh
 #	_z --add "$(pwd -P)"
 #}
 #
+######################################################################
+# tmuxinator
+######################################################################
+tmuxinator_path=$HOME/.tmuxinator/scripts/tmuxinator 
+if [ -s $tmuxinator_path ]; then
+  source $tmuxinator_path
+fi
+
+
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # memo
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
