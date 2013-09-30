@@ -249,6 +249,12 @@ alias rspec='rspec -c'
 # Read only vim
 alias vimr='vim -R'
 
+# git 
+alias gst='git status'
+alias gadd='git add'
+alias gcom='git commit'
+
+
 ############################################################
 #  ディレクトリスタック
 ############################################################
