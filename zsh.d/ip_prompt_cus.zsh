@@ -160,7 +160,8 @@ first_line () {
 		cwd=`print -P "%~"`
 	fi
   USER_AND_HOST="[${USER}@${HOSTNAME}(${inet_addr}):${cwd}]"
-  user_host_decolation="[${USER}@${HOSTNAME}(${inet_addr}):]"
+  #user_host_decolation="[${USER}@${HOSTNAME}(${inet_addr}):]"
+  user_host_decolation="[${USER}@${HOSTNAME}(xxx.xxx.xxx.xxx):]"
   user_host_decolation_size=$(( ${COLUMNS} - ${#${user_host_decolation}} ))
     
 # IPアドレス
@@ -170,6 +171,11 @@ first_line () {
 set_color () {
 
   PROMPT=$'%{$terminfo['bold']%}%{$GREEN%}[%{$fg[${U_CLR}]%}${USER}%{${GREEN}%}@%{$fg[${H_CLR}]%}${HOST}%{${GREEN}%}(%{$fg["yellow"]%}${inet_addr}%{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
+
+  ##
+  # デモ用プロンプト ユーザ名、ホスト名、IPアドレスをマスク
+  ##
+  #PROMPT=$'%{$terminfo['bold']%}%{$GREEN%}[%{$fg[${U_CLR}]%}user%{${GREEN}%}@%{$fg[${H_CLR}]%}HostName%{${GREEN}%}(%{$fg["yellow"]%}xxx.xxx.xxx.xxx%{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
   fill_char
 
   s_line_f="-(%#"
