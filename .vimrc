@@ -8,7 +8,7 @@
 " 表示
 "
 " シンタックスハイライトを有効 +その他
-syntax on
+syntax enable
 filetype on
 
 filetype plugin on
