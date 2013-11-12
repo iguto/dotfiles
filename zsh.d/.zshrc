@@ -10,7 +10,7 @@ export LANG=ja_JP.UTF-8
 
 ## ページャをlessと明示
 export PAGER=less
-export SUDO_EDITOR='vim -u /home/iguto/.vimrc'
+export SUDO_EDITOR="vim -u $HOME/.vimrc"
 export EDITOR=vim  # pit用の設定
 export GISTY_DIR="$HOME/dev/gists"
 ## zsh設定リポジトリへのパス
