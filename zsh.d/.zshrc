@@ -16,6 +16,9 @@ export GISTY_DIR="$HOME/dev/gists"
 ## zsh設定リポジトリへのパス
 zsh_dir=$HOME/zsh_dotfiles
 
+# showterm privateserver
+export SHOWTERM_SERVER='http://133.92.145.188/showterm'
+
 ############################################################
 #  ターミナル起動時に実行するコマンド
 ############################################################
@@ -254,6 +257,18 @@ alias gst='git status'
 alias gadd='git add'
 alias gcom='git commit'
 
+function p_decode() {
+  sed 's/=/:**:/g' | tr % = | nkf -emQ | sed 's/\:\*\*\:/=/g'
+}
+alias pdec=p_decode
+
+function httprequest() {
+  cut -d' ' -f 6-7 | sed 's/^\"//'
+}
+
+function sql_filter() {
+  \grep '?' | egrep 'SELECT|WHERE|INSERT|JOIN|FROM|%20OR%20'
+}
 
 ############################################################
 #  ディレクトリスタック
@@ -513,7 +528,10 @@ alias irb=pry
 ######################################################################
 # autojump
 #pp#####################################################################
-source /etc/profile.d/autojump.zsh
+autojump_path=/etc/profile.d/autojump.zsh
+if [ -e $autojump_path ]; then
+  source $autojump_path
+fi
 
 ## z
 #_Z_CMD=j
