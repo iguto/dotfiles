@@ -443,12 +443,14 @@ alias rspec='rspec -c'
 # Read only vim
 alias vimr='vim -R'
 
-# git 
+# git alias
 alias gs='git status -s'
 alias gst='git status'
-alias gad='git add'
+alias ga='git add'
 alias gc='git commit'
 alias gco='git checkout'
+alias gb='git branch'
+alias gd='git diff'
 
 function p_decode() {
   sed 's/=/:**:/g' | tr % = | nkf -emQ | sed 's/\:\*\*\:/=/g'
