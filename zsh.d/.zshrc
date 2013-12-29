@@ -780,3 +780,12 @@ fi
 #		ヒストリ機能のない対話環境を引数にすることで、実行可能
 #		ヒストリ機能を強制的につけるようなもの？
 # $ mono NetWorkMiner.exe "in opt"
+#
+
+
+function _chdir_parent_dir() {
+  builtin cd ..
+  zle accept-line
+}
+zle -N _chdir_parent_dir
+bindkey '^W' _chdir_parent_dir
