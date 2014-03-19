@@ -310,7 +310,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
 
 #allow tab completion in the middle of a word
-setopt COMPLETE_IN_WORD
+#setopt COMPLETE_IN_WORD
 
 ## 補完スタイル
 #zstyle ':completion:*' completer _expand _complete _approximate #_match
