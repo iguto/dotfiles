@@ -16,6 +16,9 @@ export GISTY_DIR="$HOME/dev/gists"
 ## zsh設定リポジトリへのパス
 zsh_dir=$HOME/zsh_dotfiles
 
+# showterm privateserver
+export SHOWTERM_SERVER='http://133.92.145.188/showterm'
+
 # TERM
 export TERM="xterm-256color"
 
@@ -23,7 +26,6 @@ export TERM="xterm-256color"
 # C-sをsttyから解放
 #
 stty stop undef
-
 
 ############################################################
 #  ターミナル起動時に実行するコマンド
@@ -441,13 +443,27 @@ alias rspec='rspec -c'
 # Read only vim
 alias vimr='vim -R'
 
-# git 
+# git alias
 alias gs='git status -s'
 alias gst='git status'
-alias gad='git add'
+alias ga='git add'
 alias gc='git commit'
 alias gco='git checkout'
+alias gb='git branch'
+alias gd='git diff'
 
+function p_decode() {
+  sed 's/=/:**:/g' | tr % = | nkf -emQ | sed 's/\:\*\*\:/=/g'
+}
+alias pdec=p_decode
+
+function httprequest() {
+  cut -d' ' -f 6-7 | sed 's/^\"//'
+}
+
+function sql_filter() {
+  \grep '?' | egrep 'SELECT|WHERE|INSERT|JOIN|FROM|%20OR%20'
+}
 
 ############################################################
 #  ディレクトリスタック
@@ -710,7 +726,10 @@ alias irb=pry
 ######################################################################
 # autojump
 #pp#####################################################################
-source /etc/profile.d/autojump.zsh
+autojump_path=/etc/profile.d/autojump.zsh
+if [ -e $autojump_path ]; then
+  source $autojump_path
+fi
 
 ## z
 #_Z_CMD=j
@@ -761,3 +780,12 @@ fi
 #		ヒストリ機能のない対話環境を引数にすることで、実行可能
 #		ヒストリ機能を強制的につけるようなもの？
 # $ mono NetWorkMiner.exe "in opt"
+#
+
+
+function _chdir_parent_dir() {
+  builtin cd ..
+  zle accept-line
+}
+zle -N _chdir_parent_dir
+bindkey '^W' _chdir_parent_dir
