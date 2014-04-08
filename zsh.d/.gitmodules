@@ -1,0 +1,3 @@
+[submodule "site_script/zaw"]
+	path = site_script/zaw
+	url = https://github.com/zsh-users/zaw.git

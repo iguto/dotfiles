@@ -28,6 +28,72 @@ export TERM="xterm-256color"
 stty stop undef
 
 ############################################################
+## history/ヒストリサーチ
+############################################################
+# history file save this directory/file
+export HISTFILE=${HOME}/.zsh_history
+# number of command that keep on memory
+export HISTSIZE=100000
+# HISTFILEに保存するコマンド数 HISTSIZEより小さいとあまり意味がない?
+export SAVEHIST=100000
+
+setopt APPEND_HISTORY
+# for sharing history between zsh processes
+#setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+# 重複があれば、古いほうを削除
+setopt hist_ignore_all_dups
+# 余分な空白があれば削除して履歴へ
+setopt hist_reduce_blanks
+# コマンドラインの先頭にくうはくがあれば、ヒストリに追加しない
+setopt hist_ignore_space
+# 時刻の記録
+setopt extended_history
+
+############################################################
+#  ディレクトリスタック
+############################################################
+# http://journal.mycom.co.jp/column/zsh/006/index.html より
+# "cd"の入力なしで、カレントディレクトリを変更できる
+#setopt auto_cd 
+# 移動したディレクトリを自動で記憶
+setopt auto_pushd
+# ディレクトリスタック内に重複があれば、古いほうを削除
+setopt pushd_ignore_dups
+
+############################################################
+# グロブパターン
+############################################################
+## ファイルグロブで #, ~, ^ を正規表現として扱う
+setopt extended_glob
+############################################################
+#  ファイル名生成機能
+############################################################
+# {a-c}を展開する
+setopt brace_ccl
+
+############################################################
+#  単語の区切 M-BS M-d で削除する単語の単位
+############################################################
+# /usr/local/bin で M-BS すると /usr/local/bin
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+############################################################
+# フロー制御
+############################################################
+# C-s/C-qでフロー制御をしない
+setopt no_flow_control
+
+############################################################
+#  コマンドラインコメント
+############################################################
+## コマンドラインで '#'以降をコメント扱い
+setopt interactive_comments
+
+## 改行がなくても出力する
+unsetopt promptcr
+
+############################################################
 #  ターミナル起動時に実行するコマンド
 ############################################################
 
@@ -37,32 +103,9 @@ stty stop undef
 #	/usr/local/bin/ruby $netset
 #fi
 
-############################################################
-## history/ヒストリサーチ
-############################################################
-setopt APPEND_HISTORY
-# for sharing history between zsh processes
-#setopt INC_APPEND_HISTORY
-setopt SHARE_HISTORY
-# history file save this directory/file
-export HISTFILE=${HOME}/.zsh_history
-# number of command that keep on memory
-export HISTSIZE=100000
-# HISTFILEに保存するコマンド数 HISTSIZEより小さいとあまり意味がない?
-export SAVEHIST=100000
-# 重複があれば、古いほうを削除
-#setopt hist_ignore_all_dups
-# 余分な空白があれば削除して履歴へ
-setopt hist_reduce_blanks
-# コマンドラインの先頭にくうはくがあれば、ヒストリに追加しない
-setopt hist_ignore_space
-# 時刻の記録
-setopt extended_history
-
 ##########################################################
 # プロンプト
 ##########################################################
-
 ## 仮想ターミナルならシンプルな、そうでなければラインな
 ## プロンプト設定読み込み
 if [ "$TERM" = linux ] ; then
@@ -82,37 +125,7 @@ fi
 ############################################################
 # gitのブランチ情報を右プロンプトに表示
 ############################################################
-#autoload -Uz add-zsh-hook
-#autoload -Uz vcs_info
-#
-#zstyle ':vcs_info:*' enable git #svn hg bzr
-#zstyle ':vcs_info:*' formats '[%b]'
-#zstyle ':vcs_info:*' actionformats '[%b|%a]'
-#zstyle ':vcs_info:(svn|bzr):*' branchformat '%b:r%r'
-#zstyle ':vcs_info:bzr:*' use-simple true
-#
-#autoload -Uz is-at-least
-#if is-at-least 4.3.10; then
-#	zstyle ':vcs_info:git:*' check-for-changes true
-#	zstyle ':vcs_info:git:*' stagedstr "+"
-#	zstyle ':vcs_info:git:*' unstagedstr "-"
-#	zstyle ':vcs_info:git:*' formats '[%b[%c%u]]'
-#	zstyle ':vcs_info:git:*' actionformats '[%b|%a[%c%u]]'
-#fi
-#
-#function _update_vcs_info_msg() {
-#	psvar=()
-#	LANG=en_US.UTF-8 vcs_info
-#	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
-#}
-#add-zsh-hook precmd _update_vcs_info_msg
-#RPROMPT="%1(v|%F{green}%1v%f|)" # [%20<..<%~]"
-
-############################################################
-#   j
-############################################################
 # vcs_info 設定
-
 RPROMPT=""
 
 autoload -Uz vcs_info
@@ -261,7 +274,6 @@ if is-at-least 4.3.11; then
             hook_com[misc]+=":S${stash}"
         fi
     }
-
 fi
 
 function _update_vcs_info_msg() {
@@ -288,8 +300,6 @@ function _update_vcs_info_msg() {
     RPROMPT="$prompt"
 }
 add-zsh-hook precmd _update_vcs_info_msg
-
-
 
 ############################################################
 #   補完/補完スタイル
@@ -346,11 +356,9 @@ if [ -e $overssh ] ; then
 	source $overssh
 fi
 
-
 ############################################################
 # emacs起動のモード？をremote/localで切り替える
 ############################################################
-
 local sw_emacs=$zsh_dir/switch-emacs.sh
 if [ -e $sw_emacs ] ; then
 	source $sw_emacs
@@ -404,7 +412,6 @@ alias -g ....='../../..'
 # -S SUFFIX : SUFFIXをバックアップファイルに付け加える文字列とする
 alias mv='mv -ibS .mvbak'
 alias cp='cp -ibS .cpbak'
-
 
 # bell
 alias bell='echo -e "\a"'
@@ -466,69 +473,28 @@ function sql_filter() {
 }
 
 ############################################################
-#  ディレクトリスタック
-############################################################
-# http://journal.mycom.co.jp/column/zsh/006/index.html より
-# "cd"の入力なしで、カレントディレクトリを変更できる
-#setopt auto_cd 
-# 移動したディレクトリを自動で記憶
-setopt auto_pushd
-# ディレクトリスタック内に重複があれば、古いほうを削除
-setopt pushd_ignore_dups
-
-############################################################
-# グロブパターン
-############################################################
-## ファイルグロブで #, ~, ^ を正規表現として扱う
-setopt extended_glob
-############################################################
-#  ファイル名生成機能
-############################################################
-# {a-c}を展開する
-setopt brace_ccl
-
-############################################################
-#  単語の区切 M-BS M-d で削除する単語の単位
-############################################################
-# /usr/local/bin で M-BS すると /usr/local/bin
-WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-
-############################################################
-# フロー制御
-############################################################
-# C-s/C-qでフロー制御をしない
-setopt no_flow_control
-
-############################################################
-#  コマンドラインコメント
-############################################################
-## コマンドラインで '#'以降をコメント扱い
-setopt interactive_comments
-
-## 改行がなくても出力する
-unsetopt promptcr
-
-############################################################
 # zawを読み込む (全く使ってない)
 ############################################################
-#local zaw_file=$zsh_dir/site_script/zaw/zaw.zsh
-#if [ -e  $zaw_file ] ; then
-#	source $zaw_file
-#fi
-#
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+
+local zaw_file=$zsh_dir/site_script/zaw/zaw.zsh
+if [ -e  $zaw_file ] ; then
+	source $zaw_file
+fi
+
 #zaw-register-src -n ack $zsh_dir/site_script/zaw/sources/ack.zsh
 #zaw-register-src -n cdr $zsh_dir/site_script/zaw/sources/cdr.zsh
-#
-## key-bind
-#bindkey 'r' zaw-history
-#
-##opt
-#zstyle ':filter-select:highlight' selected bg=white
-#zstyle ':filter-select:highlight' matched fg=yellow,red
-#zstyle ':filter-select' max-lines 10 # use 10 lines for filter-select
-#zstyle ':filter-select' max-lines -10 # use $LINES - 10 for filter-select
-#zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
-#zstyle ':filter-select' extended-search yes # see below
+
+# key-bind
+bindkey '' zaw-history
+
+#opt
+zstyle ':filter-select:highlight' selected bg=white
+zstyle ':filter-select:highlight' matched fg=yellow,red
+zstyle ':filter-select' max-lines 10 # use 10 lines for filter-select
+zstyle ':filter-select' max-lines -10 # use $LINES - 10 for filter-select
+zstyle ':filter-select' case-insensitive yes # enable case-insensitive search
+zstyle ':filter-select' extended-search yes # see below
 
 ############################################################
 # zsh_command_not_found  存在しないコマンドを実行→ 近いパッケージを表示
@@ -609,16 +575,6 @@ fi
 alias diff='diff -u'
 
 ############################################################
-# 毎回スクリーンを立ち上げる設定
-############################################################
-
-#which screen > /dev/null
-#if [ $? -eq 0 ] && [ $SHLVL = 1 ] ; then
-#    screen -qR
-#fi
-#
-
-############################################################
 # URLを自動でクオート処理
 ############################################################
 autoload -Uz url-quote-magic
@@ -630,7 +586,6 @@ zle -N self-insert url-quote-magic
 #
 #setopt auto_name_dirs  # !!!
 alias ndate='date +%m%d_%H:%M:%S'
-
 
 ## smart insert word
 autoload smart-insert-last-word
