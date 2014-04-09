@@ -1,10 +1,7 @@
 ;; ========================================
 ;; package.el
 ;; ========================================
-
-
-
-
+(require 'package)
 ;; MELPAを追加
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 ;; ;; Marmaladeを追加
