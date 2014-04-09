@@ -1,7 +1,10 @@
 ;; ========================================
 ;; package.el
 ;; ========================================
-(require 'package)
+
+
+
+
 ;; MELPAを追加
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 ;; ;; Marmaladeを追加
@@ -36,13 +39,16 @@
 (set-buffer-file-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 ;; ファイル名が重複した時に、バッファ名にディレクトリまで含める
-(require 'uniquify)
+
 ;;(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-buffer-name-style 'forward)
+;; コマンド履歴の保存 http://qiita.com/akisute3@github/items/4b489c0abbb39a5dcc45
+(setq desktop-globals-to-save '(extended-command-history))
+(setq desktop-files-not-to-save "")
+(desktop-save-mode 1)
 ;;--------------------
 ;; タブ, 全角スペース, 行末空白表示
 ;;--------------------
-(require 'whitespace)
 ;;---
 (defface my-face-b-1 '((t (:background "NavajoWhite4"))) nil) ; 全角スペース
 (defface my-face-b-2 '((t (:background "gray10"))) nil) ; タブ
@@ -100,9 +106,17 @@
 ;; ========================================
 ;; helm
 ;; ========================================
-(require 'helm-config)
 (global-set-key (kbd "C-x C-b") 'helm-mini)
 (helm-mode 1)
+;; M-yでキルリングの履歴一覧を表示
+(define-key global-map (kbd "M-y") 'helm-show-kill-ring)
+;; helm modeでもC-hで1文字削除
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
+;; キーバインドの説明
+(require 'helm-descbinds)
+(helm-descbinds-mode)
+
+;; find-file時 C-zでディレクトリ移動
 
 ;; ========================================
 ;; auto-complete
@@ -152,3 +166,5 @@
 ;; emmet-helm installed by mannualy
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+
+(require 'all-ext)
