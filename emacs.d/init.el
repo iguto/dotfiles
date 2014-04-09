@@ -35,10 +35,15 @@
 (set-keyboard-coding-system 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
-
+;; ファイル名が重複した時に、バッファ名にディレクトリまで含める
+(require 'uniquify)
+;;(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
+(setq uniquify-buffer-name-style 'forward)
 ;;--------------------
 ;; タブ, 全角スペース, 行末空白表示
 ;;--------------------
+(require 'whitespace)
+;;---
 (defface my-face-b-1 '((t (:background "NavajoWhite4"))) nil) ; 全角スペース
 (defface my-face-b-2 '((t (:background "gray10"))) nil) ; タブ
 (defface my-face-u-1 '((t (:background "SteelBlue" :underline t))) nil) ; 行末空白表示
@@ -147,5 +152,3 @@
 ;; emmet-helm installed by mannualy
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-
-(require 'whitespace)
