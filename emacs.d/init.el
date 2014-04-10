@@ -146,6 +146,8 @@
 ;; ========================================
 (require 'ruby-block)
 (require 'ruby-tools)
+;; ruby-mode でencoding: utf-8 自動挿入をOFFにする
+(defun ruby-mode-set-encoding () ())
 ;; --------------------
 ;; ruby-mode のインデントを綺麗にする http://willnet.in/13
 ;; --------------------
