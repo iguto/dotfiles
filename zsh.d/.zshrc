@@ -736,6 +736,16 @@ fi
 #		ヒストリ機能を強制的につけるようなもの？
 # $ mono NetWorkMiner.exe "in opt"
 #
+#
+# tmux ログアウト → アタッチしてもssh-agent forwardが使えるように
+#
+SOCK="/tmp/ssh-agent-$USER"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+  rm -f $SOCK
+  ln -sf $SSH_AUTH_SOCK $SOCK
+  export SSH_AUTH_SOCK=$SOCK
+fi
 
 
 function _chdir_parent_dir() {
