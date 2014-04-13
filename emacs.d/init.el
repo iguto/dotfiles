@@ -43,6 +43,12 @@
 (setq desktop-globals-to-save '(extended-command-history))
 (setq desktop-files-not-to-save "")
 (desktop-save-mode 1)
+;; --------------------
+;; menuを隠す
+;;--------------------
+(cond
+ (window-system (tool-bar-mode -1))
+ (t (menu-bar-mode -1)))
 ;;--------------------
 ;; タブ, 全角スペース, 行末空白表示
 ;;--------------------
@@ -134,6 +140,42 @@
 ;; ========================================
 (require 'popwin)
 (popwin-mode 1)
+;; ========================================
+;; gitクライアント magit
+;; ========================================
+(require 'magit)
+;; ========================================
+;; gutter
+;; ========================================
+(global-git-gutter-mode +1)
+;; ========================================
+;; 賢くカッコの自動挿入
+;; ========================================
+(require 'smartparens-config)
+(smartparens-global-mode t)
+;; ========================================
+;; 指定したキーに続くキーバインドを表示する guide-key http://qiita.com/kbkbkbkb1/items/16bd5cb65be18e804c63
+;; ========================================
+(require 'guide-key)
+;; (setq guide-key/guide-key-sequence '("C-x" "C-x r" "C-x 4" "C-x 5" "C-c r" "C-c p")
+(setq guide-key/guide-key-sequence '("C-x" "C-c"))
+(setq guide-key/recursive-key-sequence-flag t)
+(setq guide-key/idle-delay 0.3)
+(guide-key-mode)
+;; ========================================
+;; mykie.el
+;; ========================================
+(require 'mykie)
+(setq mykie:use-major-mode-key-override t)
+(mykie:initialize)
+(mykie:set-keys nil
+  "M-;"
+  :default (progn
+             (end-of-line)
+             (set-mark (line-beginning-position))
+             (comment-dwim 1))
+  :region  (comment-dwim 1)
+)
 
 ;; ========================================
 ;; 言語ごと設定
@@ -171,10 +213,10 @@
 ;; ========================================
 ;; rails
 ;; ========================================
-;; erbのシンタックス
 (require 'rhtml-mode)
-;; coffee scriptのシンタックス
 (require 'coffee-mode)
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 ;; --------------------
 ;; projectile-rails    a replacement of rinari
 ;; --------------------
@@ -191,5 +233,3 @@
 ;; emmet-helm installed by mannualy
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-
-(require 'all-ext)
