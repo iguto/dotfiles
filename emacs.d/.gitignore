@@ -7,3 +7,4 @@ elpa/archives/
 *.elc
 .emacs.desktop
 .emacs.desktop.lock
+elpa/

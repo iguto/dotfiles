@@ -36,13 +36,11 @@
 (set-buffer-file-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 ;; ファイル名が重複した時に、バッファ名にディレクトリまで含める
-
+(require 'uniquify)
 ;;(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 (setq uniquify-buffer-name-style 'forward)
 ;; コマンド履歴の保存 http://qiita.com/akisute3@github/items/4b489c0abbb39a5dcc45
 (setq desktop-globals-to-save '(extended-command-history))
-(setq desktop-files-not-to-save "")
-(desktop-save-mode 1)
 ;; --------------------
 ;; menuを隠す
 ;;--------------------
@@ -215,6 +213,8 @@
 ;; ========================================
 (require 'rhtml-mode)
 (require 'coffee-mode)
+(require 'sass-mode)
+(require 'slim-mode)
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 ;; --------------------
