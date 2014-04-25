@@ -174,6 +174,11 @@
              (comment-dwim 1))
   :region  (comment-dwim 1)
 )
+;; ========================================
+;; インデントをハイライト
+;; ========================================
+(require 'highlight-indentation)
+(highlight-indentation-current-column-mode) ;; 現在行に関連あるインデントの表示
 
 ;; ========================================
 ;; 言語ごと設定
