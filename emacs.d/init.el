@@ -145,7 +145,11 @@
 ;; ========================================
 ;; gutter
 ;; ========================================
+(require 'git-rebase-mode)
 (global-git-gutter-mode +1)
+(setq git-gutter:deleted-sign "-")
+(setq git-gutter:separator-sign "|")
+(set-face-foreground 'git-gutter:separator "gray")
 ;; ========================================
 ;; 賢くカッコの自動挿入
 ;; ========================================
