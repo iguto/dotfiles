@@ -118,7 +118,6 @@
 ;; キーバインドの説明
 (require 'helm-descbinds)
 (helm-descbinds-mode)
-
 ;; find-file時 C-zでディレクトリ移動
 
 ;; ========================================
@@ -127,12 +126,15 @@
 (require 'auto-complete)
 (global-auto-complete-mode t)
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/elpa/auto-complete-20140322.321/dict")
+(require 'fuzzy)
 (ac-config-default)
 ;; C-n/C-pで候補選択
 (setq ac-use-menu-map t)
 (define-key ac-menu-map "\C-n" 'ac-next)
 (define-key ac-menu-map "\C-p" 'ac-previous)
+(define-key ac-mode-map (kbd "C-;") 'ac-fuzzy-complete)
+(add-to-list 'ac-modes 'slim-mode 'rhtml-mode)
+(setq ac-use-fuzzy t)
 ;; ========================================
 ;; popwin
 ;; ========================================
@@ -182,7 +184,7 @@
 ;; インデントをハイライト
 ;; ========================================
 (require 'highlight-indentation)
-(highlight-indentation-current-column-mode) ;; 現在行に関連あるインデントの表示
+(highlight-indentation-current-column-mode t) ;; 現在行に関連あるインデントの表示
 
 ;; ========================================
 ;; 言語ごと設定
