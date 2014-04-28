@@ -51,6 +51,7 @@
 (depends-on "git-gutter")
 (depends-on "magit")
 ;; misc
+(depends-on "recentf-ext")
 (depends-on "guide-key")
 (depends-on "mykie")
 (depends-on "highlight-indentation")

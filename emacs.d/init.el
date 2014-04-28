@@ -13,7 +13,7 @@
 ;; cask
 ;; ========================================
 (require 'cask "~/.cask/cask.el")
-(cask-initialize)q
+(cask-initialize)
 
 ;; ========================================
 ;; setting
@@ -221,6 +221,9 @@
 (require 'ruby-tools)
 ;; ruby-mode でencoding: utf-8 自動挿入をOFFにする
 (defun ruby-mode-set-encoding () ())
+;; ハイライトするファイルの種類を追加
+(add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
 ;; --------------------
 ;; ruby-mode のインデントを綺麗にする http://willnet.in/13
 ;; --------------------
