@@ -9,3 +9,5 @@ elpa/archives/
 .emacs.desktop.lock
 elpa/
 projectile-bookmarks.eld
+url/
+.cask/
