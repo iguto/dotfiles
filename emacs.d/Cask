@@ -55,4 +55,5 @@
 (depends-on "mykie")
 (depends-on "highlight-indentation")
 (depends-on "popwin")
-(depends-on "smartparens")
+(depends-on "expand-region")
+(depends-on "all-ext")

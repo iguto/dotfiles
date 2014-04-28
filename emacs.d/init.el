@@ -221,6 +221,10 @@
 (require 'ruby-tools)
 ;; ruby-mode でencoding: utf-8 自動挿入をOFFにする
 (defun ruby-mode-set-encoding () ())
+;; gemfile, cap file syntax
+(add-to-list 'auto-mode-alist '("Gemfile$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Capfile$" . ruby-mode))
+
 ;; --------------------
 ;; ruby-mode のインデントを綺麗にする http://willnet.in/13
 ;; --------------------
@@ -266,3 +270,30 @@
 ;; emmet-helm installed by mannualy
 (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
 (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+
+
+;; ========================================
+;; TRY
+;; ========================================
+
+;; --------------------
+;; コマンドヒストリを残す設定
+;; --------------------
+(setq savehist-file (concat user-emacs-directory "history")) ;コマンド履歴
+(savehist-mode t)
+(setq history-length 1000)
+
+;; --------------------
+;; expand region
+;; --------------------
+(require 'expand-region)
+(global-set-key (kbd "C-,") 'er/expand-region)
+(global-set-key (kbd "C-M-,") 'er/contract-region)
+(transient-mark-mode t)
+
+
+;; helm occur
+(require 'all-ext)
+(global-set-key (kbd "C-M-o") 'helm-occur) ; helm-occurの起動
+(define-key isearch-mode-map (kbd "C-o") 'helm-occur-from-isearch) ; isearchからhelm-occurを起動
+(define-key helm-map (kbd "C-c C-a") 'all-from-helm-occur) ; helm-occurからall-extに受け渡し
