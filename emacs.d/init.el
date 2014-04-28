@@ -13,7 +13,7 @@
 ;; cask
 ;; ========================================
 (require 'cask "~/.cask/cask.el")
-(cask-initialize)q
+(cask-initialize)
 
 ;; ========================================
 ;; setting
