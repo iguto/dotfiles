@@ -179,6 +179,22 @@
              (set-mark (line-beginning-position))
              (comment-dwim 1))
   :region  (comment-dwim 1)
+  "C-w"
+  :default (progn
+             (kill-region (line-beginning-position) (line-end-position))
+             (kill-append "\n" nil))
+  :region kill-region
+  "M-w"
+  :default (progn
+             (kill-ring-save (line-beginning-position) (line-end-position))
+             (kill-append "\n" nil))
+  :region kill-ring-save
+  "C-y"
+  :default (yank)
+  :region (progn
+            (kill-new beg end)
+
+            (yank))
 )
 ;; ========================================
 ;; インデントをハイライト
