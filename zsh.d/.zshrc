@@ -763,3 +763,9 @@ if [ -e $k ]; then
   source $k
   alias ll=k
 fi
+
+###
+# tagdir
+###
+tagdir_script=$zsh_dir/site_script/tagdir/tagdir.zsh
+[ -e $tagdir_script ] && source $tagdir_script
