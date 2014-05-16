@@ -93,16 +93,6 @@ setopt interactive_comments
 ## 改行がなくても出力する
 unsetopt promptcr
 
-############################################################
-#  ターミナル起動時に実行するコマンド
-############################################################
-
-## いる場所で、ssh_configを切り替える
-#local netset=$zsh_dir/ch-network-setting.rb
-#if [ -e $netset ] ; then
-#	/usr/local/bin/ruby $netset
-#fi
-
 ##########################################################
 # プロンプト
 ##########################################################
@@ -330,7 +320,7 @@ zstyle ':completion:*' completer _oldlist _complete  _expand
 ## 2011.05.25 auto-fuのために_oldlistを先頭に追加した。
 
 ## ↑ の_matchについて、一意に対象を絞るため、補完位置ずらしていく
-zstyle 'completion::match:*' insert-unambiguous true
+#zstyle 'completion::match:*' insert-unambiguous true
 
 ## 保管ができるコマンドを追加する  https://github.com/zsh-users/zsh-completions
 fpath=($zsh_dir/zsh_completions/src $fpath)
@@ -721,14 +711,25 @@ fi
 #}
 #
 ######################################################################
-# tmuxinator
+# tmux
 ######################################################################
+#
+# tmuxinator
+#
 tmuxinator_path=$HOME/.tmuxinator/scripts/tmuxinator 
 if [ -s $tmuxinator_path ]; then
   source $tmuxinator_path
 fi
 
-
+# tmux ログアウト → アタッチしてもssh-agent forwardが使えるように
+#
+SOCK="/tmp/ssh-agent-$USER"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+  rm -f $SOCK
+  ln -sf $SSH_AUTH_SOCK $SOCK
+  export SSH_AUTH_SOCK=$SOCK
+fi
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # memo
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -763,8 +764,30 @@ fi
 #		ヒストリ機能を強制的につけるようなもの？
 # $ mono NetWorkMiner.exe "in opt"
 
+function _chdir_parent_dir() {
+  builtin cd ..
+  zle accept-line
+}
+zle -N _chdir_parent_dir
+bindkey '^W' _chdir_parent_dir
 
 #
 # direnv
 #
 which direnv > /dev/null && eval "$(direnv hook zsh)"
+
+
+##
+# k
+###
+k=$zsh_dir/site_script/k/k.sh
+if [ -e $k ]; then
+  source $k
+  alias ll=k
+fi
+
+###
+# tagdir
+###
+tagdir_script=$zsh_dir/site_script/tagdir/tagdir.zsh
+[ -e $tagdir_script ] && source $tagdir_script
