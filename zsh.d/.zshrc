@@ -517,6 +517,33 @@ function pcolor() {
 echo
 }
 
+#####################################################################
+# tmux ログアウト → アタッチしてもssh-agent forwardが使えるように
+#####################################################################
+SOCK="/tmp/ssh-agent-$USER"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+  rm -f $SOCK
+  ln -sf $SSH_AUTH_SOCK $SOCK
+  export SSH_AUTH_SOCK=$SOCK
+fi
+
+
+function _chdir_parent_dir() {
+  builtin cd ..
+  zle accept-line
+}
+zle -N _chdir_parent_dir
+bindkey '^W' _chdir_parent_dir
+
+##
+# k
+###
+k=$zsh_dir/site_script/k/k.sh
+if [ -e $k ]; then
+  source $k
+  alias ll=k
+fi
 ############################################################
 # auto-fu インクリメンタルに補完候補を表示
 ############################################################
@@ -735,31 +762,9 @@ fi
 #		ヒストリ機能のない対話環境を引数にすることで、実行可能
 #		ヒストリ機能を強制的につけるようなもの？
 # $ mono NetWorkMiner.exe "in opt"
-#
-#
-# tmux ログアウト → アタッチしてもssh-agent forwardが使えるように
-#
-SOCK="/tmp/ssh-agent-$USER"
-if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
-then
-  rm -f $SOCK
-  ln -sf $SSH_AUTH_SOCK $SOCK
-  export SSH_AUTH_SOCK=$SOCK
-fi
 
 
-function _chdir_parent_dir() {
-  builtin cd ..
-  zle accept-line
-}
-zle -N _chdir_parent_dir
-bindkey '^W' _chdir_parent_dir
-
-##
-# k
-###
-k=$zsh_dir/site_script/k/k.sh
-if [ -e $k ]; then
-  source $k
-  alias ll=k
-fi
+#
+# direnv
+#
+which direnv > /dev/null && eval "$(direnv hook zsh)"
