@@ -448,6 +448,7 @@ alias gc='git commit'
 alias gco='git checkout'
 alias gb='git branch'
 alias gd='git diff'
+alias gdd='git diff --cached'
 
 function p_decode() {
   sed 's/=/:**:/g' | tr % = | nkf -emQ | sed 's/\:\*\*\:/=/g'
