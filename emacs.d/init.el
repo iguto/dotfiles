@@ -20,6 +20,8 @@
 (setq echo-keystrokes 0.1)
 ;; ;; C-h をバックスペースに。
 (global-set-key "\C-h" 'backward-delete-char)
+;; 外部でファイルが変更された時にバッファを再読み込みする
+(global-auto-revert-mode)
 ;; 行末の空白を保存時に削除
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 ;; ; タブ幅
