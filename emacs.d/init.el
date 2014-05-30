@@ -122,7 +122,9 @@
 ;; キーバインドの説明
 (require 'helm-descbinds)
 (helm-descbinds-mode)
-;; find-file時 C-zでディレクトリ移動
+;; タグジャンプをhelmで
+(global-set-key (kbd "M-.") 'helm-etags-select)
+
 
 ;; ========================================
 ;; auto-complete
