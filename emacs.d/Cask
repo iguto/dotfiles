@@ -39,6 +39,7 @@
 (depends-on "sass-mode")
 (depends-on "slim-mode")
 (depends-on "yaml-mode")
+(depends-on "grizzl")
 (depends-on "projectile-rails")
 (depends-on "emmet-mode")
 ;; ruby

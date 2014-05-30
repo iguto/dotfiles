@@ -1,8 +1,4 @@
-;; ========================================
-;; package.el
-;; ========================================
 (require 'package)
-;; MELPAを追加
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 ;; ;; Marmaladeを追加
 (add-to-list 'package-archives  '("marmalade" . "http://marmalade-repo.org/packages/"))
@@ -273,11 +269,6 @@
 ;; ========================================
 ;; cygwin用 キーバインド再定義
 ;; ========================================
-; (global-set-key (kbd "[1;5r") 'set-mark-command)
-
-;;-------------------------
-
-
 ;;;; for terminal key translate (only mintty?)
 (unless window-system
   (define-key input-decode-map "\e[1;5k" (kbd "C-;"))
@@ -292,7 +283,7 @@
   (define-key input-decode-map "\e[1;5w" (kbd "C-'"))
   (define-key input-decode-map "\e[1;5x" (kbd "C-("))
   (define-key input-decode-map "\e[1;5y" (kbd "C-)"))
-
+  (define-key input-decode-map "\e[59;5e" (kbd "C-:"))
   (define-key input-decode-map "\e[1;6k" (kbd "C-S-;"))
   (define-key input-decode-map "\e[1;6l" (kbd "C-S-,"))
   (define-key input-decode-map "\e[1;6m" (kbd "C-S--"))
@@ -326,3 +317,13 @@
   (define-key input-decode-map "" (kbd "C-}"))
 
   (define-key input-decode-map "\e[1;7k" (kbd "C-M-;")))
+
+;;
+;; recentf and recentf-ext.el の設定
+;;
+(require 'recentf)
+(setq recentf-save-file "~/.emacs.d/.recentf")
+(setq recentf-max-saved-items 500)            ;; recentf に保存するファイルの数
+(setq recentf-auto-cleanup 10)                ;; 保存する内容を整理
+(run-with-idle-timer 30 t 'recentf-save-list) ;; 30秒ごとに .recentf を保存
+(require 'recentf-ext)
