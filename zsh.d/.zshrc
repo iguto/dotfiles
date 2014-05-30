@@ -474,13 +474,13 @@ if [ -e  $zaw_file ] ; then
 fi
 
 #zaw-register-src -n ack $zsh_dir/site_script/zaw/sources/ack.zsh
-#zaw-register-src -n cdr $zsh_dir/site_script/zaw/sources/cdr.zsh
+zaw-register-src -n cdr $zsh_dir/site_script/zaw/sources/cdr.zsh
 
 # key-bind
 bindkey '' zaw-history
 
 #opt
-zstyle ':filter-select:highlight' selected bg=white
+zstyle ':filter-select:highlight' selected fg=black,bg=white
 zstyle ':filter-select:highlight' matched fg=yellow,red
 zstyle ':filter-select' max-lines 10 # use 10 lines for filter-select
 zstyle ':filter-select' max-lines -10 # use $LINES - 10 for filter-select
