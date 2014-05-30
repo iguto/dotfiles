@@ -478,6 +478,7 @@ zaw-register-src -n cdr $zsh_dir/site_script/zaw/sources/cdr.zsh
 
 # key-bind
 bindkey '' zaw-history
+bindkey '' zaw-tmux
 
 #opt
 zstyle ':filter-select:highlight' selected fg=black,bg=white
