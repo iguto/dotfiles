@@ -359,11 +359,11 @@ fi
 ############################################################
 # emacs起動のモード？をremote/localで切り替える
 ############################################################
-local sw_emacs=$zsh_dir/switch-emacs.sh
-if [ -e $sw_emacs ] ; then
-	source $sw_emacs
-fi
-alias emacs=switch_emacs
+#local sw_emacs=$zsh_dir/switch-emacs.sh
+#if [ -e $sw_emacs ] ; then
+#	source $sw_emacs
+#fi
+#alias emacs=switch_emacs
 ############################################################
 # bindkeyの変更
 ############################################################

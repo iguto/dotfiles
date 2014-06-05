@@ -2,7 +2,7 @@
 # ログインシェル/対話シェルで読み込まれる
 # スクリプト用シェルでも読み込まれる
 
-export PATH=$HOME/bin:$PATH
+export PATH=$HOME/local/bin:$HOME/bin:$PATH
 
 # バージョンチェックし、古いなら新しいものに変える
 
