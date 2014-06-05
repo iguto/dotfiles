@@ -93,16 +93,6 @@ setopt interactive_comments
 ## 改行がなくても出力する
 unsetopt promptcr
 
-############################################################
-#  ターミナル起動時に実行するコマンド
-############################################################
-
-## いる場所で、ssh_configを切り替える
-#local netset=$zsh_dir/ch-network-setting.rb
-#if [ -e $netset ] ; then
-#	/usr/local/bin/ruby $netset
-#fi
-
 ##########################################################
 # プロンプト
 ##########################################################
@@ -330,7 +320,7 @@ zstyle ':completion:*' completer _oldlist _complete  _expand
 ## 2011.05.25 auto-fuのために_oldlistを先頭に追加した。
 
 ## ↑ の_matchについて、一意に対象を絞るため、補完位置ずらしていく
-zstyle 'completion::match:*' insert-unambiguous true
+#zstyle 'completion::match:*' insert-unambiguous true
 
 ## 保管ができるコマンドを追加する  https://github.com/zsh-users/zsh-completions
 fpath=($zsh_dir/zsh_completions/src $fpath)
@@ -458,6 +448,7 @@ alias gc='git commit'
 alias gco='git checkout'
 alias gb='git branch'
 alias gd='git diff'
+alias gdd='git diff --cached'
 
 function p_decode() {
   sed 's/=/:**:/g' | tr % = | nkf -emQ | sed 's/\:\*\*\:/=/g'
@@ -483,13 +474,14 @@ if [ -e  $zaw_file ] ; then
 fi
 
 #zaw-register-src -n ack $zsh_dir/site_script/zaw/sources/ack.zsh
-#zaw-register-src -n cdr $zsh_dir/site_script/zaw/sources/cdr.zsh
+zaw-register-src -n cdr $zsh_dir/site_script/zaw/sources/cdr.zsh
 
 # key-bind
 bindkey '' zaw-history
+bindkey '' zaw-tmux
 
 #opt
-zstyle ':filter-select:highlight' selected bg=white
+zstyle ':filter-select:highlight' selected fg=black,bg=white
 zstyle ':filter-select:highlight' matched fg=yellow,red
 zstyle ':filter-select' max-lines 10 # use 10 lines for filter-select
 zstyle ':filter-select' max-lines -10 # use $LINES - 10 for filter-select
@@ -517,6 +509,33 @@ function pcolor() {
 echo
 }
 
+#####################################################################
+# tmux ログアウト → アタッチしてもssh-agent forwardが使えるように
+#####################################################################
+SOCK="/tmp/ssh-agent-$USER"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+  rm -f $SOCK
+  ln -sf $SSH_AUTH_SOCK $SOCK
+  export SSH_AUTH_SOCK=$SOCK
+fi
+
+
+function _chdir_parent_dir() {
+  builtin cd ..
+  zle accept-line
+}
+zle -N _chdir_parent_dir
+bindkey '^W' _chdir_parent_dir
+
+##
+# k
+###
+k=$zsh_dir/site_script/k/k.sh
+if [ -e $k ]; then
+  source $k
+  alias ll=k
+fi
 ############################################################
 # auto-fu インクリメンタルに補完候補を表示
 ############################################################
@@ -694,14 +713,25 @@ fi
 #}
 #
 ######################################################################
-# tmuxinator
+# tmux
 ######################################################################
+#
+# tmuxinator
+#
 tmuxinator_path=$HOME/.tmuxinator/scripts/tmuxinator 
 if [ -s $tmuxinator_path ]; then
   source $tmuxinator_path
 fi
 
-
+# tmux ログアウト → アタッチしてもssh-agent forwardが使えるように
+#
+SOCK="/tmp/ssh-agent-$USER"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
+then
+  rm -f $SOCK
+  ln -sf $SSH_AUTH_SOCK $SOCK
+  export SSH_AUTH_SOCK=$SOCK
+fi
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # memo
 #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -735,18 +765,6 @@ fi
 #		ヒストリ機能のない対話環境を引数にすることで、実行可能
 #		ヒストリ機能を強制的につけるようなもの？
 # $ mono NetWorkMiner.exe "in opt"
-#
-#
-# tmux ログアウト → アタッチしてもssh-agent forwardが使えるように
-#
-SOCK="/tmp/ssh-agent-$USER"
-if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]
-then
-  rm -f $SOCK
-  ln -sf $SSH_AUTH_SOCK $SOCK
-  export SSH_AUTH_SOCK=$SOCK
-fi
-
 
 function _chdir_parent_dir() {
   builtin cd ..
@@ -754,6 +772,12 @@ function _chdir_parent_dir() {
 }
 zle -N _chdir_parent_dir
 bindkey '^W' _chdir_parent_dir
+
+#
+# direnv
+#
+which direnv > /dev/null && eval "$(direnv hook zsh)"
+
 
 ##
 # k
@@ -763,3 +787,9 @@ if [ -e $k ]; then
   source $k
   alias ll=k
 fi
+
+###
+# tagdir
+###
+tagdir_script=$zsh_dir/site_script/tagdir/tagdir.zsh
+[ -e $tagdir_script ] && source $tagdir_script
