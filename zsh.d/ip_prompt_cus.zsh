@@ -66,6 +66,7 @@ get-ipaddr() {
 }
 
 function select_ipaddr () {
+  sed -i '/127.0.0.1/d' /tmp/.inet
 	num_ip=`cat /tmp/.inet | wc -l`
 	echo $num_ip
 	if [ $num_ip -eq 1 ]; then
