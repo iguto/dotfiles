@@ -11,3 +11,5 @@ elpa/
 projectile-bookmarks.eld
 url/
 .cask/
+.bundle
+.recentf

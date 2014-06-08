@@ -32,6 +32,7 @@
 
 (depends-on "helm")
 (depends-on "helm-descbinds")
+(depends-on "init-loader")
 
 ;; rails
 (depends-on "rhtml-mode")
@@ -39,6 +40,7 @@
 (depends-on "sass-mode")
 (depends-on "slim-mode")
 (depends-on "yaml-mode")
+(depends-on "grizzl")
 (depends-on "projectile-rails")
 (depends-on "emmet-mode")
 ;; ruby
@@ -58,3 +60,5 @@
 (depends-on "popwin")
 (depends-on "expand-region")
 (depends-on "all-ext")
+(depends-on "smartparens")
+(depends-on "robe")
