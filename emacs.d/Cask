@@ -32,6 +32,7 @@
 
 (depends-on "helm")
 (depends-on "helm-descbinds")
+(depends-on "init-loader")
 
 ;; rails
 (depends-on "rhtml-mode")
@@ -58,3 +59,5 @@
 (depends-on "highlight-indentation")
 (depends-on "popwin")
 (depends-on "smartparens")
+(depends-on "robe")
+

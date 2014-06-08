@@ -25,3 +25,6 @@ cd ~/.emacs.d
 cask
 )
 
+if [ ! -d $script_dir/inits ]; then
+  mkdir $script_dir/inits
+fi
