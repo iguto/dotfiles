@@ -172,6 +172,13 @@
 (setq guide-key/recursive-key-sequence-flag t)
 (setq guide-key/idle-delay 0.3)
 (guide-key-mode)
+
+;; ========================================
+;; macro
+;; ========================================
+(fset 'duplicate-line
+   "\C-a\C-@\C-n\C-[w\C-y\C-p")
+(global-set-key (kbd "C-x y") 'duplicate-line)
 ;; ========================================
 ;; mykie.el
 ;; ========================================
@@ -331,3 +338,26 @@
 (setq recentf-auto-cleanup 10)                ;; 保存する内容を整理
 (run-with-idle-timer 30 t 'recentf-save-list) ;; 30秒ごとに .recentf を保存
 (require 'recentf-ext)
+
+;;
+;; undo-tree
+;;
+(require 'undo-tree)
+(global-undo-tree-mode t)
+(global-set-key (kbd "M-/") 'undo-tree-redo)
+
+
+;;
+;; highlight-symbol
+;;
+(require 'highlight-symbol)
+(setq highlight-symbol-colors '("DarkOrange" "DodgerBlue1" "DeepPink1")) ;; 使いたい色を設定、repeatしてくれる
+
+;; 適宜keybindの設定
+(global-set-key (kbd "<f3>") 'highlight-symbol-at-point)
+(global-set-key (kbd "<f5>") 'highlight-symbol-remove-all)
+
+
+;; hl line
+
+(global-hl-line-mode)
