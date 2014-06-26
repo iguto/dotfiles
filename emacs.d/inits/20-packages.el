@@ -1,6 +1,7 @@
 ;; ========================================
 ;; helm
 ;; ========================================
+(require 'helm-config)
 (global-set-key (kbd "C-x C-b") 'helm-mini)
 (helm-mode 1)
 ;; M-yでキルリングの履歴一覧を表示
@@ -14,6 +15,9 @@
 (helm-descbinds-mode)
 ;; タグジャンプをhelmで
 (global-set-key (kbd "M-.") 'helm-etags-select)
+;; helm occur
+(global-set-key (kbd "C-M-o") 'helm-occur)
+(define-key isearch-mode-map (kbd "C-o") 'helm-occur-from-isearch)
 
 ;; ========================================
 ;; auto-complete
