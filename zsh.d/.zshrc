@@ -797,3 +797,6 @@ fi
 ###
 tagdir_script=$zsh_dir/site_script/tagdir/tagdir.zsh
 [ -e $tagdir_script ] && source $tagdir_script
+fpath=($fpath /home/ookawa/.ghq/github.com/iguto/zsh_dotfiles/site_script/zaw/functions)
+
+alias gcd='cd $(ghq list -p | peco)'
