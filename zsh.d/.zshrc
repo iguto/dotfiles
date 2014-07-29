@@ -797,6 +797,52 @@ fi
 ###
 tagdir_script=$zsh_dir/site_script/tagdir/tagdir.zsh
 [ -e $tagdir_script ] && source $tagdir_script
+
+# 
 fpath=($fpath /home/ookawa/.ghq/github.com/iguto/zsh_dotfiles/site_script/zaw/functions)
 
 alias gcd='cd $(ghq list -p | peco)'
+
+# added by travis gem
+[ -f /home/usr/member/ookawa/.travis/travis.sh ] && source /home/usr/member/ookawa/.travis/travis.sh
+source ~/.fzf.zsh
+
+#
+# github cloned repository list widget.
+#
+function repository-list () {
+  which ghq peco > /dev/null
+  if [ $? -ne 0 ]; then
+    echo "Please install ghq and peco" > /dev/stderr
+    return 1
+  fi
+  local selected_dir=$(ghq list -p | peco)
+  BUFFER="cd $selected_dir"
+  zle accept-line
+  #zle clear-screen
+}
+zle -N repository-list
+bindkey "r" repository-list
+
+
+function list-directories() {
+  which ghq peco > /dev/null
+  if [ $? -ne 0 ]; then
+    echo "Please install ghq and peco" > /dev/stderr
+    return 1
+  fi
+  directories=$(find -type d -maxdepth 1 -mindepth 1 | sed 's/\.\///' | sort)
+  if [ -z $directories ]; then
+    echo "directory does not exist."
+    return 2
+  fi
+  directory=$(echo $directories | peco)
+  [ $? -eq 1 ] && return 0
+  BUFFER="cd $directory"
+  cd $directory
+  zle accept-line
+  list-directories
+}
+zle -N list-directories
+bindkey "d" list-directories
+
