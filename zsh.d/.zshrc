@@ -801,3 +801,21 @@ tagdir_script=$zsh_dir/site_script/tagdir/tagdir.zsh
 # added by travis gem
 [ -f /home/usr/member/ookawa/.travis/travis.sh ] && source /home/usr/member/ookawa/.travis/travis.sh
 source ~/.fzf.zsh
+
+#
+# github cloned repository list widget.
+#
+function repository-list () {
+  which ghq peco > /dev/null
+  if [ $? -ne 0 ]; then
+    echo "Please install ghq and peco" > /dev/stderr
+    return 1
+  fi
+  echo "passed"
+  local selected_dir=$(ghq list -p | peco)
+  BUFFER="cd $selected_dir"
+  zle accept-line
+  zle clear-screen
+}
+zle -N repository-list
+bindkey "r" repository-list
