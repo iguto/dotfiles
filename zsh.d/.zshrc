@@ -793,3 +793,7 @@ fi
 ###
 tagdir_script=$zsh_dir/site_script/tagdir/tagdir.zsh
 [ -e $tagdir_script ] && source $tagdir_script
+
+# added by travis gem
+[ -f /home/usr/member/ookawa/.travis/travis.sh ] && source /home/usr/member/ookawa/.travis/travis.sh
+source ~/.fzf.zsh
