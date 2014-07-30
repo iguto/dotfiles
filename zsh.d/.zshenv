@@ -2,7 +2,7 @@
 # ログインシェル/対話シェルで読み込まれる
 # スクリプト用シェルでも読み込まれる
 
-export PATH=$HOME/bin:$PATH
+export PATH=$HOME/local/bin:$HOME/bin:$PATH
 
 # バージョンチェックし、古いなら新しいものに変える
 
@@ -15,3 +15,7 @@ export PATH=$HOME/bin:$PATH
 
 # zshのリポジトリへの変数を用意する スクリプト用
 zsh_dir=~/zsh_dotfiles
+
+# golang
+export GOPATH=$HOME/.golang
+export PATH=$PATH:$GOPATH/bin

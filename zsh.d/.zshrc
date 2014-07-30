@@ -14,7 +14,11 @@ export SUDO_EDITOR="vim -u $HOME/.vimrc"
 export EDITOR=vim  # pit用の設定
 export GISTY_DIR="$HOME/dev/gists"
 ## zsh設定リポジトリへのパス
-zsh_dir=$HOME/zsh_dotfiles
+real_path=`readlink -f $HOME/.zshrc`
+#echo "realpath: $realpath"
+#echo `(cd $(dirname $real_path); pwd)`
+zsh_dir=`(cd $(dirname $real_path); pwd)`
+#zsh_dir=`(cd $(dirname $0); pwd)`
 
 # showterm privateserver
 export SHOWTERM_SERVER='http://133.92.145.188/showterm'
@@ -349,11 +353,11 @@ fi
 ############################################################
 # emacs起動のモード？をremote/localで切り替える
 ############################################################
-local sw_emacs=$zsh_dir/switch-emacs.sh
-if [ -e $sw_emacs ] ; then
-	source $sw_emacs
-fi
-alias emacs=switch_emacs
+#local sw_emacs=$zsh_dir/switch-emacs.sh
+#if [ -e $sw_emacs ] ; then
+#	source $sw_emacs
+#fi
+#alias emacs=switch_emacs
 ############################################################
 # bindkeyの変更
 ############################################################
