@@ -172,3 +172,7 @@ prompt_file=$bash_dir/.bash_prompt
 if [ -e $prompt_file ]; then
   . $prompt_file
 fi
+
+# added by travis gem
+[ -f /home/usr/member/ookawa/.travis/travis.sh ] && source /home/usr/member/ookawa/.travis/travis.sh
+source ~/.fzf.bash

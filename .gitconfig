@@ -6,3 +6,5 @@
 	default = current
 [log]
 	decorate = short
+[alias]
+	ignore = "!gi() { curl http://www.gitignore.io/api/$@ ;}; gi"
