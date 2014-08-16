@@ -69,3 +69,4 @@
 (depends-on "smartparens")
 (depends-on "robe")
 (depends-on "undo-tree")
+(depends-on "ace-jump-mode")

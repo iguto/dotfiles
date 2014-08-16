@@ -105,3 +105,15 @@
 ;; ========================================
 (require 'highlight-indentation)
 (highlight-indentation-current-column-mode t) ;; 現在行に関連あるインデントの表示
+
+;; ========================================
+;; ace-jump-mode
+;; ========================================
+(autoload
+  'ace-jump-mode-pop-mark
+  "ace-jump-mode"
+  "Ace jump back"
+  t)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mode-sync))
+(define-key global-map (kbd "M-a") 'ace-jump-mode)
