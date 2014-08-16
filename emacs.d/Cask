@@ -52,6 +52,12 @@
 ;; git
 (depends-on "git-gutter")
 (depends-on "magit")
+
+;; golang
+(depends-on "go-mode")
+(depends-on "go-autocomplete")
+(depends-on "go-eldoc")
+
 ;; misc
 (depends-on "recentf-ext")
 (depends-on "guide-key")
@@ -62,3 +68,4 @@
 (depends-on "all-ext")
 (depends-on "smartparens")
 (depends-on "robe")
+(depends-on "undo-tree")
