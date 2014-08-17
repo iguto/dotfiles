@@ -17,5 +17,5 @@ export PATH=$HOME/local/bin:$HOME/bin:$PATH
 zsh_dir=~/zsh_dotfiles
 
 # golang
-export GOPATH=$HOME/.golang
+export GOPATH=$HOME.golang
 export PATH=$PATH:$GOPATH/bin
