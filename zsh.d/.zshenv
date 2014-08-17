@@ -15,3 +15,7 @@ export PATH=$HOME/local/bin:$HOME/bin:$PATH
 
 # zshのリポジトリへの変数を用意する スクリプト用
 zsh_dir=~/zsh_dotfiles
+
+if [ -d $HOME/local/go/bin ]; then
+  export PATH=$PATH:$HOME/local/go/bin
+fi
