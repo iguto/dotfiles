@@ -57,6 +57,10 @@
 (require 'slim-mode)
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-to-list 'ac-modes 'coffee-mode)
+(add-to-list 'ac-modes 'slim-mode)
+(add-to-list 'ac-modes 'sass-mode)
+(add-to-list 'ac-modes 'yaml-mode)
 ;; --------------------
 ;; projectile-rails    a replacement of rinari
 ;; --------------------
