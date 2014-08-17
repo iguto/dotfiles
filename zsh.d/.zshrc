@@ -104,12 +104,12 @@ local vcs_rprompt=$zsh_dir/vcs_rprompt.zsh
 #===========================================================
 local alias_file=$zsh_dir/alias.zsh
 [ -e $alias_file ] && source $alias_file
+
 #===========================================================
-#  ssh-agentをssh系コマンド実行前に実行
+# 自分で定義した関数
 #===========================================================
-## ssh-agent をssh,scp,sftp,rsyncに関連付け
-local overssh=$zsh_dir/pressh_agent.sh
-[ -e $overssh ] && source $overssh
+local my_functions=$zsh_dir/my_functions.zsh
+[ -e $my_functions ] && source $my_functions
 
 #===========================================================
 # zawを読み込む
@@ -127,85 +127,32 @@ zstyle ':filter-select' extended-search yes # see below
 
 bindkey '' zaw-history
 bindkey '' zaw-tmux
+
 #===========================================================
 # zsh_command_not_found  存在しないコマンドを実行 -> 近いパッケージを表示
 #===========================================================
 local cmd_nfound=/etc/zsh_command_not_found
 [ -e $cmd_nfound ] && source $cmd_nfound
 
-#====================================================================
-# 256色表示確認                                                     #
-#====================================================================
-function pcolor() {
-  for ((f = 0; f < 255; f++))
-  do
-    printf "\e[38;5;%dm %3d*■\e[m" $f $f
-    [[ $f%8 -eq 7 ]] && printf "\n"
-  done
-  echo
-}
-
-#====================================================================
-# widget
-#====================================================================
-function _chdir_parent_dir() {
-  builtin cd ..
-  zle accept-line
-}
-zle -N _chdir_parent_dir
-bindkey '^W' _chdir_parent_dir
-
+#===========================================================
+# k
+#===========================================================
 local k=$zsh_dir/site_script/k/k.sh
 if [ -e $k ]; then
   source $k
   alias ll=k
 fi
 
-#===========================================================
-# サークルのサーバへのssh接続を楽にする
-#   IPアドレスの4オクテット目の入力だけで接続可能
-#   ただし、ユーザ名の指定は l オプションで
-#===========================================================
-local sshl=$zsh_dir/ssh-labo.sh
-if [ -e $sshl ] ; then
-	source $sshl
-fi
-
-#===========================================================
-#  history-grep 候補を一覧表示するヒストリ検索
-#===========================================================
-local histgrep="$zsh_dir/history-grep.zsh"
-[ -r $histgrep ] && source $histgrep
-
-#===========================================================
-#  絶対パスへ展開してヒストリ登録するcd
-#===========================================================
-local zcd_file=$zsh_dir/zcd.zsh
-[ -e $zcd_file ] && source $zcd_file
-alias cd='zcd'
-
-#===========================================================
-# URLを自動でクオート処理
-#===========================================================
-autoload -Uz url-quote-magic
-zle -N self-insert url-quote-magic
-
-## smart insert word
-autoload smart-insert-last-word
-zle -N insert-last-word smart-insert-last-word
-zstyle :insert-last-word match \
-  '*([^[:space:]][[:alpha:]/\\]|[[:alpha:]/\\][^[:space:]])*'
-
 #=====================================================================
 # autojump
 #=======================================================================
 autojump_path=/etc/profile.d/autojump.zsh
 [ -e $autojump_path ] && source $autojump_path
+
 #=====================================================================
 # tmux
 #=====================================================================
 # tmux ログアウト -> アタッチしてもssh-agent forwardが使えるように
-#
 SOCK="/tmp/ssh-agent-$USER"
 if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]; then
   rm -f $SOCK
@@ -230,42 +177,3 @@ fpath=($fpath /home/ookawa/.ghq/github.com/iguto/zsh_dotfiles/site_script/zaw/fu
 # added by travis gem
 [ -f /home/usr/member/ookawa/.travis/travis.sh ] && source /home/usr/member/ookawa/.travis/travis.sh
 source ~/.fzf.zsh
-
-#
-# github cloned repository list widget.
-#
-function repository-list () {
-  which ghq peco > /dev/null
-  if [ $? -ne 0 ]; then
-    echo "Please install ghq and peco" > /dev/stderr
-    return 1
-  fi
-  local selected_dir=$(ghq list -p | peco)
-  BUFFER="cd $selected_dir"
-  zle accept-line
-  #zle clear-screen
-}
-zle -N repository-list
-bindkey "r" repository-list
-
-
-function list-directories() {
-  which ghq peco > /dev/null
-  if [ $? -ne 0 ]; then
-    echo "Please install ghq and peco" > /dev/stderr
-    return 1
-  fi
-  directories=$(find -type d -maxdepth 1 -mindepth 1 | sed 's/\.\///' | sort)
-  if [ -z $directories ]; then
-    echo "directory does not exist."
-    return 2
-  fi
-  directory=$(echo $directories | peco)
-  [ $? -eq 1 ] && return 0
-  BUFFER="cd $directory"
-  cd $directory
-  zle accept-line
-  list-directories
-}
-zle -N list-directories
-bindkey "d" list-directories
