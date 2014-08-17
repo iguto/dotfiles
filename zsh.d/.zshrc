@@ -30,7 +30,7 @@ setopt hist_ignore_space
 setopt extended_history
 
 #===========================================================
-# オプション 
+# オプション
 #===========================================================
 setopt auto_pushd
 setopt pushd_ignore_dups
@@ -59,13 +59,16 @@ fi
 #===========================================================
 #   補完/補完スタイル
 #===========================================================
-## 補完機能上位版を使用
-autoload -U compinit && compinit
+autoload -U compinit && compinit # 補完機能上位版を使用
 
 zstyle ':completion:*' completer _oldlist _complete  _expand
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}	
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**' # a-zとA-Zを相互置換、'-','_','.'があるところで*を補ったような補完を実現
-fpath=($zsh_dir/zsh_completions/src $fpath) # 保管ができるコマンドを追加する  https://github.com/zsh-users/zsh-completions
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# a-zとA-Zを相互置換、'-','_','.'があるところで*を補ったような補完を実現
+# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z} r:|[-_.]=**'
+# 補完時に大文字小文字を区別しない,大文字入力した場合は大文字のみ
+# .があるところで補うような補完
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[.]=**'
 
 # 補完候補表示の際、グループ名表示し、グループごとに表示する
 zstyle ':completion:*:messages' format $YELLOW'%d'$DEFAULT
@@ -74,6 +77,8 @@ zstyle ':completion:*:descriptions' format $YELLOW'completing %B%d%b'$DEFAULT
 zstyle ':completion:*:corrections' format $YELLOW'%B%d '$RED'(errors: %e)%b'$DEFAULT
 zstyle ':completion:*:options' description 'yes'
 zstyle ':completion:*' group-name ''
+
+fpath=($zsh_dir/zsh_completions/src $fpath) # 保管ができるコマンドを追加する  https://github.com/zsh-users/zsh-completions
 
 #===========================================================
 # bindkeyの変更
@@ -107,7 +112,7 @@ local overssh=$zsh_dir/pressh_agent.sh
 [ -e $overssh ] && source $overssh
 
 #===========================================================
-# zawを読み込む 
+# zawを読み込む
 #===========================================================
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 local zaw_file=$zsh_dir/site_script/zaw/zaw.zsh
@@ -219,7 +224,7 @@ which direnv > /dev/null && eval "$(direnv hook zsh)"
 tagdir_script=$zsh_dir/site_script/tagdir/tagdir.zsh
 [ -e $tagdir_script ] && source $tagdir_script
 
-# 
+#
 fpath=($fpath /home/ookawa/.ghq/github.com/iguto/zsh_dotfiles/site_script/zaw/functions)
 
 # added by travis gem
@@ -264,4 +269,3 @@ function list-directories() {
 }
 zle -N list-directories
 bindkey "d" list-directories
-
