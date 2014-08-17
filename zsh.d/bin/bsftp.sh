@@ -22,7 +22,7 @@ return 0
 
 # 引数の数が1以下なら、引数不足なので、使い方の表示を行う
 if [ $# -le 1 ] ; then
-	eecho "`basename $0` [host:dir send_file]"
+	echo "`basename $0` [host:dir send_file]" > /dev/stderr
 	return 
 fi
 

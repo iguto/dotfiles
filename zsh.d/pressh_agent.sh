@@ -1,18 +1,19 @@
 function run-agent() {
-		/usr/bin/ssh-add -l >& /dev/null
-		if [ $? -eq 2 ] ; then
-				eval `ssh-agent -s`
-		fi
-		/usr/bin/ssh-add -l >& /dev/null
-		if [ $? -eq 1 ] ; then
-	# 公開鍵が ~/.ssh にあると正常に動作しないため、存在しないことを確認
-				ls $HOME/.ssh/ | egrep .pub$ > /dev/null
-				if [ $? -ne 0 ] ; then
-						/usr/bin/ssh-add ~/.ssh/id*
-				else
-						echo "check ~/.ssh has publickey. then move it to pub/" > /dev/stderr
-				fi
-		fi
+  /usr/bin/ssh-add -l >& /dev/null
+  if [ $? -eq 2 ] ; then
+    eval `ssh-agent -s`
+  fi
+  /usr/bin/ssh-add -l >& /dev/null
+  if [ $? -eq 1 ] ; then
+    # 公開鍵が ~/.ssh にあると正常に動作しないため、存在しないことを確認
+    #ls $HOME/.ssh/ | egrep .pub$ > /dev/null
+    ids=`\ls -1 ~/.ssh/id* | \grep -v .pub$`
+    for id in `print $ids`
+    do
+      /usr/bin/ssh-add $id
+      #echo id:$id
+    done
+  fi
 }
 
 ############################################################

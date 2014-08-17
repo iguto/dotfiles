@@ -19,3 +19,6 @@ zsh_dir=~/zsh_dotfiles
 if [ -d $HOME/local/go/bin ]; then
   export PATH=$PATH:$HOME/local/go/bin
 fi
+# golang
+export GOPATH=$HOME.golang
+export PATH=$PATH:$GOPATH/bin
