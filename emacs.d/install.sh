@@ -17,9 +17,8 @@ if [ ! -d ~/bin ]; then
   echo "directory: ~/bin created."
   mkdir ~/bin
 fi
-ln -s ~/.cask/bin/cask ~/bin/
+ln -sf ~/.cask/bin/cask ~/bin/
 (
-cd ~/.emacs.d
 cask
 )
 
@@ -27,7 +26,9 @@ if [ ! -d $script_dir/inits ]; then
   mkdir $script_dir/inits
 fi
 
-ln -s $script_dir $HOME/.emacs.d
+rm -rf ~/.emacs.d
+ln -sf $script_dir ~/.emacs.d
+echo $script_dir/
 
 # golang
 go get -u github.com/nsf/gocode
