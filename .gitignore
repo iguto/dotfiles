@@ -47,3 +47,4 @@ tramp
 # KDE directory preferences
 .directory
 
+emacs.d/.bundle

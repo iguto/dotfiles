@@ -12,11 +12,11 @@ done
 #
 # zsh 
 #
-base_path=`pwd`/zsh.d
-echo "creating symlinks.."
+(
+cd zsh.d
+./install.sh
+)
 
-ln -sf $base_path/.zshrc $HOME
-ln -sf $base_path/.zshenv $HOME
 
 #
 # emacs
