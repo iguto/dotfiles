@@ -1,0 +1,133 @@
+#
+# vim ft:sh
+
+# bash用プロンプト設定
+#
+#   - 色付き表示
+#   - 色でVM上にいるか、実マシン上にいるかを判別できる
+#   - VagrantのVMの状態を表示する
+#
+
+
+#
+# 色設定
+#
+# 使える色　
+#   $black
+#   $red
+#   $green
+#   $yellow
+#   $blue
+#   $purple
+#   $cyan
+#   $gray
+#   $black
+#   $lred
+#   $lgreen
+#   $lyellow
+#   $lblue
+#   $lpurple
+#   $lcyan
+#   $lgray
+#   $reset
+
+get_state() {
+	#
+	# get name of vm
+	#
+	if [ $# -ge 1 ]; then
+		vmname=$1
+	else
+		# from pwd
+		vmname=`basename $PWD`
+
+		# from Vagrantfile
+		#echo `grep host_name` ## +something
+	fi
+
+	#
+	# VMのuuidを取得
+	#
+
+	# 欲しいVMの名前からuuidの部分を取り出す
+	#uuid_with_brace=`vboxmanage list vms | grep $vmname | cut -d' ' -f 2`
+	vmname_with_uuid_raw=`vboxmanage list vms | grep $vmname`
+	if [ $? -eq 0 ]; then
+		uuid_with_brace=`echo $vmname_with_uuid_raw | cut -d' ' -f 2`
+		# uuid文字列の長さを取得
+		length=`echo $uuid_with_brace | wc -c`
+
+		# uuid文字列から余分な{}を削除
+		pos_last=`expr $length - 2`
+		uuid=`echo $uuid_with_brace | cut -c 2-$pos_last`
+
+		#
+		# VMの状態を取得
+		#
+		vmstate=`vboxmanage showvminfo --machinereadable $uuid | grep 'VMState=' | sed -e s/VMState=\"// -e s/\"//`
+		echo $vmstate
+	fi
+}
+
+
+
+
+prompt_dynamic_part() {
+	{
+		if [ -e Vagrantfile ]; then
+			#vagrant_status=`vagrant status | sed -n 3p | awk '{ print $2 }'`
+			#echo -n $vagrant_status
+			#echo -n " "
+			get_state
+		fi
+	}
+}
+
+set_prompt() {
+	#
+	# 色変数設定
+	#
+	local colors=("black" "red" "green" "yellow" "blue" "purple" "cyan" "gray")
+	local lcolors=("black" "lred" "lgreen" "lyellow" "lblue" "lpurple" "lcyan" "lgray")
+
+	for i in `seq 0 7`
+	do
+		eval "local ${colors[$i]}='\[\e[0;3${i}m\]'"
+		eval "local ${lcolors[$i]}='\[\e[1;3${i}m\]'"
+	done
+
+	reset="\[\e[00m\]"
+	#
+	# プロンプト設定
+	#
+	#
+	# 仮想マシン判定
+	#
+	#   仮想マシン上にいる場合と実マシン上にいる場合でプロンプトの色を変える
+	#   Macアドレスのベンダ部分を用いて判定する
+	hwaddrs=`/sbin/ifconfig | grep HWaddr | awk '{ print $5 }' | cut -d: -f 1-3`
+	is_vm=true
+	for hwaddr in $hwaddrs
+	do
+		if [ ${hwaddr} != "08:00:27" ]; then
+			is_vm=false
+			break
+		fi
+	done
+
+	#
+	# プロンプト変数へ反映
+	#   色を反映する箇所では""でくくる
+	#   毎回毎回コマンドを反映させたい箇所では''でくくる必要がある
+	#
+	#
+	if $is_vm; then
+		PS1="[${lblue}\u${reset}@${lgreen}\h${reset} ${lpurple}\w${reset}]${lgreen}\$${reset} "
+	else
+		#PS1="[${lblue}\u${reset}@${lcyan}\h${reset} ${lgreen}\w${reset}]${lcyan}\$${reset} "
+		PS1='['"${red}"'$(prompt_dynamic_part)'"${lblue}\u${reset}@${lcyan}\h${reset} ${lgreen}\w${reset}]${lcyan} 
+\$${reset} "
+	fi
+}
+
+set_prompt

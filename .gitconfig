@@ -1,0 +1,10 @@
+[color]
+	ui = true
+[user]
+	email = clc.iguto@gmail.com
+[push]
+	default = current
+[log]
+	decorate = short
+[alias]
+	ignore = "!gi() { curl http://www.gitignore.io/api/$@ ;}; gi"
