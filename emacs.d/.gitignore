@@ -1,0 +1,15 @@
+.*.swp
+*~
+*#*
+ac-comphist.dat
+elpa/archives/
+*/projectile-bookmarks.eld
+*.elc
+.emacs.desktop
+.emacs.desktop.lock
+elpa/
+projectile-bookmarks.eld
+url/
+.cask/
+.bundle
+.recentf
