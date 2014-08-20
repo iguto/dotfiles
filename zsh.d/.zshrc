@@ -112,6 +112,12 @@ local my_functions=$zsh_dir/my_functions.zsh
 [ -e $my_functions ] && source $my_functions
 
 #===========================================================
+# 自分で定義した関数
+#===========================================================
+local my_widget=$zsh_dir/my_widgets.zsh
+[ -e $my_widget ] && source $my_widget
+
+#===========================================================
 # zawを読み込む
 #===========================================================
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
