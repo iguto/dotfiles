@@ -25,7 +25,10 @@ BINSTUB_DIR=.bundle/bin
 
 script_dir=`(cd $(dirname $0); pwd)`/emacs.d
 echo $script_dir
+(
+cd $script_dir
 bundle install --path .bundle --binstubs=$BINSTUB_DIR
+)
 if [ ! -d $HOME/bin ]; then
   mkdir $HOME/bin
 fi
