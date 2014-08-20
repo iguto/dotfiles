@@ -1,0 +1,6 @@
+[submodule "zsh.d/site_script/zaw"]
+	path = zsh.d/site_script/zaw
+	url = https://github.com/zsh-users/zaw.git
+[submodule "zsh.d/site_script/k"]
+	path = zsh.d/site_script/k
+	url = https://github.com/supercrabtree/k.git

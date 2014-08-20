@@ -1,9 +1,0 @@
-[submodule "site_script/zaw"]
-	path = site_script/zaw
-	url = https://github.com/zsh-users/zaw.git
-[submodule "site_script/k"]
-	path = site_script/k
-	url = https://github.com/supercrabtree/k.git
-[submodule "site_script/tagdir"]
-	path = site_script/tagdir
-	url = git@github.com:iguto/tagdir.git
