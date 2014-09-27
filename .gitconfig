@@ -2,6 +2,7 @@
 	ui = true
 [user]
 	email = clc.iguto@gmail.com
+	name = iguto
 [push]
 	default = current
 [log]
