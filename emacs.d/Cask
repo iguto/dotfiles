@@ -70,3 +70,4 @@
 (depends-on "robe")
 (depends-on "undo-tree")
 (depends-on "ace-jump-mode")
+(depends-on "ace-isearch")

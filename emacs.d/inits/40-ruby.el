@@ -61,6 +61,7 @@
 (add-to-list 'ac-modes 'slim-mode)
 (add-to-list 'ac-modes 'sass-mode)
 (add-to-list 'ac-modes 'yaml-mode)
+(add-hook 'slim-mode 'highlight-indentation-current-column-mode)
 ;; --------------------
 ;; projectile-rails    a replacement of rinari
 ;; --------------------

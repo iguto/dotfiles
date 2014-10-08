@@ -106,36 +106,41 @@
 (require 'highlight-indentation)
 (highlight-indentation-current-column-mode t) ;; 現在行に関連あるインデントの表示
 
+; ;; ========================================
+; ;; ace-jump-mode
+; ;; ========================================
+; (autoload
+;   'ace-jump-mode-pop-mark
+;   "ace-jump-mode"
+;   "Ace jump back"
+;   t)
+; ; (eval-after-load "ace-jump-mode"
+; ;   '(ace-jump-mode-enable-mode-sync))
+
+; ; (define-key global-map (kbd "M-s M-s") 'ace-jump-mode)
+; (define-key global-map (kbd "M-s M-s") 'ace-jump-word-mode)
+; (define-key global-map (kbd "M-s " 'ace-jump-search-filter))
+; (define-key global-map (kbd "M-s M-l") 'ace-jump-line-mode)
+; (define-key global-map (kbd "M-s l") 'ace-jump-line-mode)
+; (define-key global-map (kbd "ESC s SPC") 'ace-jump-mode-pop-mark)
+
+
+; (defun ace-jump-word-from-isearch ()
+;   (interactive)
+;   (let ((input isearch-string))
+;     (isearch-done)
+;     (isearch-clean-overlays)
+;     (ace-jump-word-mode (string-to-char input))))
+; (defun ace-jump-char-from-isearch ()
+;   (interactive)
+;   (let ((input isearch-string))
+;     (isearch-done)
+;     (isearch-clean-overlays)
+;     (ace-jump-char-mode (string-to-char input))))
+; (define-key isearch-mode-map (kbd "C-l") 'ace-jump-word-from-isearch)
+; (define-key isearch-mode-map (kbd "C-k") 'ace-jump-char-from-isearch)
+
 ;; ========================================
 ;; ace-jump-mode
 ;; ========================================
-(autoload
-  'ace-jump-mode-pop-mark
-  "ace-jump-mode"
-  "Ace jump back"
-  t)
-; (eval-after-load "ace-jump-mode"
-;   '(ace-jump-mode-enable-mode-sync))
-
-; (define-key global-map (kbd "M-s M-s") 'ace-jump-mode)
-(define-key global-map (kbd "M-s M-s") 'ace-jump-word-mode)
-(define-key global-map (kbd "M-s " 'ace-jump-search-filter))
-(define-key global-map (kbd "M-s M-l") 'ace-jump-line-mode)
-(define-key global-map (kbd "M-s l") 'ace-jump-line-mode)
-(define-key global-map (kbd "ESC s SPC") 'ace-jump-mode-pop-mark)
-
-
-(defun ace-jump-word-from-isearch ()
-  (interactive)
-  (let ((input isearch-string))
-    (isearch-done)
-    (isearch-clean-overlays)
-    (ace-jump-word-mode (string-to-char input))))
-(defun ace-jump-char-from-isearch ()
-  (interactive)
-  (let ((input isearch-string))
-    (isearch-done)
-    (isearch-clean-overlays)
-    (ace-jump-char-mode (string-to-char input))))
-(define-key isearch-mode-map (kbd "C-l") 'ace-jump-word-from-isearch)
-(define-key isearch-mode-map (kbd "C-k") 'ace-jump-char-from-isearch)
+(global-ace-isearch-mode 1)
