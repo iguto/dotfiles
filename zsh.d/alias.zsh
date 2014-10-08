@@ -4,7 +4,7 @@
 ## 色表示関連
 # less 色表示を残す? もとの表示を維持しようとする
 alias grep="grep --color='always'"
-alias less='less -R'
+alias less='less -RFX'
 
 alias ls="ls --color=always -hvF" 
 alias ll='ls -lF' la='ls -aF' laa='la | grep ^\.' lla='la -l'
