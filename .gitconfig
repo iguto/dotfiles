@@ -10,4 +10,4 @@
 [alias]
 	ignore = "!gi() { curl http://www.gitignore.io/api/$@ ;}; gi"
 [core]
-	excludesfile = /home/usr/member/ookawa//.gitignore
+	excludesfile = $HOME/.gitignore

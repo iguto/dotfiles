@@ -6,6 +6,7 @@
 *.un~
 Session.vim
 .vim/.netrwhist
+.vim/bundle/vim-slim
 *~
 
 
