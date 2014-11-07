@@ -62,3 +62,14 @@ function list-directories() {
 }
 zle -N list-directories
 bindkey "d" list-directories
+
+function peco-git-recent-branches () {
+  local selected_branch=$( git for-each-ref --format='%(refname)' --sort=-committerdate  refs/heads | ruby -pne '$_.gsub!(/refs\/(heads|remotes)\//, "")' | peco )
+  if [ -n "$selected_branch" ]; then
+    BUFFER="git checkout $selected_branch"
+    zle accept-line
+  fi
+  #zle clear-screen
+}
+zle -N peco-git-recent-branches
+bindkey '^xb' peco-git-recent-branches

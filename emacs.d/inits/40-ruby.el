@@ -13,21 +13,21 @@
 ; (setq inf-ruby-default-implementation "pry")
 
 ;; robe 高度な補完
-(autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files" t)
-(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
-(add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
-(add-hook 'ruby-mode-hook '(lambda ()
-                             (require 'rcodetools)
-                             (require 'anything-rcodetools)
-                             (require 'myrurema)
-                             (load-auto-complete)
-                             (define-key ruby-mode-map "\M-c" 'rct-complete-symbol)
-                             (define-key ruby-mode-map "\M-d" 'xmp)
-                             (setq ruby-deep-indent-paren-style nil)))
+; (autoload 'ruby-mode "ruby-mode" "Mode for editing ruby source files" t)
+; (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+; (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))
+; (add-hook 'ruby-mode-hook '(lambda ()
+;                              (require 'rcodetools)
+;                              (require 'anything-rcodetools)
+;                              (require 'myrurema)
+;                              (load-auto-complete)
+;                              (define-key ruby-mode-map "\M-c" 'rct-complete-symbol)
+;                              (define-key ruby-mode-map "\M-d" 'xmp)
+;                              (setq ruby-deep-indent-paren-style nil)))
 
-(autoload 'robe-mode "robe" "Code navigation, documentation lookup and completion for Ruby" t nil)
-(autoload 'robe-ac-setup "ac-robe" "robe auto-complete" nil nil)
-(add-hook 'robe-mode-hook 'robe-ac-setup)
+; (autoload 'robe-mode "robe" "Code navigation, documentation lookup and completion for Ruby" t nil)
+; (autoload 'robe-ac-setup "ac-robe" "robe auto-complete" nil nil)
+; (add-hook 'robe-mode-hook 'robe-ac-setup)
 ;; --------------------
 ;; ruby-mode のインデントを綺麗にする http://willnet.in/13
 ;; --------------------
@@ -69,8 +69,7 @@
 (projectile-global-mode)
 (require 'projectile-rails)
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
-;; use grizzle to select something
-(setq projectile-completion-system 'grizzl)
+(setq projectile-completion-system 'helm)
 ;; emmet-mode
 ;; --------------------
 (require 'emmet-mode)

@@ -4,5 +4,10 @@
         "M-v": "peco.SelectPreviousPage",
       "C-c": "peco.Cancel",
       "C-g": "peco.Cancel"
+    },
+    "Style": {
+      "Basic": ["on_default", "default"],
+      "Selected": ["black", "on_green", "on_bold"],
+      "Matched": ["red"]
     }
 }
