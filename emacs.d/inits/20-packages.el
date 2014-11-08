@@ -18,7 +18,8 @@
 ;; helm occur
 (global-set-key (kbd "C-M-o") 'helm-occur)
 (define-key isearch-mode-map (kbd "C-o") 'helm-occur-from-isearch)
-
+;; M-x
+(global-set-key (kbd "M-x") 'helm-M-x)
 ;; ========================================
 ;; auto-complete
 ;; ========================================
