@@ -172,14 +172,7 @@ fi
 which direnv > /dev/null && eval "$(direnv hook zsh)"
 
 #
-# tagdir
-#
-tagdir_script=$zsh_dir/site_script/tagdir/tagdir.zsh
-[ -e $tagdir_script ] && source $tagdir_script
-
-#
 fpath=($fpath /home/ookawa/.ghq/github.com/iguto/zsh_dotfiles/site_script/zaw/functions)
 
 # added by travis gem
 [ -f /home/usr/member/ookawa/.travis/travis.sh ] && source /home/usr/member/ookawa/.travis/travis.sh
-source ~/.fzf.zsh
