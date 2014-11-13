@@ -176,3 +176,8 @@ fpath=($fpath /home/ookawa/.ghq/github.com/iguto/zsh_dotfiles/site_script/zaw/fu
 
 # added by travis gem
 [ -f /home/usr/member/ookawa/.travis/travis.sh ] && source /home/usr/member/ookawa/.travis/travis.sh
+
+#=====================================================================
+# local
+#=====================================================================
+[ -e $zsh_dir/local.zsh ] && source $zsh_dir/local.zsh
