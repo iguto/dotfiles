@@ -49,3 +49,5 @@ tramp
 .directory
 
 emacs.d/.bundle
+.envrc
+.direnv

@@ -54,3 +54,4 @@ tramp
 # KDE directory preferences
 .directory
 
+local.zsh

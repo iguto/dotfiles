@@ -9,5 +9,8 @@
 	decorate = short
 [alias]
 	ignore = "!gi() { curl http://www.gitignore.io/api/$@ ;}; gi"
+  lock = "update-index --skip-worktree"
+  locked = "!f() { git ls-files -v | grep ^S | sed -e 's|S ||'; }; f;"
+  unlock = "update-index --no-skip-worktree"
 [core]
-	excludesfile = $HOME/.gitignore
+	excludesfile = /home/ookawa/.gitignore
