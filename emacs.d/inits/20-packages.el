@@ -145,3 +145,8 @@
 ;; ace-jump-mode
 ;; ========================================
 (global-ace-isearch-mode 1)
+
+;; ========================================
+;; smart newline
+;; ========================================
+(define-key global-map (kbd "RET") 'smart-newline)
