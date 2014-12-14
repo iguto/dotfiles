@@ -73,3 +73,19 @@ function peco-git-recent-branches () {
 }
 zle -N peco-git-recent-branches
 bindkey '^xb' peco-git-recent-branches
+
+
+function peco-tmux-session() {
+  which tmux peco > /dev/null
+  if [ $? -ne 0 ]; then
+    echo "Please install peco and tmux"
+    return 1
+  fi
+  sessions=$(tmux ls | ruby -ane 'name,*other=$_.split(" "); puts ("%-20s" % name) + other.join(" ")')
+  echo $sessions
+  local selected=$(echo $sessions | peco | cut -d: -f 1)
+  BUFFER="tmux attach -t $selected"
+  zle accept-line
+}
+zle -N peco-tmux-session
+bindkey '^s' peco-tmux-session
