@@ -100,24 +100,6 @@ local vcs_rprompt=$zsh_dir/vcs_rprompt.zsh
 [ -e $vcs_rprompt ] && source $vcs_rprompt
 
 #===========================================================
-#  alias
-#===========================================================
-local alias_file=$zsh_dir/alias.zsh
-[ -e $alias_file ] && source $alias_file
-
-#===========================================================
-# 自分で定義した関数
-#===========================================================
-local my_functions=$zsh_dir/my_functions.zsh
-[ -e $my_functions ] && source $my_functions
-
-#===========================================================
-# 自分で定義した関数
-#===========================================================
-local my_widget=$zsh_dir/my_widgets.zsh
-[ -e $my_widget ] && source $my_widget
-
-#===========================================================
 # zawを読み込む
 #===========================================================
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
@@ -135,6 +117,25 @@ bindkey '' zaw-history
 bindkey '' zaw-tmux
 
 #===========================================================
+#  alias
+#===========================================================
+local alias_file=$zsh_dir/alias.zsh
+[ -e $alias_file ] && source $alias_file
+
+#===========================================================
+# 自分で定義した関数
+#===========================================================
+local my_functions=$zsh_dir/my_functions.zsh
+[ -e $my_functions ] && source $my_functions
+
+#===========================================================
+# 自分で定義した関数
+#===========================================================
+local my_widget=$zsh_dir/my_widgets.zsh
+[ -e $my_widget ] && source $my_widget
+
+
+#===========================================================
 # zsh_command_not_found  存在しないコマンドを実行 -> 近いパッケージを表示
 #===========================================================
 local cmd_nfound=/etc/zsh_command_not_found
@@ -143,17 +144,17 @@ local cmd_nfound=/etc/zsh_command_not_found
 #===========================================================
 # k
 #===========================================================
-local k=$zsh_dir/site_script/k/k.sh
-if [ -e $k ]; then
-  source $k
-  alias ll=k
-fi
+#local k=$zsh_dir/site_script/k/k.sh
+#if [ -e $k ]; then
+#  source $k
+#  alias ll=k
+#fi
 
 #=====================================================================
 # autojump
 #=======================================================================
-autojump_path=/etc/profile.d/autojump.zsh
-[ -e $autojump_path ] && source $autojump_path
+#autojump_path=/etc/profile.d/autojump.zsh
+#[ -e $autojump_path ] && source $autojump_path
 
 #=====================================================================
 # tmux
