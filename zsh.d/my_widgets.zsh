@@ -84,6 +84,10 @@ function peco-tmux-session() {
   sessions=$(tmux ls | ruby -ane 'name,*other=$_.split(" "); puts ("%-20s" % name) + other.join(" ")')
   echo $sessions
   local selected=$(echo $sessions | peco | cut -d: -f 1)
+  if [ -z $selected ]; then
+    zle clear-screen
+    return 0
+  fi
   BUFFER="tmux attach -t $selected"
   zle accept-line
 }
