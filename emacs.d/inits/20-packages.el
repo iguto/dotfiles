@@ -46,6 +46,7 @@
 ;; gitクライアント magit
 ;; ========================================
 (require 'magit)
+(global-set-key (kbd "C-x g") 'magit-status)
 ;; ========================================
 ;; gutter
 ;; ========================================
@@ -77,12 +78,12 @@
 (setq mykie:use-major-mode-key-override t)
 (mykie:initialize)
 (mykie:set-keys nil
-  "M-;"
-  :default (progn
-             (end-of-line)
-             (set-mark (line-beginning-position))
-             (comment-dwim 1))
-  :region  (comment-dwim 1)
+  ; "M-;"
+  ; :default (progn
+  ;            (end-of-line)
+  ;            (set-mark (line-beginning-position))
+  ;            (comment-dwim 1))
+  ; :region  (comment-dwim 1)
   "C-w"
   :default (progn
              (kill-region (line-beginning-position) (line-end-position))
@@ -150,3 +151,9 @@
 ;; smart newline
 ;; ========================================
 (define-key global-map (kbd "RET") 'smart-newline)
+
+;; ========================================
+;; 1行コメント
+;; ========================================
+(setq comment-dwim-2--inline-comment-behavior 'reindent-comment)
+(global-set-key (kbd "M-;") 'comment-dwim-2)
