@@ -150,7 +150,10 @@
 ;; ========================================
 ;; smart newline
 ;; ========================================
-(define-key global-map (kbd "RET") 'smart-newline)
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (smart-newline-mode 1)))
+
 
 ;; ========================================
 ;; 1行コメント

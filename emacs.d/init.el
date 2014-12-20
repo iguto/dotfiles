@@ -1,3 +1,5 @@
+;; (setq user-emacs-directory "~/.ghq/github.com/iguto/dotfiles/emacs.d/")
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 ;; ;; Marmaladeを追加
