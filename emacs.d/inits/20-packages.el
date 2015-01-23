@@ -160,3 +160,9 @@
 ;; ========================================
 (setq comment-dwim-2--inline-comment-behavior 'reindent-comment)
 (global-set-key (kbd "M-;") 'comment-dwim-2)
+;; ========================================
+;; scss-mode
+;; ========================================
+;; (autolaod 'scss-mode "scss-mode")
+(setq scss-compile-at-save nil)
+(setq css-index-offset 2)
