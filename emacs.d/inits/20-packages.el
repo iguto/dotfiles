@@ -153,6 +153,12 @@
 (add-hook 'ruby-mode-hook
           (lambda ()
             (smart-newline-mode 1)))
+;; ========================================
+;; highlight-indentation-current-column-mode
+;; ========================================
+(add-hook 'slim-mode-hook
+          (lambda ()
+            (highlight-indentation-current-column-mode 1)))
 
 
 ;; ========================================
