@@ -172,3 +172,9 @@
 ;; (autolaod 'scss-mode "scss-mode")
 (setq scss-compile-at-save nil)
 (setq css-index-offset 2)
+
+;; ========================================
+;; コード行頭と行頭のへの移動
+;; ========================================
+(global-set-key (kbd "C-a") 'mwim-beginning-of-code-or-line)
+(global-set-key (kbd "C-e") 'mwim-end-of-code-or-line)

@@ -72,3 +72,4 @@
 (depends-on "ace-isearch")
 (depends-on "smart-newline")
 (depends-on "comment-dwim-2")
+(depends-on "mwim")
