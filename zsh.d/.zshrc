@@ -182,3 +182,9 @@ fpath=($fpath /home/ookawa/.ghq/github.com/iguto/zsh_dotfiles/site_script/zaw/fu
 # local
 #=====================================================================
 [ -e $zsh_dir/local.zsh ] && source $zsh_dir/local.zsh
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+
+if which rbenv > /dev/null ; then
+  eval "$(rbenv init -)"
+fi
