@@ -34,6 +34,9 @@ function repository-list () {
     return 1
   fi
   local selected_dir=$(ghq list -p | peco)
+  if [ -z $selected_dir ]; then
+    return 0
+  fi
   BUFFER="cd $selected_dir"
   zle accept-line
   #zle clear-screen
