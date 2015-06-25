@@ -4,10 +4,10 @@
 # vcs_info 設定
 RPROMPT=""
 
-autoload -Uz vcs_info
+autoload -Uz vcs_info && vcs_info
 autoload -Uz add-zsh-hook
 autoload -Uz is-at-least
-autoload -Uz colors
+autoload -Uz colors && colors
 
 # 以下の3つのメッセージをエクスポートする
 #   $vcs_info_msg_0_ : 通常メッセージ用 (緑)

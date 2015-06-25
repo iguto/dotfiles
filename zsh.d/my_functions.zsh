@@ -23,9 +23,9 @@ function pcolor() {
 #===========================================================
 #  絶対パスへ展開してヒストリ登録するcd
 #===========================================================
-local zcd_file=$zsh_dir/zcd.zsh
-[ -e $zcd_file ] && source $zcd_file
-alias cd='zcd'
+#local zcd_file=$zsh_dir/zcd.zsh
+#[ -e $zcd_file ] && source $zcd_file
+#alias cd='zcd'
 
 #===========================================================
 #  ssh-agentをssh系コマンド実行前に実行

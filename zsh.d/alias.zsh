@@ -6,17 +6,21 @@
 alias grep="grep --color='always'"
 alias less='less -RFX'
 
-alias ls="ls --color=always -hvF" 
-alias ll='ls -lF' la='ls -aF' laa='la | grep ^\.' lla='la -l'
-alias lsd='ls -d *(/)'
+if [ "$(uname)" = "Darwin" ]; then
+  alias ls="ls -G -hvF"
+else
+  alias ls="ls --color=always -hvF"
+  alias ll='ls -lF' la='ls -aF' laa='la | grep ^\.' lla='la -l'
+  alias lsd='ls -d *(/)'
+fi
 
 ## 実行確認
-# -i : 上書き確認, 
+# -i : 上書き確認,
 # -u : 移動元の更新日時が更新先より古いか、同じ場合は上書きしない
 # -b : 上書き必要がある場合、バックアップファイルを作成する
 # -S SUFFIX : SUFFIXをバックアップファイルに付け加える文字列とする
-alias mv='mv -ibS .mvbak'
-alias cp='cp -ibS .cpbak'
+alias mv='mv -i'
+alias cp='cp -i'
 
 alias e="emacs"
 alias vimr='vim -R' # Read only vim
@@ -75,4 +79,3 @@ function color_test {
    echo "\033[38;05;${2}m${1}\033[0m"
   fi
 }
-

@@ -43,50 +43,6 @@ setopt prompt_subst
 autoload colors -U && colors
 autoload zsh/terminfo
 
-# ipアドレスを参照する
-get-ipaddr() {
-  # get NIC list
-	local devices="`cat /proc/net/arp | sed '1d' |  awk '{print $6}'`"
-  # num of NICs
-  local numof_dev=`echo "$devices" | wc -l`
-  # reset file
-  cat /dev/null > /tmp/.inet
-  # check ip-addr of all nics
-  for i in `seq -s' ' 1 1 $numof_dev`
-  do
-      focus_dev=`echo "$devices" | cat -n | grep $i | awk '{print $2}'`
-      inet_line=`/sbin/ifconfig $focus_dev | grep -v inet6 | grep inet`
-      /sbin/ifconfig $focus_dev | grep -v inet6 | grep inet > /dev/null
-      if [ $? -eq 0 ]; then
-          echo $inet_line | cut -d : -f2 | cut -d' ' -f1 >> /tmp/.inet
-          inet_addr=`cat /tmp/.inet`
-          return
-      fi
-  done
-}
-
-function select_ipaddr () {
-  sed -i '/127.0.0.1/d' /tmp/.inet
-	num_ip=`cat /tmp/.inet | wc -l`
-	if [ $num_ip -eq 1 ]; then
-		inet_addr=`cat /tmp/.inet`
-		return
-	fi
-	select i in `cat /tmp/.inet`
-	do
-	if [ -x $i ] ; then
-		echo "plz retry."
-		continue
-	fi
-		inet_addr=$i
-		break
-	done
-}
-
-# 関数実行
-get-ipaddr 2> /dev/null					# エラーは捨てる
-select_ipaddr
-
 # ユーザごとに色を変える
 # rootならユーザ名rootを赤で表示する
 # 自分のアカウントでない場合は紫っぽい色で表示
@@ -106,21 +62,6 @@ fi
 if [ $HOST = 'iguto-Think' ] ; then
     HOSTNAME='Think'
   H_CLR="green"
-elif [ $HOST = 'daisyoohkawa.myhome.cx' ] ; then
-  HOSTNAME='HomeSrv'
-  H_CLR="blue"
-elif [ $HOST = 'poulenc.eng.kagawa-u.ac.jp' ] ; then
-  HOSTNAME='poulenc'
-  H_CLR="red"
-elif [ $HOST = 'stfile.eng.kagawa-u.ac.jp' ] ; then
-  HOSTNAME='STFILE'
-  H_CLR="yallow"
-elif [ $HOST = 'utillo1.eng.kagawa-u.ac.jp' ] ; then
-  HOSTNAME='u1'
-  H_CLR="cyan"
-elif [ $HOST = 'utrillo2.eng.kagawa-u.ac.jp' ] ; then
-  HOSTNAME='u2'
-  H_CLR="magenta}"
 else
 	HOSTNAME=$HOST
   H_CLR="magenta"
@@ -159,9 +100,9 @@ first_line () {
 	if [ $cwd = "~cwd" ]; then
 		cwd=`print -P "%~"`
 	fi
-  USER_AND_HOST="[${USER}@${HOSTNAME}(${inet_addr}):${cwd}]"
-  #user_host_decolation="[${USER}@${HOSTNAME}(${inet_addr}):]"
-  user_host_decolation="[${USER}@${HOSTNAME}(xxx.xxx.xxx.xxx):]"
+  USER_AND_HOST="[${USER}@${HOSTNAME}:${cwd}]"
+  user_host_decolation="[${USER}@${HOSTNAME}:]"
+  # user_host_decolation="[${USER}@${HOSTNAME}(xxx.xxx.xxx.xxx):]"
   user_host_decolation_size=$(( ${COLUMNS} - ${#${user_host_decolation}} ))
 
   # IPアドレス
@@ -171,7 +112,7 @@ first_line () {
 set_color () {
 
   #PROMPT=$'%{$terminfo['bold']%}%{$GREEN%}[%{$fg[${U_CLR}]%}${USER}%{${GREEN}%}@%{$fg[${H_CLR}]%}${HOST}%{${GREEN}%}(%{$fg["yellow"]%}${inet_addr}%{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
-  PROMPT=$'%{$GREEN%}[%{$fg[${U_CLR}]%}${USER}%{${GREEN}%}@%{$fg[${H_CLR}]%}${HOST}%{${GREEN}%}(%{$fg["yellow"]%}${inet_addr}%{$fg['green']%}):%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
+  PROMPT=$'%{$GREEN%}[%{$fg[${U_CLR}]%}${USER}%{${GREEN}%}@%{$fg[${H_CLR}]%}${HOST}%{${GREEN}%}:%{$fg['blue']%}%${user_host_decolation_size}<...<${cwd}%<<%{$fg['green']%}]%{$fg['cyan']%}'
 
   ##
   # デモ用プロンプト ユーザ名、ホスト名、IPアドレスをマスク
