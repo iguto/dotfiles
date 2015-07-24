@@ -12,7 +12,6 @@
 (depends-on "flycheck-cask")
 (depends-on "htmlize")
 (depends-on "idle-highlight-mode")
-(depends-on "magit")
 (depends-on "multiple-cursors")
 (depends-on "nyan-mode")
 (depends-on "pallet")
@@ -50,7 +49,6 @@
 (depends-on "fuzzy")
 ;; git
 (depends-on "git-gutter")
-(depends-on "magit")
 
 ;; golang
 (depends-on "go-mode")

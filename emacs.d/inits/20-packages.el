@@ -43,14 +43,8 @@
 (popwin-mode 1)
 
 ;; ========================================
-;; gitクライアント magit
-;; ========================================
-(require 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
-;; ========================================
 ;; gutter
 ;; ========================================
-(require 'git-rebase-mode)
 (global-git-gutter-mode +1)
 (setq git-gutter:deleted-sign "-")
 (setq git-gutter:separator-sign "|")
