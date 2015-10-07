@@ -56,7 +56,7 @@ alias diff='diff -u'
 
 alias ndate='date +%m%d_%H:%M:%S'
 
-
+alias init-proj=$zsh_dir/bin/init-proj.sh
 
 function p_decode() {
   sed 's/=/:**:/g' | tr % = | nkf -emQ | sed 's/\:\*\*\:/=/g'
@@ -71,11 +71,4 @@ function sql_filter() {
   \grep '?' | egrep 'SELECT|WHERE|INSERT|JOIN|FROM|%20OR%20'
 }
 
-# 256色表示を個別にテストするための関数
-function color_test {
-  if [ $# -lt 2 ]; then
-    echo "color_test message number"
-  else
-   echo "\033[38;05;${2}m${1}\033[0m"
-  fi
-}
+
