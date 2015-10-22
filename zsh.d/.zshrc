@@ -109,6 +109,9 @@ bindkey 'm' _most_recent_file
 bindkey '' _read_comp
 bindkey 'C' _correct_filename
 bindkey 'c' _correct_word
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey '' edit-command-line
 #===========================================================
 # gitのブランチ情報を右プロンプトに表示
 #===========================================================
