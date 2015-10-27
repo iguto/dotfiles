@@ -11,7 +11,7 @@
 (set-buffer-file-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 ;; コマンド履歴の保存 http://qiita.com/akisute3@github/items/4b489c0abbb39a5dcc45
-(setq desktop-globals-to-save '(extended-command-history))
+;; (setq desktop-globals-to-save '(extended-command-history))
 
 ;;
 ;; recentf and recentf-ext.el の設定
