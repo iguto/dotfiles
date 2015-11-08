@@ -14,3 +14,5 @@
   unlock = "update-index --no-skip-worktree"
 [core]
 	excludesfile = /home/ookawa/.gitignore
+[issue]
+	type = github

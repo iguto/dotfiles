@@ -96,3 +96,23 @@ function peco-tmux-session() {
 }
 zle -N peco-tmux-session
 bindkey '^s' peco-tmux-session
+
+function peco-git-issue() 
+{
+  which git-issue peco > /dev/null
+  if [ $? -ne 0 ]; then
+    echo "Please install git-issue and peco"
+    return 1
+  fi
+  local issue=$(git issue | peco | awk '{ print $1 }' | sed 's/#//')
+  if [ -z "$issue" ]; then
+    zle clear-screen
+    return 0
+  fi
+  BUFFER="git issue $issue"
+  zle accept-line
+}
+zle -N peco-git-issue
+bindkey '^Xi' peco-git-issue
+
+
