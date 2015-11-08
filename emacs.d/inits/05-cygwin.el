@@ -43,6 +43,8 @@
   (define-key input-decode-map "\e[1;8x" (kbd "C-M-S-("))
   (define-key input-decode-map "\e[1;8y" (kbd "C-M-S-)"))
 
+  (define-key input-decode-map "" (kbd "C-S-d"))
+
   (define-key input-decode-map "" (kbd "C-~"))
   (define-key input-decode-map "" (kbd "C-|"))
   (define-key input-decode-map "" (kbd "C-`"))

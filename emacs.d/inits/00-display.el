@@ -9,7 +9,7 @@
 (setq-default indent-tabs-mode nil) ; 空白でインデント
 (defun indent-set ()
   (setq indent-tabs-mode nil)
-  (setq c-basic-offset   2  ) ; ブロック内のインデント数
+  ;; (setq c-basic-offset   2  ) ; ブロック内のインデント数
   (setq tab-width        2  ) ; タブのインデント数
 )
 
@@ -47,7 +47,7 @@
 ;; ============================================================
 ;; フォント
 ;; ============================================================
-(add-to-list 'default-frame-alist '(font . "Ricty-11"))
+(add-to-list 'default-frame-alist '(font . "Ricty-12"))
 
 ;; ========================================
 ;; 24からのテーマ  M-x customize-themes

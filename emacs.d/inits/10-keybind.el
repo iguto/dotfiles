@@ -39,3 +39,4 @@
     )
 )
 (global-set-key (kbd "C-x y") 'duplicate-line)
+(define-key global-map (kbd "C-S-D") 'duplicate-line)
