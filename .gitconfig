@@ -16,3 +16,5 @@
 	excludesfile = /home/ookawa/.gitignore
 [issue]
 	type = github
+[pager]
+	diff = diff-highlight

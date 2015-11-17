@@ -73,6 +73,7 @@ fi
 #===========================================================
 #   補完/補完スタイル
 #===========================================================
+fpath=($zsh_dir/zsh_completions/src $fpath) # 保管ができるコマンドを追加する  https://github.com/zsh-users/zsh-completions
 autoload -U compinit && compinit # 補完機能上位版を使用
 
 zstyle ':completion:*' completer _oldlist _complete  _expand
@@ -94,7 +95,6 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[.]=**'
 #zstyle ':completion:*:options' description 'yes'
 #zstyle ':completion:*' group-name ''
 
-fpath=($zsh_dir/zsh_completions/src $fpath) # 保管ができるコマンドを追加する  https://github.com/zsh-users/zsh-completions
 
 #===========================================================
 # bindkeyの変更
