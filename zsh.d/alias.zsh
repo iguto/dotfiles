@@ -71,4 +71,11 @@ function sql_filter() {
   \grep '?' | egrep 'SELECT|WHERE|INSERT|JOIN|FROM|%20OR%20'
 }
 
+function webrickserver() {
+  local port=$1
+  if [ -z $port ]; then
+    port=9000
+  fi
+  ruby -rwebrick -e "WEBrick::HTTPServer.new(DocumentRoot: './', Port: $port).start"
+}
 

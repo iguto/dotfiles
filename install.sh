@@ -29,6 +29,17 @@ do
 done
 
 #
+# git-contrib
+#
+if [ -e /usr/share/doc/git/contrib/diff-highlight/diff-highlight ]; then
+  sudo chmod +x /usr/share/doc/git/contrib/diff-highlight/diff-highlight
+  ln -sf /usr/share/doc/git/contrib/diff-highlight/diff-highlight $HOME/bin
+  chmod +x $HOME/bin/diff-highlight
+else
+  echo "diff-highlight not found" > /dev/stderr
+fi
+
+#
 # zsh
 #
 (

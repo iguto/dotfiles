@@ -17,4 +17,4 @@
 [issue]
 	type = github
 [pager]
-	diff = diff-highlight
+	diff = diff-highlight | less
