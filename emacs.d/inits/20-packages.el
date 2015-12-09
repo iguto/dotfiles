@@ -20,6 +20,9 @@
 (define-key isearch-mode-map (kbd "C-o") 'helm-occur-from-isearch)
 ;; M-x
 (global-set-key (kbd "M-x") 'helm-M-x)
+;; pop-global-mark
+(global-set-key (kbd "C-x C-@") 'helm-all-mark-rings)
+
 ;; ========================================
 ;; auto-complete
 ;; ========================================
