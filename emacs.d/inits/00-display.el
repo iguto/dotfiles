@@ -47,7 +47,8 @@
 ;; ============================================================
 ;; フォント
 ;; ============================================================
-(add-to-list 'default-frame-alist '(font . "Ricty-12"))
+;; (add-to-list 'default-frame-alist '(font . "RictyDiminished-Regular-12"))
+(add-to-list 'default-frame-alist '(font . "Ricty Diminished-12"))
 
 ;; ========================================
 ;; 24からのテーマ  M-x customize-themes
