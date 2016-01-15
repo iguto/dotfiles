@@ -1,5 +1,6 @@
 [color]
 	ui = true
+	grep = auto
 [user]
 	email = clc.iguto@gmail.com
 	name = iguto
@@ -18,3 +19,7 @@
 	type = github
 [pager]
 	diff = diff-highlight | less
+[grep]
+	lineNumber = true
+[color "grep"]
+	linenumber = magenta
