@@ -104,7 +104,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " .rb拡張子の時ときにRubyへのパスと、マジックコメントを自動挿入
 " vim [file_name]のとき自動挿入
 " touch [file_name] → vim [file_name]では自動挿入されない
-autocmd BufNewFile *.rb 0r ~/.vim/templates/rb.tpl
+"autocmd BufNewFile *.rb 0r ~/.vim/templates/rb.tpl
+"autocmd BufNewFile,BufRead *.c set filetype=c
 
 
 "
@@ -113,13 +114,13 @@ autocmd BufNewFile *.rb 0r ~/.vim/templates/rb.tpl
 "
 "
 
-execute pathogen#infect()
-syntax on
-filetype plugin indent on
+"execute pathogen#infect()
+"syntax on
+"filetype plugin indent on
 
 
 " docのロード
-helptags ~/.vim/doc
+"helptags ~/.vim/doc
 
 "
 " memo
