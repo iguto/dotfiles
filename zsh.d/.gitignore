@@ -55,3 +55,5 @@ tramp
 .directory
 
 local.zsh
+
+zsh-completions
