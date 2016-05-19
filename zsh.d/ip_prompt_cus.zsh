@@ -66,7 +66,7 @@ get-ipaddr() {
 }
 
 function select_ipaddr () {
-  sed -i '/127.0.0.1/d' /tmp/.inet
+  sed -ie '/127.0.0.1/d' /tmp/.inet
 	num_ip=`cat /tmp/.inet | wc -l`
 	if [ $num_ip -eq 1 ]; then
 		inet_addr=`cat /tmp/.inet`
@@ -84,8 +84,11 @@ function select_ipaddr () {
 }
 
 # 関数実行
-get-ipaddr 2> /dev/null					# エラーは捨てる
-select_ipaddr
+{ uname | grep Darwin &> /dev/null } || \
+{ 
+  get-ipaddr 2> /dev/null					# エラーは捨てる
+  select_ipaddr
+}
 
 # ユーザごとに色を変える
 # rootならユーザ名rootを赤で表示する
@@ -165,7 +168,7 @@ first_line () {
   user_host_decolation_size=$(( ${COLUMNS} - ${#${user_host_decolation}} ))
 
   # IPアドレス
-  REMAIN=$(( ${COLUMNS} - ${#USER_AND_HOST} ))
+  {uname | grep Darwin >& /dev/null} || REMAIN=$(( ${COLUMNS} - ${#USER_AND_HOST} ))
 }
 
 set_color () {
