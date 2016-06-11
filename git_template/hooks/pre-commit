@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# if the branch is master, then fail
+
+branch="$(git synbolic-ref HEAD 2> /dev/null" || \
+       "$(git describe --contains --all HEAD)"
+
+if [ "${branch##refs/heads/}" = "master" ]; then
+  echo "Do not commit on master branch!" > /dev/stderr
+  exit 1
+fi
+
+
+if [ -e Gemfile ]; then
+  if grep -vE '^#' Gemfile | grep annotate 2> /dev/null; then
+    bundle exec annotate
+    exit 2
+  fi
+fi

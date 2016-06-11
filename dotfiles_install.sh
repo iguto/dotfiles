@@ -33,3 +33,13 @@ done
 #
 [ ! -d ~/.config/peco ] && mkdir -p ~/.config/peco
 ln -sf $dotfiles_dir/.config/peco/config.json ~/.config/peco
+
+
+#
+# git_templates
+#
+if [ ! -d ~/.git_template ]; then
+  mkdir ~/.git_template
+  [ ! -d ~/.git_template/hooks ] && mkdir ~/.git_template/hooks
+  ln -s $dotfiles_dir/git_template/hooks/git_template/pre-commit ~/.git_template/hooks
+fi
